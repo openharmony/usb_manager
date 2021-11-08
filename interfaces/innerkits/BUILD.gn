@@ -27,7 +27,6 @@ config("usbsrv_public_config") {
 ohos_shared_library("usbsrv_client") {
   sources = [
     "${usb_manager_path}/services/zidl/src/usb_srv_proxy.cpp",
-    "native/src/usb_device.cpp",
     "native/src/usb_device_pipe.cpp",
     "native/src/usb_request.cpp",
     "native/src/usb_srv_client.cpp",
