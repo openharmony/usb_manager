@@ -1,0 +1,54 @@
+# Copyright (C) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/config/ohos/rules.gni")
+import("//build/ohos.gni")
+
+USB_MANAGER_ROOT = "//base/usb/usb_manager"
+ADAPTER_DIR = "$USB_MANAGER_ROOT/adapter"
+INTERFACES_ROOT = "$USB_MANAGER_ROOT/interfaces"
+
+java_library("usb_manager_java") {
+  java_files = [
+    "$INTERFACES_ROOT/kits/java/ohos/usb/USBLoggerFactory.java",
+    "$INTERFACES_ROOT/kits/java/ohos/usb/USBDevice.java",
+    "$INTERFACES_ROOT/kits/java/ohos/usb/USBDevicePipe.java",
+    "$INTERFACES_ROOT/kits/java/ohos/usb/USBInterface.java",
+    "$INTERFACES_ROOT/kits/java/ohos/usb/USBCore.java",
+    "$INTERFACES_ROOT/kits/java/ohos/usb/USBRequest.java",
+    "$INTERFACES_ROOT/kits/java/ohos/usb/USBConfig.java",
+    "$INTERFACES_ROOT/kits/java/ohos/usb/USBEndpoint.java",
+    "$INTERFACES_ROOT/kits/java/ohos/usb/package-info.java",
+  ]
+
+  deps = [ "//utils/java:utils_maple_java" ]
+
+  external_deps = [
+    "appexecfwk:appexecfwk_java",
+    "appexecfwk:appexecfwk_java_maple",
+    "hilog:hilog_maple_java",
+    "samgr:samgr_java",
+    "samgr:samgr_java_maple",
+  ]
+
+  subsystem_name = "usb"
+  part_name = "usb_manager"
+}
+
+ohos_maple_java("usb_manager_maple_java") {
+  deps = [ ":usb_manager_java" ]
+  external_deps = [ "hilog:hilog_maple_java" ]
+  so_name = "usb_manager_java"
+  part_name = "usb_manager"
+  output_dir = "$root_build_dir/usb/"
+}

@@ -1,0 +1,55 @@
+# Copyright (c) 2021 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//base/usb/usb_manager/usbmgr.gni")
+
+config("usbsrv_private_config") {
+  include_dirs = [
+    "${usb_manager_path}/services/zidl/include",
+    "//utils/system/safwk/native/include",
+  ]
+}
+
+config("usbsrv_public_config") {
+  include_dirs = [ "native/include" ]
+}
+
+ohos_shared_library("usbsrv_client") {
+  sources = [
+    "${usb_manager_path}/services/zidl/src/usb_srv_proxy.cpp",
+    "native/src/usb_device.cpp",
+    "native/src/usb_device_pipe.cpp",
+    "native/src/usb_request.cpp",
+    "native/src/usb_srv_client.cpp",
+  ]
+
+  configs = [
+    "${utils_path}:utils_config",
+    ":usbsrv_private_config",
+    ":usbsrv_public_config",
+  ]
+
+  public_configs = [ ":usbsrv_public_config" ]
+
+  deps = [ "//utils/native/base:utils" ]
+
+  external_deps = [
+    "appexecfwk_standard:libeventhandler",
+    "hiviewdfx_hilog_native:libhilog",
+    "ipc:ipc_core",
+    "safwk:system_ability_fwk",
+    "samgr_L2:samgr_proxy",
+  ]
+
+  part_name = "usb_manager_native"
+}
