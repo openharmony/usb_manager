@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #include "usbd_transfer_test.h"
 #include <iostream>
 #include <vector>
@@ -19,6 +20,7 @@
 #include "hilog_wrapper.h"
 #include "if_system_ability_manager.h"
 #include "system_ability_definition.h"
+
 #include "usb_common.h"
 #include "usb_device.h"
 #include "usb_device_pipe.h"
@@ -87,7 +89,6 @@ void UsbdTransferTest::PrintBuffer(const char *charstr, const uint8_t *databuffe
     if (charstr == NULL || datalength == 0 || databuffer == nullptr) {
         return;
     }
-
     oss.str("");
     oss << charstr << " << 二进制数据流[" << datalength << "字节] >> :";
     for (uint32_t i = 0; i < datalength; ++i) {
@@ -2779,11 +2780,13 @@ HWTEST_F(UsbdTransferTest, UsbdSetInterface001, TestSize.Level1)
     uint8_t devAddr = device.GetDevAddr();
     uint8_t interfaceid = interface.GetId();
     uint8_t altIndex = interface.GetAlternateSetting();
+
     dev = {busNum, devAddr};
     auto ret = UsbdClient::ReleaseInterface(dev, interfaceid);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbdTransferTest::UsbdClaimInterface001 %{public}d ReleaseInterface=%{public}d",
                __LINE__, ret);
     ASSERT_TRUE(ret == 0);
+
     ret = UsbdClient::ClaimInterface(dev, interfaceid);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbdTransferTest::UsbdClaimInterface001 %{public}d ClaimInterface=%{public}d",
                __LINE__, ret);
@@ -2811,9 +2814,11 @@ HWTEST_F(UsbdTransferTest, UsbdSetInterface002, TestSize.Level1)
 
     uint8_t altIndex = interface.GetAlternateSetting();
     dev = {busNum, devAddr};
+
     auto ret = UsbdClient::ReleaseInterface(dev, interfaceid);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbdTransferTest::UsbdClaimInterface001 %{public}d ReleaseInterface=%{public}d",
                __LINE__, ret);
+
     ASSERT_TRUE(ret == 0);
     ret = UsbdClient::ClaimInterface(dev, interfaceid);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbdTransferTest::UsbdClaimInterface001 %{public}d ClaimInterface=%{public}d",
@@ -2841,11 +2846,11 @@ HWTEST_F(UsbdTransferTest, UsbdSetInterface003, TestSize.Level1)
     uint8_t devAddr = device.GetDevAddr();
     uint8_t interfaceid = interface.GetId();
     uint8_t altIndex = interface.GetAlternateSetting();
-
     dev = {busNum, devAddr};
     auto ret = UsbdClient::ReleaseInterface(dev, interfaceid);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbdTransferTest::UsbdClaimInterface001 %{public}d ReleaseInterface=%{public}d",
                __LINE__, ret);
+
     ASSERT_TRUE(ret == 0);
     ret = UsbdClient::ClaimInterface(dev, interfaceid);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbdTransferTest::UsbdClaimInterface001 %{public}d ClaimInterface=%{public}d",
@@ -2904,13 +2909,13 @@ HWTEST_F(UsbdTransferTest, UsbdSetInterface005, TestSize.Level1)
     uint8_t busNum = device.GetBusNum();
     uint8_t devAddr = device.GetDevAddr();
     uint8_t interfaceid = interface.GetId();
-
     uint8_t altIndex = interface.GetAlternateSetting();
 
     dev = {busNum, devAddr};
     auto ret = UsbdClient::ReleaseInterface(dev, interfaceid);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbdTransferTest::UsbdClaimInterface001 %{public}d ReleaseInterface=%{public}d",
                __LINE__, ret);
+
     ASSERT_TRUE(ret == 0);
     ret = UsbdClient::ClaimInterface(dev, interfaceid);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbdTransferTest::UsbdClaimInterface001 %{public}d ClaimInterface=%{public}d",
@@ -2972,9 +2977,9 @@ HWTEST_F(UsbdTransferTest, UsbdSetInterface007, TestSize.Level1)
 
     uint8_t devAddr = device.GetDevAddr();
     int32_t interfaceid = interface.GetId();
-
     uint8_t altIndex = 225;
     dev = {busNum, devAddr};
+
     auto ret = UsbdClient::ReleaseInterface(dev, interfaceid);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbdTransferTest::UsbdClaimInterface001 %{public}d ReleaseInterface=%{public}d",
                __LINE__, ret);
@@ -3005,8 +3010,8 @@ HWTEST_F(UsbdTransferTest, UsbdSetInterface008, TestSize.Level1)
     uint8_t busNum = device.GetBusNum();
     uint8_t devAddr = device.GetDevAddr();
     int32_t interfaceid = interface.GetId();
-
     uint8_t altIndex = 225;
+
     dev = {busNum, devAddr};
     auto ret = UsbdClient::ReleaseInterface(dev, interfaceid);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbdTransferTest::UsbdClaimInterface001 %{public}d ReleaseInterface=%{public}d",
@@ -4102,12 +4107,13 @@ HWTEST_F(UsbdTransferTest, UsbdRequestWait001, TestSize.Level1)
     ASSERT_TRUE(ret == 0);
     UsbRequest request;
     uint8_t tag[1000] = "queue read";
+
     uint8_t buffer[255] = {};
     uint32_t length = 255;
-
     struct UsbPipe pipe = {interfaceid, pointid};
     std::vector<uint8_t> clientdata = {tag, tag + 10};
     request.SetClientData(clientdata);
+
     std::vector<uint8_t> bufferdata = {buffer, buffer + length};
     request.SetReqData(bufferdata);
     ret = UsbdClient::RequestQueue(dev, pipe, clientdata, bufferdata);
@@ -4153,13 +4159,14 @@ HWTEST_F(UsbdTransferTest, UsbdRequestWait002, TestSize.Level1)
                __LINE__, ret);
     ASSERT_TRUE(ret == 0);
     UsbRequest request;
+
     uint8_t tag[1000] = "queue read";
     uint8_t buffer[255] = {};
     uint32_t length = 255;
     struct UsbPipe pipe = {interfaceid, pointid};
     std::vector<uint8_t> clientdata = {tag, tag + 10};
-    request.SetClientData(clientdata);
 
+    request.SetClientData(clientdata);
     std::vector<uint8_t> bufferdata = {buffer, buffer + length};
     request.SetReqData(bufferdata);
     ret = UsbdClient::RequestQueue(dev, pipe, clientdata, bufferdata);
@@ -4209,8 +4216,10 @@ HWTEST_F(UsbdTransferTest, UsbdRequestWait003, TestSize.Level1)
 
     uint8_t tag[1000] = "queue read";
     uint8_t buffer[255] = {};
+
     uint32_t length = 255;
     struct UsbPipe pipe = {interfaceid, pointid};
+
     std::vector<uint8_t> clientdata = {tag, tag + 10};
     request.SetClientData(clientdata);
     std::vector<uint8_t> bufferdata = {buffer, buffer + length};
@@ -4260,10 +4269,10 @@ HWTEST_F(UsbdTransferTest, UsbdRequestWait004, TestSize.Level1)
     ASSERT_TRUE(ret == 0);
     UsbRequest request;
     uint8_t tag[1000] = "queue read";
-
     uint8_t buffer[255] = {};
     uint32_t length = 255;
     struct UsbPipe pipe = {interfaceid, pointid};
+
     std::vector<uint8_t> clientdata = {tag, tag + 10};
     request.SetClientData(clientdata);
     std::vector<uint8_t> bufferdata = {buffer, buffer + length};
@@ -4311,13 +4320,14 @@ HWTEST_F(UsbdTransferTest, UsbdRequestWait005, TestSize.Level1)
                __LINE__, ret);
     ASSERT_TRUE(ret == 0);
     UsbRequest request;
-
     uint8_t tag[1000] = "queue read";
     uint8_t buffer[255] = {};
+
     uint32_t length = 255;
     struct UsbPipe pipe = {interfaceid, pointid};
     std::vector<uint8_t> clientdata = {tag, tag + 10};
     request.SetClientData(clientdata);
+
     std::vector<uint8_t> bufferdata = {buffer, buffer + length};
     request.SetReqData(bufferdata);
     ret = UsbdClient::RequestQueue(dev, pipe, clientdata, bufferdata);
@@ -4566,9 +4576,9 @@ HWTEST_F(UsbdTransferTest, UsbdRequestCancel005, TestSize.Level1)
     UsbRequest request;
     uint8_t tag[1000] = "queue Write";
     struct UsbPipe pipe = {interfaceid, pointid};
-
     std::vector<uint8_t> clientdata = {tag, tag + 11};
     request.SetClientData(clientdata);
+
     std::vector<uint8_t> bufferdata = {buffer, buffer + length};
     request.SetReqData(bufferdata);
     ret = UsbdClient::RequestQueue(dev, pipe, clientdata, bufferdata);
@@ -4613,6 +4623,7 @@ HWTEST_F(UsbdTransferTest, UsbdRequestCancel006, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     UsbRequest request;
     uint8_t tag[1000] = "queue Write";
+
     struct UsbPipe pipe = {interfaceid, pointid};
     std::vector<uint8_t> clientdata = {tag, tag + 11};
     request.SetClientData(clientdata);
@@ -4662,6 +4673,7 @@ HWTEST_F(UsbdTransferTest, UsbdRequestCancel007, TestSize.Level1)
                __LINE__, ret);
     EXPECT_TRUE(ret == 0);
     UsbRequest request;
+
     uint8_t tag[1000] = "queue Write";
     struct UsbPipe pipe = {interfaceid, pointid};
     std::vector<uint8_t> clientdata = {tag, tag + 11};
@@ -4717,6 +4729,7 @@ HWTEST_F(UsbdTransferTest, UsbdRequestCancel008, TestSize.Level1)
 
     std::vector<uint8_t> clientdata = {tag, tag + 11};
     request.SetClientData(clientdata);
+
     std::vector<uint8_t> bufferdata = {buffer, buffer + length};
     request.SetReqData(bufferdata);
     ret = UsbdClient::RequestQueue(dev, pipe, clientdata, bufferdata);

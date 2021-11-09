@@ -32,10 +32,8 @@ using namespace OHOS;
 using namespace OHOS::USB;
 using namespace std;
 
-const int SLEEP_TIME = 3;
-
 vector<UsbDevice> deviceList;
-
+const int SLEEP_TIME = 3;
 UsbDevice device;
 
 auto &usbSrvClient = UsbSrvClient::GetInstance();

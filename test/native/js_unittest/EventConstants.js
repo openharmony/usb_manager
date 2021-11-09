@@ -13,54 +13,55 @@
  * limitations under the License.
  */
 
-/**
+/*
  * Constants of events that will be registered to system.
  */
 const EventConstants = {
-    /**
-    * Bitmask used for extracting the USBEndpoint type from it's address
-    */
-    USB_ENDPOINT_XFERTYPE_MASK: 0x03,
 
-    /**
-    * Control USBEndpoint type
-    */
-    USB_ENDPOINT_XFER_CONTROL: 0,
+  /*
+  * Bitmask used for extracting the USBEndpoint type from it's address
+  */
+  USB_ENDPOINT_XFERTYPE_MASK: 0x03,
 
-    /**
-    * Isochronous USBEndpoint type
-    */
-    USB_ENDPOINT_XFER_ISOC: 1,
+  /*
+  * Control USBEndpoint type
+  */
+  USB_ENDPOINT_XFER_CONTROL: 0,
 
-    /**
-    * Bulk USBEndpoint type
-    */
-    USB_ENDPOINT_XFER_BULK: 2,
+  /*
+  * Isochronous USBEndpoint type
+  */
+  USB_ENDPOINT_XFER_ISOC: 1,
 
-    /**
-    * Interrupt USBEndpoint type
-    */
-    USB_ENDPOINT_XFER_INT: 3,
+  /*
+  * Bulk USBEndpoint type
+  */
+  USB_ENDPOINT_XFER_BULK: 2,
 
-    /**
-    * Bitmask used for extracting the USBEndpoint number from it's address
-    */
-    USB_ENDPOINT_NUMBER_MASK: 0x0f,
+  /*
+  * Interrupt USBEndpoint type
+  */
+  USB_ENDPOINT_XFER_INT: 3,
 
-    /**
-    * Bitmask used for extracting the USBEndpoint direction from it's address
-    */
-    USB_ENDPOINT_DIR_MASK: 0x80,
+  /*
+  * Bitmask used for extracting the USBEndpoint number from it's address
+  */
+  USB_ENDPOINT_NUMBER_MASK: 0x0f,
 
-    /**
-    * Used to signify direction of data for USBEndpoint is OUT, host to device
-    */
-    USB_ENDPOINT_DIR_OUT: 0,
+  /*
+  * Bitmask used for extracting the USBEndpoint direction from it's address
+  */
+  USB_ENDPOINT_DIR_MASK: 0x80,
 
-    /**
-    * Used to signify direction of data for USBEndpoint is IN, device to host
-    */
-    USB_ENDPOINT_DIR_IN: 0x80
+  /*
+  * Used to signify direction of data for USBEndpoint is OUT, host to device
+  */
+  USB_ENDPOINT_DIR_OUT: 0,
+
+  /*
+  * Used to signify direction of data for USBEndpoint is IN, device to host
+  */
+  USB_ENDPOINT_DIR_IN: 0x80
 }
 
 export default EventConstants;

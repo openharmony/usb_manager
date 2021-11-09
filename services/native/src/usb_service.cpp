@@ -21,6 +21,7 @@
 #include <string>
 #include <unistd.h>
 #include "bundle_mgr_interface.h"
+#include "bundle_mgr_proxy.h"
 #include "file_ex.h"
 #include "if_system_ability_manager.h"
 #include "iservice_registry.h"
@@ -31,7 +32,6 @@
 #include "usb_descriptor_parser.h"
 #include "usb_port_manager.h"
 #include "usb_right_manager.h"
-#include "bundle_mgr_proxy.h"
 
 namespace OHOS {
 namespace USB {
@@ -363,7 +363,6 @@ static std::string GetDevStringValFromIdx(uint8_t busNum, uint8_t devAddr, uint8
 {
     const UsbDev dev = {busNum, devAddr};
     std::vector<uint8_t> strV;
-    uint32_t length = 0;
     std::string string = " ";
 
     USB_HILOGW(MODULE_USB_SERVICE, "%{public}s:%{public}d getString idx:%{public}d", __func__, __LINE__, idx);
@@ -377,7 +376,7 @@ static std::string GetDevStringValFromIdx(uint8_t busNum, uint8_t devAddr, uint8
                    __LINE__, idx, ret);
         return string;
     }
-    length = strV.size();
+    uint32_t length = strV.size();
     if ((length < DESCRIPTOR_VALUE_START_OFFSET) || (strV[1] != DESCRIPTOR_TYPE_STRING)) {
         USB_HILOGW(MODULE_USB_SERVICE, "%{public}s:%{public}d type or length error, len:%{public}d", __func__, __LINE__,
                    length);
@@ -493,7 +492,6 @@ int32_t UsbService::GetConfigDescriptor(const UsbDev &uDev,
     for (uint8_t i = 0; i < dev.GetDescConfigCount(); ++i) {
         uint32_t cursor = 0;
         decriptor.clear();
-        uint32_t length = 0;
         ret = UsbdClient::GetConfigDescriptor(uDev, i, decriptor);
         if (ret != UEC_OK) {
             UsbdClient::CloseDevice(uDev);
@@ -501,7 +499,7 @@ int32_t UsbService::GetConfigDescriptor(const UsbDev &uDev,
                        ret);
             return ret;
         }
-        length = decriptor.size();
+        uint32_t length = decriptor.size();
         buffer = decriptor.data();
         if (length == 0) {
             USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:%{public}d GetConfigDescriptor[%{public}d] length=%{public}d",

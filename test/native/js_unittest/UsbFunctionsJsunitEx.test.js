@@ -20,228 +20,232 @@ import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from
 /* usb core functions test */
 describe('UsbFunctionsJsFunctionsTestEx', function () {
 
-    beforeAll(function () {
-        console.log('*************Usb Unit UsbFunctionsJsFunctionsTest Begin*************');
-        var Version = usb.getVersion()
-        console.info('begin test getversion :' + Version)
-        // 切换到 device
-        var usbPortList = usb.getPorts()
-        if (usbPortList.length > 0) {
-            if (usbPortList[0].status.currentMode == 1) {
-                console.info('usb case set data role 1, data role 1');
-                usb.setPortRoles(usbPortList[0].id, 2, 2).then(data => {
-                    console.info('usb case setPortRoles return: ' + data);
-                }).catch(error => {
-                    console.info('usb case setPortRoles error : ' + error);
-                });
-                console.log('*************Usb Unit switch to device Begin*************');
-            }
-        }
-    })
-    beforeEach(function () {
-        console.info('beforeEach: *************Usb Unit Test Case*************');
-    })
-    afterEach(function () {
-        console.info('afterEach: *************Usb Unit Test Case*************');
-    })
-    afterAll(function () {
-        console.log('*************Usb Unit UsbFunctionsJsFunctionsTest End*************');
-    })
+  beforeAll(function () {
+    console.log('*************Usb Unit UsbFunctionsJsFunctionsTestEx Begin*************');
+    var Version = usb.getVersion()
+    console.info('begin test getversion :' + Version)
 
-    /**
-    * @tc.number    : usb_function_to_string_test_01
-    * @tc.name      : usbFunctionsToString
-    * @tc.desc      : 正向测试 0 返回 'none'
-    */
-    it('usb_function_to_string_test_01', 0, function () {
-        console.info('usb usb_function_to_string_test_01 begin');
-        var maskCode = 0
-        var strMaskCode = usb.usbFunctionsToString(maskCode)
-        expect(strMaskCode).assertEqual('none');
-        console.info('usb case maskCode ' + maskCode + ' usbFunctionsToString return int: ' + strMaskCode);
-        console.info('usb usb_function_to_string_test_01 :  PASS');
-    })
+    // 切换到 device
+    var usbPortList = usb.getPorts()
+    if (usbPortList.length > 0) {
+      if (usbPortList[0].status.currentMode == 1) {
+        console.info('usb case set data role 1, data role 1');
+        usb.setPortRoles(usbPortList[0].id, 2, 2).then(data => {
+          console.info('usb case setPortRoles return: ' + data);
+        }).catch(error => {
+          console.info('usb case setPortRoles error : ' + error);
+        });
 
-    /**
-    * @tc.number    : usb_function_to_string_test_02
-    * @tc.name      : usbFunctionsToString
-    * @tc.desc      : 正向测试 1 返回 'acm'
-    */
-    it('usb_function_to_string_test_02', 0, function () {
-        console.info('usb usb_function_to_string_test_02 begin');
-        var maskCode = 1
-        var strMaskCode = usb.usbFunctionsToString(maskCode)
-        expect(strMaskCode).assertEqual('acm');
-        console.info('usb case maskCode ' + maskCode + ' usbFunctionsToString return int: ' + strMaskCode);
-        console.info('usb usb_function_to_string_test_02 :  PASS');
-    })
+        console.log('*************Usb Unit switch to device Begin*************');
+      }
+    }
+  })
+  beforeEach(function () {
+    console.info('beforeEach: *************Usb Unit Test Case*************');
+  })
 
-    /**
-    * @tc.number    : usb_function_to_string_test_03
-    * @tc.name      : usbFunctionsToString
-    * @tc.desc      : 正向测试 2 返回 'ecm'
-    */
-    it('usb_function_to_string_test_02', 0, function () {
-        console.info('usb usb_function_to_string_test_02 begin');
-        var maskCode = 2
-        var strMaskCode = usb.usbFunctionsToString(maskCode)
-        expect(strMaskCode).assertEqual('ecm');
-        console.info('usb case maskCode ' + maskCode + ' usbFunctionsToString return int: ' + strMaskCode);
-        console.info('usb usb_function_to_string_test_02 :  PASS');
-    })
+  afterEach(function () {
+    console.info('afterEach: *************Usb Unit Test Case*************');
+  })
 
-    /**
-    * @tc.number    : usb_function_to_string_test_04
-    * @tc.name      : usbFunctionsToString
-    * @tc.desc      : 正向测试 3 返回 'acm,ecm'
-    */
-    it('usb_function_to_string_test_02', 0, function () {
-        console.info('usb usb_function_to_string_test_02 begin');
-        var maskCode = 3
-        var strMaskCode = usb.usbFunctionsToString(maskCode)
-        expect(strMaskCode).assertEqual('acm,ecm');
-        console.info('usb case maskCode ' + maskCode + ' usbFunctionsToString return int: ' + strMaskCode);
-        console.info('usb usb_function_to_string_test_02 :  PASS');
-    })
+  afterAll(function () {
+    console.log('*************Usb Unit UsbFunctionsJsFunctionsTest End*************');
+  })
 
-    /**
-    * @tc.number    : usb_function_to_string_test_05
-    * @tc.name      : usbFunctionsToString
-    * @tc.desc      : 正向测试 4 返回 'hdc'
-    */
-    it('usb_function_to_string_test_05', 0, function () {
-        console.info('usb usb_function_to_string_test_05 begin');
-        var maskCode = 4
-        var strMaskCode = usb.usbFunctionsToString(maskCode)
-        expect(strMaskCode).assertEqual('hdc');
-        console.info('usb case maskCode ' + maskCode + ' usbFunctionsToString return int: ' + strMaskCode);
-        console.info('usb usb_function_to_string_test_05 :  PASS');
-    })
+  /*
+  * @tc.number    : usb_function_to_string_test_01
+  * @tc.name      : usbFunctionsToString
+  * @tc.desc      : 正向测试 0 返回 'none'
+  */
+  it('usb_function_to_string_test_01', 0, function () {
+    console.info('usb usb_function_to_string_test_01 begin');
+    var maskCode = 0
+    var strMaskCode = usb.usbFunctionsToString(maskCode)
+    expect(strMaskCode).assertEqual('none');
+    console.info('usb case maskCode ' + maskCode + ' usbFunctionsToString return int: ' + strMaskCode);
+    console.info('usb usb_function_to_string_test_01 :  PASS');
+  })
 
-    /**
-    * @tc.number    : usb_function_to_string_test_06
-    * @tc.name      : usbFunctionsToString
-    * @tc.desc      : 正向测试 5 返回 'acm,hdc'
-    */
-    it('usb_function_to_string_test_06', 0, function () {
-        console.info('usb usb_function_to_string_test_06 begin');
-        var maskCode = 5
-        var strMaskCode = usb.usbFunctionsToString(maskCode)
-        expect(strMaskCode).assertEqual('hdc,acm');
-        console.info('usb case maskCode ' + maskCode + ' usbFunctionsToString return int: ' + strMaskCode);
-        console.info('usb usb_function_to_string_test_06 :  PASS');
-    })
+  /*
+  * @tc.number    : usb_function_to_string_test_02
+  * @tc.name      : usbFunctionsToString
+  * @tc.desc      : 正向测试 1 返回 'acm'
+  */
+  it('usb_function_to_string_test_02', 0, function () {
+    console.info('usb usb_function_to_string_test_02 begin');
+    var maskCode = 1
+    var strMaskCode = usb.usbFunctionsToString(maskCode)
+    expect(strMaskCode).assertEqual('acm');
+    console.info('usb case maskCode ' + maskCode + ' usbFunctionsToString return int: ' + strMaskCode);
+    console.info('usb usb_function_to_string_test_02 :  PASS');
+  })
 
-    /**
-    * @tc.number    : usb_function_to_string_test_07
-    * @tc.name      : usbFunctionsToString
-    * @tc.desc      : 正向测试 6 返回 'ecm,hdc'
-    */
-    it('usb_function_to_string_test_07', 0, function () {
-        console.info('usb usb_function_to_string_test_07 begin');
-        var maskCode = 6
-        var strMaskCode = usb.usbFunctionsToString(maskCode)
-        expect(strMaskCode).assertEqual('hdc,ecm');
-        console.info('usb case maskCode ' + maskCode + ' usbFunctionsToString return int: ' + strMaskCode);
-        console.info('usb usb_function_to_string_test_07 :  PASS');
-    })
+  /*
+  * @tc.number    : usb_function_to_string_test_03
+  * @tc.name      : usbFunctionsToString
+  * @tc.desc      : 正向测试 2 返回 'ecm'
+  */
+  it('usb_function_to_string_test_02', 0, function () {
+    console.info('usb usb_function_to_string_test_02 begin');
+    var maskCode = 2
+    var strMaskCode = usb.usbFunctionsToString(maskCode)
+    expect(strMaskCode).assertEqual('ecm');
+    console.info('usb case maskCode ' + maskCode + ' usbFunctionsToString return int: ' + strMaskCode);
+    console.info('usb usb_function_to_string_test_02 :  PASS');
+  })
 
-    /**
-    * @tc.number    : usb_function_from_string_test_01
-    * @tc.name      : usbFunctionsFromString
-    * @tc.desc      : 正向测试 'none' 返回 0
-    */
-    it('usb_function_from_string_test_01', 0, function () {
-        console.info('usb usb_function_from_string_test_01 begin');
-        var strMaskCode = 'none'
-        var nMaskCode = usb.usbFunctionsFromString(strMaskCode)
-        expect(nMaskCode).assertEqual(0);
-        console.info('usb case strMaskCode ' + strMaskCode + ' usbFunctionsFromString return int: ' + nMaskCode);
-        console.info('usb usb_function_to_string_test_01 :  PASS');
-    })
+  /*
+  * @tc.number    : usb_function_to_string_test_04
+  * @tc.name      : usbFunctionsToString
+  * @tc.desc      : 正向测试 3 返回 'acm,ecm'
+  */
+  it('usb_function_to_string_test_02', 0, function () {
+    console.info('usb usb_function_to_string_test_02 begin');
+    var maskCode = 3
+    var strMaskCode = usb.usbFunctionsToString(maskCode)
+    expect(strMaskCode).assertEqual('acm,ecm');
+    console.info('usb case maskCode ' + maskCode + ' usbFunctionsToString return int: ' + strMaskCode);
+    console.info('usb usb_function_to_string_test_02 :  PASS');
+  })
 
-    /**
-    * @tc.number    : usb_function_from_string_test_02
-    * @tc.name      : usbFunctionsFromString
-    * @tc.desc      : 正向测试 'acm' 返回 1
-    */
-    it('usb_function_from_string_test_02', 0, function () {
-        console.info('usb usb_function_from_string_test_02 begin');
-        var strMaskCode = 'acm'
-        var nMaskCode = usb.usbFunctionsFromString(strMaskCode)
-        expect(nMaskCode).assertEqual(1);
-        console.info('usb case strMaskCode ' + strMaskCode + ' usbFunctionsFromString return int: ' + nMaskCode);
-        console.info('usb usb_function_from_string_test_02 :  PASS');
-    })
+  /*
+  * @tc.number    : usb_function_to_string_test_05
+  * @tc.name      : usbFunctionsToString
+  * @tc.desc      : 正向测试 4 返回 'hdc'
+  */
+  it('usb_function_to_string_test_05', 0, function () {
+    console.info('usb usb_function_to_string_test_05 begin');
+    var maskCode = 4
+    var strMaskCode = usb.usbFunctionsToString(maskCode)
+    expect(strMaskCode).assertEqual('hdc');
+    console.info('usb case maskCode ' + maskCode + ' usbFunctionsToString return int: ' + strMaskCode);
+    console.info('usb usb_function_to_string_test_05 :  PASS');
+  })
 
-    /**
-    * @tc.number    : usb_function_from_string_test_03
-    * @tc.name      : usbFunctionsFromString
-    * @tc.desc      : 正向测试 'ecm' 返回 2
-    */
-    it('usb_function_from_string_test_03', 0, function () {
-        console.info('usb usb_function_from_string_test_03 begin');
-        var strMaskCode = 'ecm'
-        var nMaskCode = usb.usbFunctionsFromString(strMaskCode)
-        expect(nMaskCode).assertEqual(2);
-        console.info('usb case strMaskCode ' + strMaskCode + ' usbFunctionsFromString return int: ' + nMaskCode);
-        console.info('usb usb_function_from_string_test_03 :  PASS');
-    })
+  /*
+  * @tc.number    : usb_function_to_string_test_06
+  * @tc.name      : usbFunctionsToString
+  * @tc.desc      : 正向测试 5 返回 'acm,hdc'
+  */
+  it('usb_function_to_string_test_06', 0, function () {
+    console.info('usb usb_function_to_string_test_06 begin');
+    var maskCode = 5
+    var strMaskCode = usb.usbFunctionsToString(maskCode)
+    expect(strMaskCode).assertEqual('hdc,acm');
+    console.info('usb case maskCode ' + maskCode + ' usbFunctionsToString return int: ' + strMaskCode);
+    console.info('usb usb_function_to_string_test_06 :  PASS');
+  })
 
-    /**
-    * @tc.number    : usb_function_from_string_test_04
-    * @tc.name      : usbFunctionsFromString
-    * @tc.desc      : 正向测试 'acm,ecm' 返回 3
-    */
-    it('usb_function_from_string_test_04', 0, function () {
-        console.info('usb usb_function_from_string_test_04 begin');
-        var strMaskCode = 'acm,ecm'
-        var nMaskCode = usb.usbFunctionsFromString(strMaskCode)
-        expect(nMaskCode).assertEqual(3);
-        console.info('usb case strMaskCode ' + strMaskCode + ' usbFunctionsFromString return int: ' + nMaskCode);
-        console.info('usb usb_function_from_string_test_04 :  PASS');
-    })
+  /*
+  * @tc.number    : usb_function_to_string_test_07
+  * @tc.name      : usbFunctionsToString
+  * @tc.desc      : 正向测试 6 返回 'ecm,hdc'
+  */
+  it('usb_function_to_string_test_07', 0, function () {
+    console.info('usb usb_function_to_string_test_07 begin');
+    var maskCode = 6
+    var strMaskCode = usb.usbFunctionsToString(maskCode)
+    expect(strMaskCode).assertEqual('hdc,ecm');
+    console.info('usb case maskCode ' + maskCode + ' usbFunctionsToString return int: ' + strMaskCode);
+    console.info('usb usb_function_to_string_test_07 :  PASS');
+  })
 
-    /**
-    * @tc.number    : usb_function_from_string_test_05
-    * @tc.name      : usbFunctionsFromString
-    * @tc.desc      : 正向测试 'hdc' 返回 4
-    */
-    it('usb_function_from_string_test_05', 0, function () {
-        console.info('usb usb_function_from_string_test_05 begin');
-        var strMaskCode = 'hdc'
-        var nMaskCode = usb.usbFunctionsFromString(strMaskCode)
-        expect(nMaskCode).assertEqual(4);
-        console.info('usb case strMaskCode ' + strMaskCode + ' usbFunctionsFromString return int: ' + nMaskCode);
-        console.info('usb usb_function_from_string_test_04 :  PASS');
-    })
+  /*
+  * @tc.number    : usb_function_from_string_test_01
+  * @tc.name      : usbFunctionsFromString
+  * @tc.desc      : 正向测试 'none' 返回 0
+  */
+  it('usb_function_from_string_test_01', 0, function () {
+    console.info('usb usb_function_from_string_test_01 begin');
+    var strMaskCode = 'none'
+    var nMaskCode = usb.usbFunctionsFromString(strMaskCode)
+    expect(nMaskCode).assertEqual(0);
+    console.info('usb case strMaskCode ' + strMaskCode + ' usbFunctionsFromString return int: ' + nMaskCode);
+    console.info('usb usb_function_to_string_test_01 :  PASS');
+  })
 
-    /**
-    * @tc.number    : usb_function_from_string_test_06
-    * @tc.name      : usbFunctionsFromString
-    * @tc.desc      : 正向测试 'acm,hdc' 返回 5
-    */
-    it('usb_function_from_string_test_06', 0, function () {
-        console.info('usb usb_function_from_string_test_06 begin');
-        var strMaskCode = 'acm,hdc'
-        var nMaskCode = usb.usbFunctionsFromString(strMaskCode)
-        expect(nMaskCode).assertEqual(5);
-        console.info('usb case strMaskCode ' + strMaskCode + ' usbFunctionsFromString return int: ' + nMaskCode);
-        console.info('usb usb_function_from_string_test_06 :  PASS');
-    })
+  /*
+  * @tc.number    : usb_function_from_string_test_02
+  * @tc.name      : usbFunctionsFromString
+  * @tc.desc      : 正向测试 'acm' 返回 1
+  */
+  it('usb_function_from_string_test_02', 0, function () {
+    console.info('usb usb_function_from_string_test_02 begin');
+    var strMaskCode = 'acm'
+    var nMaskCode = usb.usbFunctionsFromString(strMaskCode)
+    expect(nMaskCode).assertEqual(1);
+    console.info('usb case strMaskCode ' + strMaskCode + ' usbFunctionsFromString return int: ' + nMaskCode);
+    console.info('usb usb_function_from_string_test_02 :  PASS');
+  })
 
-    /**
-    * @tc.number    : usb_function_from_string_test_07
-    * @tc.name      : usbFunctionsFromString
-    * @tc.desc      : 正向测试 'ecm,hdc' 返回 6
-    */
-    it('usb_function_from_string_test_07', 0, function () {
-        console.info('usb usb_function_from_string_test_07 begin');
-        var strMaskCode = 'ecm,hdc'
-        var nMaskCode = usb.usbFunctionsFromString(strMaskCode)
-        expect(nMaskCode).assertEqual(6);
-        console.info('usb case strMaskCode ' + strMaskCode + ' usbFunctionsFromString return int: ' + nMaskCode);
-        console.info('usb usb_function_from_string_test_07 :  PASS');
-    })
+  /*
+  * @tc.number    : usb_function_from_string_test_03
+  * @tc.name      : usbFunctionsFromString
+  * @tc.desc      : 正向测试 'ecm' 返回 2
+  */
+  it('usb_function_from_string_test_03', 0, function () {
+    console.info('usb usb_function_from_string_test_03 begin');
+    var strMaskCode = 'ecm'
+    var nMaskCode = usb.usbFunctionsFromString(strMaskCode)
+    expect(nMaskCode).assertEqual(2);
+    console.info('usb case strMaskCode ' + strMaskCode + ' usbFunctionsFromString return int: ' + nMaskCode);
+    console.info('usb usb_function_from_string_test_03 :  PASS');
+  })
+
+  /*
+  * @tc.number    : usb_function_from_string_test_04
+  * @tc.name      : usbFunctionsFromString
+  * @tc.desc      : 正向测试 'acm,ecm' 返回 3
+  */
+  it('usb_function_from_string_test_04', 0, function () {
+    console.info('usb usb_function_from_string_test_04 begin');
+    var strMaskCode = 'acm,ecm'
+    var nMaskCode = usb.usbFunctionsFromString(strMaskCode)
+    expect(nMaskCode).assertEqual(3);
+    console.info('usb case strMaskCode ' + strMaskCode + ' usbFunctionsFromString return int: ' + nMaskCode);
+    console.info('usb usb_function_from_string_test_04 :  PASS');
+  })
+
+  /*
+  * @tc.number    : usb_function_from_string_test_05
+  * @tc.name      : usbFunctionsFromString
+  * @tc.desc      : 正向测试 'hdc' 返回 4
+  */
+  it('usb_function_from_string_test_05', 0, function () {
+    console.info('usb usb_function_from_string_test_05 begin');
+    var strMaskCode = 'hdc'
+    var nMaskCode = usb.usbFunctionsFromString(strMaskCode)
+    expect(nMaskCode).assertEqual(4);
+    console.info('usb case strMaskCode ' + strMaskCode + ' usbFunctionsFromString return int: ' + nMaskCode);
+    console.info('usb usb_function_from_string_test_04 :  PASS');
+  })
+
+  /*
+  * @tc.number    : usb_function_from_string_test_06
+  * @tc.name      : usbFunctionsFromString
+  * @tc.desc      : 正向测试 'acm,hdc' 返回 5
+  */
+  it('usb_function_from_string_test_06', 0, function () {
+    console.info('usb usb_function_from_string_test_06 begin');
+    var strMaskCode = 'acm,hdc'
+    var nMaskCode = usb.usbFunctionsFromString(strMaskCode)
+    expect(nMaskCode).assertEqual(5);
+    console.info('usb case strMaskCode ' + strMaskCode + ' usbFunctionsFromString return int: ' + nMaskCode);
+    console.info('usb usb_function_from_string_test_06 :  PASS');
+  })
+
+  /*
+  * @tc.number    : usb_function_from_string_test_07
+  * @tc.name      : usbFunctionsFromString
+  * @tc.desc      : 正向测试 'ecm,hdc' 返回 6
+  */
+  it('usb_function_from_string_test_07', 0, function () {
+    console.info('usb usb_function_from_string_test_07 begin');
+    var strMaskCode = 'ecm,hdc'
+    var nMaskCode = usb.usbFunctionsFromString(strMaskCode)
+    expect(nMaskCode).assertEqual(6);
+    console.info('usb case strMaskCode ' + strMaskCode + ' usbFunctionsFromString return int: ' + nMaskCode);
+    console.info('usb usb_function_from_string_test_07 :  PASS');
+  })
 
 })
