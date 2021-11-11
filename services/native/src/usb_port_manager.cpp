@@ -14,6 +14,7 @@
  */
 
 #include "usb_port_manager.h"
+#include "usb_errors.h"
 #include "usbd_client.h"
 
 namespace OHOS {

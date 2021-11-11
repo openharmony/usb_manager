@@ -51,11 +51,11 @@ describe('UsbCoreJsFunctionsTest', function () {
   var gDeviceList
   var gPipe;
 
-  /*
-  * @tc.number    : get_devices_test_01
-  * @tc.name      : getDevices
-  * @tc.desc      : 获取设备列表
-  */
+  /**
+   * @tc.number    : get_devices_test_01
+   * @tc.name      : getDevices
+   * @tc.desc      : 获取设备列表
+   */
   it('get_devices_test_01', 0, function () {
     console.info('usb get_device_01 begin');
     gDeviceList = usb.getDevices();
@@ -70,11 +70,11 @@ describe('UsbCoreJsFunctionsTest', function () {
   })
 
 
-  /*
-  * @tc.number    : has_right_1
-  * @tc.name      : hasRigt
-  * @tc.desc      : 权限查询 连接设备 关闭设备
-  */
+  /**
+   * @tc.number    : has_right_1
+   * @tc.name      : hasRigt
+   * @tc.desc      : 权限查询 连接设备 关闭设备
+   */
   it('has_right_01', 0, function () {
     console.info('usb has_right_01 begin');
     if (gDeviceList.length == 0) {
@@ -93,11 +93,11 @@ describe('UsbCoreJsFunctionsTest', function () {
   })
 
 
-  /*
-  * @tc.number    : request_right_01
-  * @tc.name      : requestRight
-  * @tc.desc      : 请求权限
-  */
+  /**
+   * @tc.number    : request_right_01
+   * @tc.name      : requestRight
+   * @tc.desc      : 请求权限
+   */
   it('request_right_01', 0, function () {
     console.info('usb request_right_01 begin');
     if (gDeviceList.length == 0) {
@@ -118,11 +118,11 @@ describe('UsbCoreJsFunctionsTest', function () {
     }
   })
 
-  /*
-  * @tc.number    : connect_device_01
-  * @tc.name      : connectDevice
-  * @tc.desc      : 打开设备
-  */
+  /**
+   * @tc.number    : connect_device_01
+   * @tc.name      : connectDevice
+   * @tc.desc      : 打开设备
+   */
   it('connect_device_01', 0, function () {
     console.info('usb connect_device_01 begin');
     if (gDeviceList.length == 0) {
@@ -147,11 +147,11 @@ describe('UsbCoreJsFunctionsTest', function () {
     console.info('usb connect_device_01 :  PASS');
   })
 
-  /*
-  * @tc.number    : close_pipe_02
-  * @tc.name      : closePipe
-  * @tc.desc      : 反向测试 关闭设备 错误 busNum
-  */
+  /**
+   * @tc.number    : close_pipe_02
+   * @tc.name      : closePipe
+   * @tc.desc      : 反向测试 关闭设备 错误 busNum
+   */
   it('close_pipe_02', 0, function () {
     console.info('usb close_pipe_02 begin');
     if (gDeviceList.length == 0) {
@@ -169,11 +169,11 @@ describe('UsbCoreJsFunctionsTest', function () {
     console.info('usb close_pipe_02 :  PASS');
   })
 
-  /*
-  * @tc.number    : close_pipe_03
-  * @tc.name      : closePipe
-  * @tc.desc      : 反向测试 关闭设备 错误 devAddress
-  */
+  /**
+   * @tc.number    : close_pipe_03
+   * @tc.name      : closePipe
+   * @tc.desc      : 反向测试 关闭设备 错误 devAddress
+   */
   it('close_pipe_03', 0, function () {
     console.info('usb close_pipe_03 begin');
     if (gDeviceList.length == 0) {
@@ -190,11 +190,11 @@ describe('UsbCoreJsFunctionsTest', function () {
     console.info('usb close_pipe_03 :  PASS');
   })
 
-  /*
-  * @tc.number    : close_pipe_04
-  * @tc.name      : closePipe
-  * @tc.desc      : 反向测试 关闭设备 错误 devAddress busNum
-  */
+  /**
+   * @tc.number    : close_pipe_04
+   * @tc.name      : closePipe
+   * @tc.desc      : 反向测试 关闭设备 错误 devAddress busNum
+   */
   it('close_pipe_04', 0, function () {
     console.info('usb close_pipe_04 begin');
     if (gDeviceList.length == 0) {
@@ -212,11 +212,11 @@ describe('UsbCoreJsFunctionsTest', function () {
     console.info('usb close_pipe_04 :  PASS');
   })
 
-  /*
-  * @tc.number    : close_pipe_01
-  * @tc.name      : closePipe
-  * @tc.desc      : 关闭设备
-  */
+  /**
+   * @tc.number    : close_pipe_01
+   * @tc.name      : closePipe
+   * @tc.desc      : 关闭设备
+   */
   it('close_pipe_01', 0, function () {
     console.info('usb close_pipe_01 begin');
     if (gDeviceList.length == 0) {

@@ -23,6 +23,7 @@
 #include "ohos/aafwk/content/want.h"
 #include "string_ex.h"
 #include "usb_common.h"
+#include "usb_errors.h"
 #include "usb_service.h"
 
 using namespace OHOS::AAFwk;
@@ -95,7 +96,7 @@ int32_t UsbServiceSubscriber::DeviceEvent(const UsbInfo &info)
     bool isSuccess = CommonEventManager::PublishCommonEvent(data, publishInfo);
     if (!isSuccess) {
         USB_HILOGE(MODULE_USB_SERVICE, "failed to publish USB_CHANGED event");
-        ret = ERR_NO_INIT;
+        ret = UEC_SERVICE_NO_INIT;
     }
     struct timeval end;
     gettimeofday(&end, NULL);

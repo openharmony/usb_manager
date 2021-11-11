@@ -50,11 +50,11 @@ describe('UsbCoreJsFunctionsTestEx', function () {
   })
 
 
-  /*
-  * @tc.number    : connect_device_02
-  * @tc.name      : connectDevice
-  * @tc.desc      : 反向测试 错误参数 devAddress 打开设备
-  */
+  /**
+   * @tc.number    : connect_device_02
+   * @tc.name      : connectDevice
+   * @tc.desc      : 反向测试 错误参数 devAddress 打开设备
+   */
   it('connect_device_02', 0, function () {
     console.info('usb connect_device_02 begin');
     if (gDeviceList.length == 0) {
@@ -87,11 +87,11 @@ describe('UsbCoreJsFunctionsTestEx', function () {
     console.info('usb connect_device_02 :  PASS');
   })
 
-  /*
-  * @tc.number    : connect_device_03
-  * @tc.name      : connectDevice
-  * @tc.desc      : 反向测试 busNum错误参数 打开设备
-  */
+  /**
+   * @tc.number    : connect_device_03
+   * @tc.name      : connectDevice
+   * @tc.desc      : 反向测试 busNum错误参数 打开设备
+   */
   it('connect_device_03', 0, function () {
     console.info('usb connect_device_03 begin');
     if (gDeviceList.length == 0) {
@@ -123,11 +123,11 @@ describe('UsbCoreJsFunctionsTestEx', function () {
     console.info('usb connect_device_03 :  PASS');
   })
 
-  /*
-  * @tc.number    : connect_device_04
-  * @tc.name      : connectDevice
-  * @tc.desc      : 反向测试 serial错误参数 打开设备
-  */
+  /**
+   * @tc.number    : connect_device_04
+   * @tc.name      : connectDevice
+   * @tc.desc      : 反向测试 serial错误参数 打开设备
+   */
   it('connect_device_04', 0, function () {
     console.info('usb connect_device_04 begin');
     if (gDeviceList.length == 0) {
@@ -162,11 +162,11 @@ describe('UsbCoreJsFunctionsTestEx', function () {
     console.info('usb connect_device_04 :  PASS');
   })
 
-  /*
-  * @tc.number    : connect_device_05
-  * @tc.name      : connectDevice
-  * @tc.desc      : 反向测试 name错误参数 打开设备
-  */
+  /**
+   * @tc.number    : connect_device_05
+   * @tc.name      : connectDevice
+   * @tc.desc      : 反向测试 name错误参数 打开设备
+   */
   it('connect_device_05', 0, function () {
     console.info('usb connect_device_05 begin');
     if (gDeviceList.length == 0) {
@@ -200,11 +200,11 @@ describe('UsbCoreJsFunctionsTestEx', function () {
     console.info('usb connect_device_05 :  PASS');
   })
 
-  /*
-  * @tc.number    : connect_device_06
-  * @tc.name      : connectDevice
-  * @tc.desc      : 反向测试 manufacturerName错误参数 打开设备
-  */
+  /**
+   * @tc.number    : connect_device_06
+   * @tc.name      : connectDevice
+   * @tc.desc      : 反向测试 manufacturerName错误参数 打开设备
+   */
   it('connect_device_06', 0, function () {
     console.info('usb connect_device_06 begin');
     if (gDeviceList.length == 0) {
@@ -239,11 +239,11 @@ describe('UsbCoreJsFunctionsTestEx', function () {
     console.info('usb connect_device_06 :  PASS');
   })
 
-  /*
-  * @tc.number    : connect_device_07
-  * @tc.name      : connectDevice
-  * @tc.desc      : 反向测试 productName错误参数 打开设备
-  */
+  /**
+   * @tc.number    : connect_device_07
+   * @tc.name      : connectDevice
+   * @tc.desc      : 反向测试 productName错误参数 打开设备
+   */
   it('connect_device_07', 0, function () {
     console.info('usb connect_device_07 begin');
     if (gDeviceList.length == 0) {
@@ -278,11 +278,11 @@ describe('UsbCoreJsFunctionsTestEx', function () {
     console.info('usb connect_device_07 :  PASS');
   })
 
-  /*
-  * @tc.number    : connect_device_08
-  * @tc.name      : connectDevice
-  * @tc.desc      : 反向测试 version错误参数 打开设备
-  */
+  /**
+   * @tc.number    : connect_device_08
+   * @tc.name      : connectDevice
+   * @tc.desc      : 反向测试 version错误参数 打开设备
+   */
   it('connect_device_08', 0, function () {
     console.info('usb connect_device_08 begin');
     if (gDeviceList.length == 0) {
@@ -317,11 +317,11 @@ describe('UsbCoreJsFunctionsTestEx', function () {
     console.info('usb connect_device_08 :  PASS');
   })
 
-  /*
-  * @tc.number    : connect_device_09
-  * @tc.name      : connectDevice
-  * @tc.desc      : 反向测试 vendorId错误参数 打开设备
-  */
+  /**
+   * @tc.number    : connect_device_09
+   * @tc.name      : connectDevice
+   * @tc.desc      : 反向测试 vendorId错误参数 打开设备
+   */
   it('connect_device_09', 0, function () {
     console.info('usb connect_device_09 begin');
     if (gDeviceList.length == 0) {
@@ -356,11 +356,11 @@ describe('UsbCoreJsFunctionsTestEx', function () {
     console.info('usb connect_device_09 :  PASS');
   })
 
-  /*
-  * @tc.number    : connect_device_10
-  * @tc.name      : connectDevice
-  * @tc.desc      : 反向测试 productId错误参数 打开设备
-  */
+  /**
+   * @tc.number    : connect_device_10
+   * @tc.name      : connectDevice
+   * @tc.desc      : 反向测试 productId错误参数 打开设备
+   */
   it('connect_device_10', 0, function () {
     console.info('usb connect_device_10 begin');
     if (gDeviceList.length == 0) {
@@ -395,11 +395,11 @@ describe('UsbCoreJsFunctionsTestEx', function () {
     console.info('usb connect_device_10 :  PASS');
   })
 
-  /*
-  * @tc.number    : connect_device_11
-  * @tc.name      : connectDevice
-  * @tc.desc      : 反向测试 clazz错误参数 打开设备
-  */
+  /**
+   * @tc.number    : connect_device_11
+   * @tc.name      : connectDevice
+   * @tc.desc      : 反向测试 clazz错误参数 打开设备
+   */
   it('connect_device_11', 0, function () {
     console.info('usb connect_device_11 begin');
     if (gDeviceList.length == 0) {
@@ -433,11 +433,11 @@ describe('UsbCoreJsFunctionsTestEx', function () {
     console.info('usb connect_device_11 :  PASS');
   })
 
-  /*
-  * @tc.number    : connect_device_12
-  * @tc.name      : connectDevice
-  * @tc.desc      : 反向测试 subclass错误参数 打开设备
-  */
+  /**
+   * @tc.number    : connect_device_12
+   * @tc.name      : connectDevice
+   * @tc.desc      : 反向测试 subclass错误参数 打开设备
+   */
   it('connect_device_12', 0, function () {
     console.info('usb connect_device_12 begin');
     if (gDeviceList.length == 0) {
@@ -471,11 +471,11 @@ describe('UsbCoreJsFunctionsTestEx', function () {
     console.info('usb connect_device_12 :  PASS');
   })
 
-  /*
-  * @tc.number    : connect_device_13
-  * @tc.name      : connectDevice
-  * @tc.desc      : 反向测试 protocol错误参数 打开设备
-  */
+  /**
+   * @tc.number    : connect_device_13
+   * @tc.name      : connectDevice
+   * @tc.desc      : 反向测试 protocol错误参数 打开设备
+   */
   it('connect_device_13', 0, function () {
     console.info('usb connect_device_13 begin');
     if (gDeviceList.length == 0) {
@@ -509,11 +509,11 @@ describe('UsbCoreJsFunctionsTestEx', function () {
     console.info('usb connect_device_13 :  PASS');
   })
 
-  /*
-  * @tc.number    : has_right_02
-  * @tc.name      : hasRight
-  * @tc.desc      : 反向测试 给错误设备名字
-  */
+  /**
+   * @tc.number    : has_right_02
+   * @tc.name      : hasRight
+   * @tc.desc      : 反向测试 给错误设备名字
+   */
   it('has_right_02', 0, function () {
     console.info('usb has_right_02 begin');
     if (gDeviceList.length == 0) {
@@ -534,11 +534,11 @@ describe('UsbCoreJsFunctionsTestEx', function () {
     expect(true).assertTrue();
   })
 
-  /*
-  * @tc.number    : has_right_03
-  * @tc.name      : hasRight
-  * @tc.desc      : 反向测试 给设备名字为字母
-  */
+  /**
+   * @tc.number    : has_right_03
+   * @tc.name      : hasRight
+   * @tc.desc      : 反向测试 给设备名字为字母
+   */
   it('has_right_03', 0, function () {
     console.info('usb has_right_03 begin');
     if (gDeviceList.length == 0) {
@@ -559,11 +559,11 @@ describe('UsbCoreJsFunctionsTestEx', function () {
     expect(true).assertTrue();
   })
 
-  /*
-  * @tc.number    : request_right_02
-  * @tc.name      : requestRight
-  * @tc.desc      : 反向测试 错误设备名字 请求权限
-  */
+  /**
+   * @tc.number    : request_right_02
+   * @tc.name      : requestRight
+   * @tc.desc      : 反向测试 错误设备名字 请求权限
+   */
   it('request_right_02', 0, function () {
     console.info('usb request_right_02 begin');
     if (gDeviceList.length == 0) {
@@ -586,11 +586,11 @@ describe('UsbCoreJsFunctionsTestEx', function () {
     }
   })
 
-  /*
-  * @tc.number    : request_right_03
-  * @tc.name      : requestRight
-  * @tc.desc      : 反向测试 设备名字为数字 请求权限
-  */
+  /**
+   * @tc.number    : request_right_03
+   * @tc.name      : requestRight
+   * @tc.desc      : 反向测试 设备名字为数字 请求权限
+   */
   it('request_right_03', 0, function () {
     console.info('usb request_right_03 begin');
     if (gDeviceList.length == 0) {

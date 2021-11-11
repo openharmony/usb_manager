@@ -20,11 +20,10 @@
 #include "ipc_skeleton.h"
 #include "iservice_registry.h"
 #include "string_ex.h"
-#include "usb_common.h"
-
 #include "system_ability_definition.h"
 #include "usb_common.h"
 #include "usb_device.h"
+#include "usb_errors.h"
 
 namespace OHOS {
 namespace USB {

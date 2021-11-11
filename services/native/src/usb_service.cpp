@@ -30,6 +30,7 @@
 #include "system_ability_definition.h"
 #include "usb_common.h"
 #include "usb_descriptor_parser.h"
+#include "usb_errors.h"
 #include "usb_port_manager.h"
 #include "usb_right_manager.h"
 

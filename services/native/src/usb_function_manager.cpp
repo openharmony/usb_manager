@@ -16,6 +16,7 @@
 #include "usb_function_manager.h"
 #include <regex>
 #include <sstream>
+#include "usb_errors.h"
 
 namespace OHOS {
 namespace USB {
@@ -62,7 +63,7 @@ int32_t UsbFunctionManager::FromStringFunctions(std::string funcs)
         } else {
             std::string msg = "Invalid argument of usb function" + funcs;
             USB_HILOGI(MODULE_USB_SERVICE, "UsbFunctionManager::FromStringFunctions Invalid argument of usb function");
-            return ERR_INVALID_VALUE;
+            return UEC_SERVICE_INVALID_VALUE;
         }
     }
     return ret;

@@ -14,6 +14,7 @@
  */
 
 #include "usb_right_manager.h"
+#include "usb_errors.h"
 
 namespace OHOS {
 namespace USB {

@@ -17,6 +17,7 @@
 #include "iusb_srv.h"
 #include "usb_common.h"
 #include "usb_device.h"
+#include "usb_errors.h"
 #include "usb_request.h"
 #include "usb_srv_client.h"
 

@@ -11,7 +11,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import("//base/usb/usb_manager/usbmgr.gni")
 import("//build/ohos.gni")
 import("//drivers/adapter/uhdf2/uhdf.gni")
 
@@ -25,7 +24,7 @@ ohos_shared_library("usbd_client") {
     "src/usbd_subscriber.cpp",
   ]
 
-  configs = [ "${utils_path}:utils_config" ]
+  configs = []
 
   public_configs = [ ":usbd_client_public_config" ]
 

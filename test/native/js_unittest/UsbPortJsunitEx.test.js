@@ -37,11 +37,11 @@ describe('UsbPortJsFunctionsTestEx', function () {
     console.log('*************Usb Unit UsbPortJsFunctionsTest End*************');
   })
 
-  /*
-  * @tc.number    : get_supported_modes_test_02
-  * @tc.name      : getSupportedModes
-  * @tc.desc      : 反向测试 改变id 获取指定的端口支持的模式列表的组合掩码
-  */
+  /**
+   * @tc.number    : get_supported_modes_test_02
+   * @tc.name      : getSupportedModes
+   * @tc.desc      : 反向测试 改变id 获取指定的端口支持的模式列表的组合掩码
+   */
   it('get_supported_modes_test_02', 0, function () {
     console.info('usb get_supported_modes_test_02 begin');
     var usbPortList = usb.getPorts()
@@ -61,11 +61,11 @@ describe('UsbPortJsFunctionsTestEx', function () {
     expect(true).assertTrue();
   })
 
-  /*
-  * @tc.number    : set_port_roles_test_03
-  * @tc.name      : setPortRoles
-  * @tc.desc      : Device模式下，dataRole参数错误
-  */
+  /**
+   * @tc.number    : set_port_roles_test_03
+   * @tc.name      : setPortRoles
+   * @tc.desc      : Device模式下，dataRole参数错误
+   */
   it('set_port_roles_test_03', 0, function () {
     var portId = 2;
     var powerRole = 2;
@@ -83,11 +83,11 @@ describe('UsbPortJsFunctionsTestEx', function () {
     expect(true).assertTrue();
   })
 
-  /*
-  * @tc.number    : set_port_roles_test_04
-  * @tc.name      : setPortRoles
-  * @tc.desc      : Device模式下，portId，powerRole参数错误
-  */
+  /**
+   * @tc.number    : set_port_roles_test_04
+   * @tc.name      : setPortRoles
+   * @tc.desc      : Device模式下，portId，powerRole参数错误
+   */
   it('set_port_roles_test_04', 0, function () {
     var portId = -1;
     var powerRole = -1;
@@ -105,11 +105,11 @@ describe('UsbPortJsFunctionsTestEx', function () {
     expect(true).assertTrue();
   })
 
-  /*
-  * @tc.number    : set_port_roles_test_05
-  * @tc.name      : setPortRoles
-  * @tc.desc      : Device模式下，portId，dataRole参数错误
-  */
+  /**
+   * @tc.number    : set_port_roles_test_05
+   * @tc.name      : setPortRoles
+   * @tc.desc      : Device模式下，portId，dataRole参数错误
+   */
   it('set_port_roles_test_05', 0, function () {
     var portId = -1;
     var powerRole = 2;
@@ -127,11 +127,11 @@ describe('UsbPortJsFunctionsTestEx', function () {
     expect(true).assertTrue();
   })
 
-  /*
-  * @tc.number    : set_port_roles_test_06
-  * @tc.name      : setPortRoles
-  * @tc.desc      : Device模式下，powerRole，dataRole参数错误
-  */
+  /**
+   * @tc.number    : set_port_roles_test_06
+   * @tc.name      : setPortRoles
+   * @tc.desc      : Device模式下，powerRole，dataRole参数错误
+   */
   it('set_port_roles_test_06', 0, function () {
     var portId = 2;
     var powerRole = -1;
@@ -149,11 +149,11 @@ describe('UsbPortJsFunctionsTestEx', function () {
     expect(true).assertTrue();
   })
 
-  /*
-  * @tc.number    : set_port_roles_test_07
-  * @tc.name      : setPortRoles
-  * @tc.desc      : Device模式下，portId,portId，dataRole参数错误
-  */
+  /**
+   * @tc.number    : set_port_roles_test_07
+   * @tc.name      : setPortRoles
+   * @tc.desc      : Device模式下，portId,portId，dataRole参数错误
+   */
   it('set_port_roles_test_07', 0, function () {
     var portId = -1;
     var powerRole = -1;
@@ -172,11 +172,11 @@ describe('UsbPortJsFunctionsTestEx', function () {
     expect(true).assertTrue();
   })
 
-  /*
-  * @tc.number    : set_port_roles_test_08
-  * @tc.name      : setPortRoles
-  * @tc.desc      : host模式下，portId参数错误
-  */
+  /**
+   * @tc.number    : set_port_roles_test_08
+   * @tc.name      : setPortRoles
+   * @tc.desc      : host模式下，portId参数错误
+   */
   it('set_port_roles_test_08', 0, function () {
     var portId = -1;
     var powerRole = 1;
@@ -194,11 +194,11 @@ describe('UsbPortJsFunctionsTestEx', function () {
     expect(true).assertTrue();
   })
 
-  /*
-  * @tc.number    : set_port_roles_test_09
-  * @tc.name      : setPortRoles
-  * @tc.desc      : host模式下，powerRole参数错误
-  */
+  /**
+   * @tc.number    : set_port_roles_test_09
+   * @tc.name      : setPortRoles
+   * @tc.desc      : host模式下，powerRole参数错误
+   */
   it('set_port_roles_test_09', 0, function () {
     var portId = 1;
     var powerRole = -1;
@@ -216,11 +216,11 @@ describe('UsbPortJsFunctionsTestEx', function () {
     expect(true).assertTrue();
   })
 
-  /*
-  * @tc.number    : set_port_roles_test_10
-  * @tc.name      : setPortRoles
-  * @tc.desc      : host模式下，dataRole参数错误
-  */
+  /**
+   * @tc.number    : set_port_roles_test_10
+   * @tc.name      : setPortRoles
+   * @tc.desc      : host模式下，dataRole参数错误
+   */
   it('set_port_roles_test_10', 0, function () {
     var portId = 1;
     var powerRole = 1;
@@ -238,11 +238,11 @@ describe('UsbPortJsFunctionsTestEx', function () {
     expect(true).assertTrue();
   })
 
-  /*
-  * @tc.number    : set_port_roles_test_11
-  * @tc.name      : setPortRoles
-  * @tc.desc      : host模式下，portId,powerRole参数错误
-  */
+  /**
+   * @tc.number    : set_port_roles_test_11
+   * @tc.name      : setPortRoles
+   * @tc.desc      : host模式下，portId,powerRole参数错误
+   */
   it('set_port_roles_test_11', 0, function () {
     var portId = -1;
     var powerRole = -1;
@@ -260,11 +260,11 @@ describe('UsbPortJsFunctionsTestEx', function () {
     expect(true).assertTrue();
   })
 
-  /*
-  * @tc.number    : set_port_roles_test_12
-  * @tc.name      : setPortRoles
-  * @tc.desc      : host模式下，portId,dataRole参数错误
-  */
+  /**
+   * @tc.number    : set_port_roles_test_12
+   * @tc.name      : setPortRoles
+   * @tc.desc      : host模式下，portId,dataRole参数错误
+   */
   it('set_port_roles_test_12', 0, function () {
     var portId = -1;
     var powerRole = 1;
@@ -282,11 +282,11 @@ describe('UsbPortJsFunctionsTestEx', function () {
     expect(true).assertTrue();
   })
 
-  /*
-  * @tc.number    : set_port_roles_test_13
-  * @tc.name      : setPortRoles
-  * @tc.desc      : host模式下，powerRole,dataRole参数错误
-  */
+  /**
+   * @tc.number    : set_port_roles_test_13
+   * @tc.name      : setPortRoles
+   * @tc.desc      : host模式下，powerRole,dataRole参数错误
+   */
   it('set_port_roles_test_13', 0, function () {
     var portId = 1;
     var powerRole = -1;
@@ -304,11 +304,11 @@ describe('UsbPortJsFunctionsTestEx', function () {
     expect(true).assertTrue();
   })
 
-  /*
-  * @tc.number    : set_port_roles_test_14
-  * @tc.name      : setPortRoles
-  * @tc.desc      : host模式下，portId,powerRole,dataRole参数错误
-  */
+  /**
+   * @tc.number    : set_port_roles_test_14
+   * @tc.name      : setPortRoles
+   * @tc.desc      : host模式下，portId,powerRole,dataRole参数错误
+   */
   it('set_port_roles_test_14', 0, function () {
     var portId = -1;
     var powerRole = -1;
@@ -327,11 +327,11 @@ describe('UsbPortJsFunctionsTestEx', function () {
     expect(true).assertTrue();
   })
 
-  /*
-  * @tc.number    : set_port_roles_test_15
-  * @tc.name      : setPortRoles
-  * @tc.desc      : Device模式下，portId参数错误
-  */
+  /**
+   * @tc.number    : set_port_roles_test_15
+   * @tc.name      : setPortRoles
+   * @tc.desc      : Device模式下，portId参数错误
+   */
   it('set_port_roles_test_15', 0, function () {
     var portId = -1;
     var powerRole = 2;
@@ -349,11 +349,11 @@ describe('UsbPortJsFunctionsTestEx', function () {
     expect(true).assertTrue();
   })
 
-  /*
-  * @tc.number    : set_port_roles_test_16
-  * @tc.name      : setPortRoles
-  * @tc.desc      : Device模式下，powerRole参数错误
-  */
+  /**
+   * @tc.number    : set_port_roles_test_16
+   * @tc.name      : setPortRoles
+   * @tc.desc      : Device模式下，powerRole参数错误
+   */
   it('set_port_roles_test_16', 0, function () {
     var portId = 2;
     var powerRole = -1;

@@ -28,6 +28,7 @@
 #include "usb_async_context.h"
 #include "usb_device_pipe.h"
 #include "usb_endpoint.h"
+#include "usb_errors.h"
 #include "usb_srv_client.h"
 
 using namespace OHOS;

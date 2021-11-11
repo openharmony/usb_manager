@@ -15,33 +15,33 @@
 
 export default {
 
-  /*
-  * Check obj is empty.
-  *
-  * @param {object} obj
-  * @return {boolean} true(empty)
-  */
+  /**
+   * Check obj is empty.
+   *
+   * @param {object} obj
+   * @return {boolean} true(empty)
+   */
   isEmpty(obj) {
     return (typeof obj == 'undefined' || obj == null ||
       JSON.stringify(obj) == '{}' || JSON.stringify(obj) == 'undefined');
   },
 
-  /*
-  * Check str is empty.
-  *
-  * @param {string} str
-  * @return {boolean} true(empty)
-  */
+  /**
+   * Check str is empty.
+   *
+   * @param {string} str
+   * @return {boolean} true(empty)
+   */
   checkStrIsEmpty(str) {
     return str.trim().length == 0;
   },
 
-  /*
-  * Check array is empty.
-  *
-  * @param {Array}arr
-  * @return {boolean} true(empty)
-  */
+  /**
+   * Check array is empty.
+   *
+   * @param {Array}arr
+   * @return {boolean} true(empty)
+   */
   isEmptyArr(arr) {
     return arr.length == 0;
   },

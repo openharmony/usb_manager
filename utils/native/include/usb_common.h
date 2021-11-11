@@ -20,7 +20,6 @@
 #include <type_traits>
 
 #include "hilog_wrapper.h"
-#include "usb_errors.h"
 
 namespace OHOS {
 namespace USB {

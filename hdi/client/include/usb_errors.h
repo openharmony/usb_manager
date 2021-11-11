@@ -91,6 +91,7 @@ enum {
     UEC_HDF_ERR_IO,                                       /**< I/O error. */
     UEC_HDF_ERR_BAD_FD                                    /**< Incorrect file descriptor. */
 };
+
 } // namespace USB
 } // namespace OHOS
 

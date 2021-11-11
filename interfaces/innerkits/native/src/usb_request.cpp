@@ -19,12 +19,12 @@
 
 namespace OHOS {
 namespace USB {
-UsbRequest::UsbRequest() : usbClient((uint8_t*)(&UsbSrvClient::GetInstance())) {}
+UsbRequest::UsbRequest() : usbClient((uint8_t *)(&UsbSrvClient::GetInstance())) {}
 int32_t UsbRequest::Initialize(const USBDevicePipe &pipe, const USBEndpoint &endpoint)
 {
     this->pipe = pipe;
     this->endpoint = endpoint;
-    int32_t ret = ((UsbSrvClient*)usbClient)->RequestInitialize(*this);
+    int32_t ret = ((UsbSrvClient *)usbClient)->RequestInitialize(*this);
     if (ERR_OK != ret) {
         USB_HILOGI(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed width ret = %{public}d.", __func__,
                    __LINE__, ret);
@@ -34,7 +34,7 @@ int32_t UsbRequest::Initialize(const USBDevicePipe &pipe, const USBEndpoint &end
 
 int32_t UsbRequest::Queue()
 {
-    int32_t ret = ((UsbSrvClient*)usbClient)->RequestQueue(*this);
+    int32_t ret = ((UsbSrvClient *)usbClient)->RequestQueue(*this);
     if (ERR_OK != ret) {
         USB_HILOGI(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed width ret = %{public}d.", __func__,
                    __LINE__, ret);
@@ -44,7 +44,7 @@ int32_t UsbRequest::Queue()
 
 int32_t UsbRequest::Free()
 {
-    int32_t ret = ((UsbSrvClient*)usbClient)->RequestFree(*this);
+    int32_t ret = ((UsbSrvClient *)usbClient)->RequestFree(*this);
     if (ERR_OK != ret) {
         USB_HILOGI(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed width ret = %{public}d.", __func__,
                    __LINE__, ret);
@@ -54,7 +54,7 @@ int32_t UsbRequest::Free()
 
 int32_t UsbRequest::Abort()
 {
-    int32_t ret = ((UsbSrvClient*)usbClient)->RequestAbort(*this);
+    int32_t ret = ((UsbSrvClient *)usbClient)->RequestAbort(*this);
     if (ERR_OK != ret) {
         USB_HILOGI(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed width ret = %{public}d.", __func__,
                    __LINE__, ret);

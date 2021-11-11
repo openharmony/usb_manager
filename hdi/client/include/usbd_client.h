@@ -18,6 +18,7 @@
 
 #include "usbd_subscriber.h"
 #include "usb_param.h"
+
 namespace OHOS {
 namespace USB {
 class UsbdClient {

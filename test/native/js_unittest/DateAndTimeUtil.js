@@ -22,10 +22,10 @@ export default class DateAndTimeUtil {
   constructor() {
   };
 
-  /*
-  *
-  * Get the current time
-  */
+  /**
+   *
+   * Get the current time
+   */
   now() {
     const datetime = new Date();
     const hours = datetime.getHours();
@@ -33,10 +33,10 @@ export default class DateAndTimeUtil {
     return this.concatTime(hours, minutes);
   };
 
-  /*
-  *
-  * Get the current time
-  */
+  /**
+   *
+   * Get the current time
+   */
   nowWithSeconds() {
     const datetime = new Date();
     const hours = datetime.getHours();
@@ -48,20 +48,20 @@ export default class DateAndTimeUtil {
     return now;
   };
 
-  /*
-  * format
-  * @param value
-  * @return
-  */
+  /**
+   * format
+   * @param value
+   * @return
+   */
   fill(value) {
     return (value > 9 ? '' : '0') + value;
   };
 
-  /*
-  * concat date
-  * @param year m d
-  * @return
-  */
+  /**
+   * concat date
+   * @param year m d
+   * @return
+   */
   concatDate(year, month, date) {
     return year + this.year + month + this.month + date + this.day;
   };
@@ -74,11 +74,11 @@ export default class DateAndTimeUtil {
     return `${this.fill(hours)}:${this.fill(minutes)}:${this.fill(milliseconds)}`;
   };
 
-  /*
-  * Turn to 24-hour clock
-  * @param str
-  * @return
-  */
+  /**
+   * Turn to 24-hour clock
+   * @param str
+   * @return
+   */
   transform24(str) {
     const timeFlag = str.substr(0, 2);
     if (timeFlag == this.morning) {
@@ -99,11 +99,11 @@ export default class DateAndTimeUtil {
     }
   };
 
-  /*
-  * Turn to 12-hour clock
-  * @param str
-  * @return
-  */
+  /**
+   * Turn to 12-hour clock
+   * @param str
+   * @return
+   */
   transform12(str) {
     const hours = str.substring(0, str.indexOf(':'));
     const minutes = str.split(':')[1];

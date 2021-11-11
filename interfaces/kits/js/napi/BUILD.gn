@@ -15,6 +15,7 @@ import("//base/usb/usb_manager/usbmgr.gni")
 
 config("usbnapi_private_config") {
   include_dirs = [
+    "//base/usb/usb_manager/hdi/client/include",
     "//foundation/ace/napi/native_engine",
     "//foundation/ace/napi/interfaces/kits",
     "//utils/system/safwk/native/include",
@@ -36,6 +37,7 @@ ohos_shared_library("usb") {
     ":usbnapi_private_config",
   ]
   deps = [
+    "${usb_manager_path}/hdi/client:usbd_client",
     "//base/usb/usb_manager/interfaces/innerkits:usbsrv_client",
     "//foundation/ace/napi:ace_napi",
     "//utils/native/base:utils",

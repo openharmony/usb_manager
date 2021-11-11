@@ -48,11 +48,11 @@ describe('UsbFunctionsJsFunctionsTest', function () {
     console.log('*************Usb Unit UsbFunctionsJsFunctionsTest End*************');
   })
 
-  /*
-  * @tc.number    : get_current_functions_test_01
-  * @tc.name      : getCurrentFunctions
-  * @tc.desc      : 获取当前设备模式 掩码与描述字符转换
-  */
+  /**
+   * @tc.number    : get_current_functions_test_01
+   * @tc.name      : getCurrentFunctions
+   * @tc.desc      : 获取当前设备模式 掩码与描述字符转换
+   */
   it('get_current_functions_test_01', 0, function () {
     console.info('usb get_current_functions_test_01 begin');
     var maskCode = usb.getCurrentFunctions();
@@ -67,11 +67,11 @@ describe('UsbFunctionsJsFunctionsTest', function () {
     expect(true).assertTrue();
   })
 
-  /*
-  * @tc.number    : get_current_functions_test_02
-  * @tc.name      : usbFunctionString
-  * @tc.desc      : 反向测试 获取当前设备模式 掩码与描述字符转换
-  */
+  /**
+   * @tc.number    : get_current_functions_test_02
+   * @tc.name      : usbFunctionString
+   * @tc.desc      : 反向测试 获取当前设备模式 掩码与描述字符转换
+   */
   it('get_current_functions_test_02', 0, function () {
     console.info('usb get_current_functions_test_02 begin');
     var maskCode = usb.getCurrentFunctions();
@@ -110,11 +110,11 @@ describe('UsbFunctionsJsFunctionsTest', function () {
     });
   }
 
-  /*
-  * @tc.number    : set_current_functions_test_02
-  * @tc.name      : functions_test
-  * @tc.desc      : 在设备模式下设置当前的USB功能列表 Set 1 设置为ACM功能
-  */
+  /**
+   * @tc.number    : set_current_functions_test_02
+   * @tc.name      : functions_test
+   * @tc.desc      : 在设备模式下设置当前的USB功能列表 Set 1 设置为ACM功能
+   */
   it('set_current_functions_test_02', 0, function () {
     CheckEmptyUtils.sleep(3000)
     console.info('usb set_current_functions_test_02 set ACM begin');
@@ -125,11 +125,11 @@ describe('UsbFunctionsJsFunctionsTest', function () {
     callSetCurFunction('set_current_functions_test_02 ACM 1', 1)
   })
 
-  /*
-  * @tc.number    : set_current_functions_test_03
-  * @tc.name      : functions_test
-  * @tc.desc      : 在设备模式下设置当前的USB功能列表 Set 2 设置为ECM功能
-  */
+  /**
+   * @tc.number    : set_current_functions_test_03
+   * @tc.name      : functions_test
+   * @tc.desc      : 在设备模式下设置当前的USB功能列表 Set 2 设置为ECM功能
+   */
   it('set_current_functions_test_03', 0, function () {
     CheckEmptyUtils.sleep(3000)
     console.info('usb set_current_functions_test_03 set ECM begin');
@@ -140,11 +140,11 @@ describe('UsbFunctionsJsFunctionsTest', function () {
     callSetCurFunction('set_current_functions_test_03 ECM 2', 2)
   })
 
-  /*
-  * @tc.number    : set_current_functions_test_04
-  * @tc.name      : functions_test
-  * @tc.desc      : 在设备模式下设置当前的USB功能列表 Set 3 设置为ACM、ECM功能
-  */
+  /**
+   * @tc.number    : set_current_functions_test_04
+   * @tc.name      : functions_test
+   * @tc.desc      : 在设备模式下设置当前的USB功能列表 Set 3 设置为ACM、ECM功能
+   */
   it('set_current_functions_test_04', 0, function () {
     CheckEmptyUtils.sleep(3000)
     console.info('usb set_current_functions_test_04 set ACM ECM begin');
@@ -155,11 +155,11 @@ describe('UsbFunctionsJsFunctionsTest', function () {
     callSetCurFunction('set_current_functions_test_04 ACM ECM 3', 3)
   })
 
-  /*
-  * @tc.number    : set_current_functions_test_05
-  * @tc.name      : functions_test
-  * @tc.desc      : 在设备模式下设置当前的USB功能列表 Set 4 设置为HDC功能
-  */
+  /**
+   * @tc.number    : set_current_functions_test_05
+   * @tc.name      : functions_test
+   * @tc.desc      : 在设备模式下设置当前的USB功能列表 Set 4 设置为HDC功能
+   */
   it('set_current_functions_test_05', 0, function () {
     CheckEmptyUtils.sleep(3000)
     console.info('usb set_current_functions_test_05 set HDC begin');
@@ -170,11 +170,11 @@ describe('UsbFunctionsJsFunctionsTest', function () {
     callSetCurFunction('set_current_functions_test_05 HDC 4', 4)
   })
 
-  /*
-  * @tc.number    : set_current_functions_test_06
-  * @tc.name      : functions_test
-  * @tc.desc      : 在设备模式下设置当前的USB功能列表 Set 5 设置为ACM、HDC功能
-  */
+  /**
+   * @tc.number    : set_current_functions_test_06
+   * @tc.name      : functions_test
+   * @tc.desc      : 在设备模式下设置当前的USB功能列表 Set 5 设置为ACM、HDC功能
+   */
   it('set_current_functions_test_06', 0, function () {
     CheckEmptyUtils.sleep(3000)
     console.info('usb set_current_functions_test_06 set ACM HDC begin');
@@ -185,11 +185,11 @@ describe('UsbFunctionsJsFunctionsTest', function () {
     callSetCurFunction('set_current_functions_test_06 ACM HDC 5', 5)
   })
 
-  /*
-  * @tc.number    : set_current_functions_test_07
-  * @tc.name      : functions_test
-  * @tc.desc      : 在设备模式下设置当前的USB功能列表 Set 6 设置为ECM、HDC功能
-  */
+  /**
+   * @tc.number    : set_current_functions_test_07
+   * @tc.name      : functions_test
+   * @tc.desc      : 在设备模式下设置当前的USB功能列表 Set 6 设置为ECM、HDC功能
+   */
   it('set_current_functions_test_07', 0, function () {
     CheckEmptyUtils.sleep(3000)
     console.info('usb set_current_functions_test_07 set ECM HDC begin');

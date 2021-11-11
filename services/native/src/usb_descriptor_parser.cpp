@@ -19,6 +19,7 @@
 #include "securec.h"
 #include "usb_config.h"
 #include "usb_endpoint.h"
+#include "usb_errors.h"
 #include "usb_interface.h"
 #include "usbd_type.h"
 
@@ -40,7 +41,7 @@ int32_t UsbDescriptorParser::ParseDeviceDescriptor(const uint8_t *buffer, uint32
     uint32_t cursor = 0;
     if (buffer == nullptr || length == 0) {
         USB_HILOGI(MODULE_USB_SERVICE, "%{public}s: buffer is null", __func__);
-        return ERR_NO_INIT;
+        return UEC_SERVICE_INVALID_VALUE;
     }
 
     USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:  parse begin buffer=%{public}p, length=%{public}d, cursor=%{public}d",
@@ -48,14 +49,14 @@ int32_t UsbDescriptorParser::ParseDeviceDescriptor(const uint8_t *buffer, uint32
     uint32_t deviceDescriptorSize = sizeof(UsbdDeviceDescriptor);
     if (length < deviceDescriptorSize) {
         USB_HILOGI(MODULE_USB_SERVICE, "%{public}s: buffer size error", __func__);
-        return ERR_INVALID_VALUE;
+        return UEC_SERVICE_INVALID_VALUE;
     }
 
     UsbdDeviceDescriptor deviceDescriptor = *(UsbdDeviceDescriptor *)buffer;
     cursor += deviceDescriptorSize;
     if (deviceDescriptor.bLength != deviceDescriptorSize) {
         USB_HILOGI(MODULE_USB_SERVICE, "%{public}s: UsbdDeviceDescriptor size error", __func__);
-        return ERR_INVALID_VALUE;
+        return UEC_SERVICE_INVALID_VALUE;
     }
 
     dev.SetVendorId(deviceDescriptor.idVendor);
@@ -70,7 +71,7 @@ int32_t UsbDescriptorParser::ParseDeviceDescriptor(const uint8_t *buffer, uint32
     dev.SetiManufacturer(deviceDescriptor.iManufacturer);
     dev.SetiProduct(deviceDescriptor.iProduct);
     dev.SetiSerialNumber(deviceDescriptor.iSerialNumber);
-    return ERR_OK;
+    return UEC_OK;
 }
 
 int32_t UsbDescriptorParser::ParseConfigDescriptor(const uint8_t *buffer,
@@ -79,7 +80,7 @@ int32_t UsbDescriptorParser::ParseConfigDescriptor(const uint8_t *buffer,
                                                    USBConfig &config)
 {
     if (buffer == nullptr || length == 0) {
-        return ERR_INVALID_VALUE;
+        return UEC_SERVICE_INVALID_VALUE;
     }
 
     USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:  parse begin buffer=%{public}p, length=%{public}d, cursor=%{public}d",
@@ -87,14 +88,14 @@ int32_t UsbDescriptorParser::ParseConfigDescriptor(const uint8_t *buffer,
     uint32_t configDescriptorSize = sizeof(UsbdConfigDescriptor);
     if (length < configDescriptorSize) {
         USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:  buffer size error", __func__);
-        return ERR_INVALID_VALUE;
+        return UEC_SERVICE_INVALID_VALUE;
     }
 
     UsbdConfigDescriptor configDescriptor = *(UsbdConfigDescriptor *)buffer;
     cursor += configDescriptorSize;
     if (configDescriptor.bLength != configDescriptorSize) {
         USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:  UsbdDeviceDescriptor size error", __func__);
-        return ERR_INVALID_VALUE;
+        return UEC_SERVICE_INVALID_VALUE;
     }
 
     config.SetId(configDescriptor.bConfigurationValue);
@@ -116,7 +117,7 @@ int32_t UsbDescriptorParser::ParseConfigDescriptor(const uint8_t *buffer,
         cursor += interfaceCursor;
     }
     config.SetInterfaces(interfaces);
-    return ERR_OK;
+    return UEC_OK;
 }
 
 int32_t UsbDescriptorParser::ParseInterfaceDescriptor(const uint8_t *buffer,
@@ -125,19 +126,19 @@ int32_t UsbDescriptorParser::ParseInterfaceDescriptor(const uint8_t *buffer,
                                                       UsbInterface &interface)
 {
     if (buffer == nullptr || length == 0) {
-        return ERR_INVALID_VALUE;
+        return UEC_SERVICE_INVALID_VALUE;
     }
 
     uint32_t descriptorHeaderSize = sizeof(UsbdDescriptorHeader);
     while ((uint32_t)cursor < length) {
         if (descriptorHeaderSize >= length) {
             USB_HILOGE(MODULE_USB_SERVICE, "%{public}s: descriptor size error", __func__);
-            return ERR_INVALID_VALUE;
+            return UEC_SERVICE_INVALID_VALUE;
         }
         UsbdDescriptorHeader descriptorHeader = *(UsbdDescriptorHeader *)(buffer + cursor);
         if (descriptorHeader.bLength > length) {
             USB_HILOGE(MODULE_USB_SERVICE, "%{public}s: descriptor size error", __func__);
-            return ERR_INVALID_VALUE;
+            return UEC_SERVICE_INVALID_VALUE;
         }
         if (descriptorHeader.bDescriptorType == static_cast<uint8_t>(DescriptorType::DESCRIPTOR_TYPE_INTERFACE)) {
             break;
@@ -150,7 +151,7 @@ int32_t UsbDescriptorParser::ParseInterfaceDescriptor(const uint8_t *buffer,
     UsbdInterfaceDescriptor interfaceDescriptor = *(UsbdInterfaceDescriptor *)(buffer + cursor);
     if (interfaceDescriptor.bLength != sizeof(UsbdInterfaceDescriptor)) {
         USB_HILOGE(MODULE_USB_SERVICE, "%{public}s: UsbdInterfaceDescriptor size error", __func__);
-        return ERR_INVALID_VALUE;
+        return UEC_SERVICE_INVALID_VALUE;
     }
     cursor += interfaceDescriptor.bLength;
 
@@ -171,7 +172,7 @@ int32_t UsbDescriptorParser::ParseInterfaceDescriptor(const uint8_t *buffer,
         cursor += epCursor;
     }
     interface.SetEndpoints(eps);
-    return ERR_OK;
+    return UEC_OK;
 }
 int32_t UsbDescriptorParser::ParseEndpointDescriptor(const uint8_t *buffer,
                                                      uint32_t length,
@@ -181,19 +182,19 @@ int32_t UsbDescriptorParser::ParseEndpointDescriptor(const uint8_t *buffer,
     USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:  parse begin buffer=%{public}p, length=%{public}d, cursor=%{public}d",
                __func__, buffer, length, cursor);
     if (buffer == nullptr || length == 0) {
-        return ERR_INVALID_VALUE;
+        return UEC_SERVICE_INVALID_VALUE;
     }
 
     uint32_t descriptorHeaderSize = sizeof(UsbdDescriptorHeader);
     while ((uint32_t)cursor < length) {
         if (descriptorHeaderSize >= length) {
             USB_HILOGI(MODULE_USB_SERVICE, "%{public}s: descriptor size error", __func__);
-            return ERR_INVALID_VALUE;
+            return UEC_SERVICE_INVALID_VALUE;
         }
         UsbdDescriptorHeader descriptorHeader = *(UsbdDescriptorHeader *)(buffer + cursor);
         if (descriptorHeader.bLength > length) {
             USB_HILOGI(MODULE_USB_SERVICE, "%{public}s: descriptor size error", __func__);
-            return ERR_INVALID_VALUE;
+            return UEC_SERVICE_INVALID_VALUE;
         }
         if (descriptorHeader.bDescriptorType == static_cast<uint8_t>(DescriptorType::DESCRIPTOR_TYPE_ENDPOINT)) {
             break;
@@ -207,7 +208,7 @@ int32_t UsbDescriptorParser::ParseEndpointDescriptor(const uint8_t *buffer,
     if (endpointDescriptor.bLength != sizeof(UsbdEndpointDescriptor)) {
         USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:  Endpoint descriptor size error, length=%{public}d", __func__,
                    endpointDescriptor.bLength);
-        return ERR_INVALID_VALUE;
+        return UEC_SERVICE_INVALID_VALUE;
     }
     cursor += endpointDescriptor.bLength;
 
@@ -215,7 +216,7 @@ int32_t UsbDescriptorParser::ParseEndpointDescriptor(const uint8_t *buffer,
     ep.SetAttr(endpointDescriptor.bmAttributes);
     ep.SetInterval(endpointDescriptor.bInterval);
     ep.SetMaxPacketSize(endpointDescriptor.wMaxPacketSize);
-    return ERR_OK;
+    return UEC_OK;
 }
 } // namespace USB
 } // namespace OHOS

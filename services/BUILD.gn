@@ -14,7 +14,10 @@
 import("//base/usb/usb_manager/usbmgr.gni")
 
 config("usbsrv_private_config") {
-  include_dirs = [ "//utils/system/safwk/native/include" ]
+  include_dirs = [
+    "//utils/system/safwk/native/include",
+    "${usb_manager_path}/hdi/client/include",
+  ]
 }
 
 config("usbsrv_public_config") {
