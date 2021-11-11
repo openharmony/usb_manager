@@ -507,7 +507,7 @@ static int32_t FunBulkReadSync(struct HostDevice *port, struct HdfSBuf *data, st
     return ret;
 }
 
-static void UsbRequestParamsWSyncInit( struct UsbRequestParams *parmas, int32_t timeout, const struct UsbPipeInfo *pipe)
+static void UsbRequestParamsWSyncInit(struct UsbRequestParams *parmas, int32_t timeout, const struct UsbPipeInfo *pipe)
 {
     if (parmas == NULL || pipe == NULL) {
         return;
@@ -1545,7 +1545,7 @@ static bool UsbdHdfReadBufAndMalloc(struct HdfSBuf *data, uint8_t **ptr, uint32_
         if (err != EOK) {
             HDF_LOGE("%{public}s:%{public}d memcpy_s fail size:%{public}d", __func__, __LINE__, *length);
             return HDF_ERR_MALLOC_FAIL;
-            }
+        }
     } else {
         *ptr = NULL;
     }

@@ -18,7 +18,6 @@
 
 namespace OHOS {
 namespace USB {
-
 struct UsbDev {
     uint8_t busNum;
     uint8_t devAddr;
@@ -34,8 +33,6 @@ struct UsbCtrlTransfer {
     int32_t index;
     int32_t timeout;
 };
-
 } // namespace USB
 } // namespace OHOS
-
 #endif // USB_PARAM_H
