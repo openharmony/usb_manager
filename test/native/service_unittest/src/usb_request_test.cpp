@@ -41,7 +41,7 @@ void UsbRequestTest::SetUpTestCase(void)
     auto &srvClient = UsbSrvClient::GetInstance();
     auto ret = srvClient.SetPortRole(1, 1, 1);
     sleep(SLEEP_TIME);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbCoreTest:: [Device] SetPortRole=%{public}d", ret);
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbdRequestTest:: [Device] SetPortRole=%{public}d", ret);
     ASSERT_TRUE(ret == 0);
     if (ret != 0) {
         exit(0);

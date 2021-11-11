@@ -33,30 +33,30 @@ describe('UsbDevicePipeJsFunctionsTestEx', function () {
     if (usbPortList.length > 0) {
       if (usbPortList[0].status.currentMode == 2) {
         usb.setPortRoles(usbPortList[0].id, 1, 1).then(data => {
-          console.info('usb case setPortRoles return: ' + data);
+          console.info('usb case setPortRoles  return: ' + data);
         }).catch(error => {
-          console.info('usb case setPortRoles error : ' + error);
+          console.info('usb case setPortRoles  error : ' + error);
         });
 
-        console.log('*************Usb Unit switch to host Begin*************');
+        console.log('*************Usb Unit switch to host Ex Begin*************');
         CheckEmptyUtils.sleep(3000)
       }
     }
 
     gDeviceList = usb.getDevices();
     gPipe = usb.connectDevice(gDeviceList[0])
-    console.info('usb unit connectDevice gPipe ret : ' + JSON.stringify(gPipe));
+    console.info('usb unit connectDevice  gPipe ret : ' + JSON.stringify(gPipe));
   })
   beforeEach(function () {
-    console.info('beforeEach: *************Usb Unit Test Case*************');
+    console.info('beforeEach: *************Usb Unit Test Ex Case*************');
   })
   afterEach(function () {
-    console.info('afterEach: *************Usb Unit Test Case*************');
+    console.info('afterEach: *************Usb Unit Test Ex Case*************');
   })
   afterAll(function () {
     var isPipClose = usb.closePipe(gPipe)
     console.info('usb unit close gPipe ret : ' + isPipClose);
-    console.log('*************Usb Unit UsbDevicePipeJsFunctionsTest End*************');
+    console.log('*************Usb Unit UsbDevicePipeJsFunctionsTestEx End*************');
   })
 
   function findInitPoint(testParam, j) {
@@ -82,19 +82,26 @@ describe('UsbDevicePipeJsFunctionsTestEx', function () {
     return false
   }
 
+  function getFlag(testParam, j) {
+    if (testParam.config.interfaces[j].clazz != 10 ||
+      testParam.config.interfaces[j].subclass != 0 ||
+      testParam.config.interfaces[j].protocol != 2) {
+      return false
+    }
+
+    if (testParam.config.interfaces[j].endpoints.length == 0) {
+      return false
+    }
+
+    return true
+  }
+
   function initPoint(testParam) {
     for (var j = 0; j < testParam.config.interfaces.length; j++) {
-      if (testParam.config.interfaces[j].endpoints.length == 0) {
-        continue
-      }
-      if (testParam.config.interfaces[j].clazz != 10 ||
-        testParam.config.interfaces[j].subclass != 0 ||
-        testParam.config.interfaces[j].protocol != 2) {
-        continue;
-      }
-
-      if (findInitPoint(testParam, j)) {
-        break
+      if (getFlag(testParam, j)) {
+        if (findInitPoint(testParam, j)) {
+          break
+        }
       }
     }
   }

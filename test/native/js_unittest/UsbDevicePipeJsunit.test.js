@@ -67,35 +67,40 @@ describe('UsbDevicePipeJsFunctionsTest', function () {
       if (endpoint.type == EventConstants.USB_ENDPOINT_XFER_BULK) {
         bfind = true
         if (endpoint.direction == EventConstants.USB_ENDPOINT_DIR_OUT) {
-          testParam.outEndpoint = endpoint;
           testParam.maxOutSize = endpoint.maxPacketSize;
+          testParam.outEndpoint = endpoint;
         } else if (endpoint.direction == EventConstants.USB_ENDPOINT_DIR_IN) {
-          testParam.inEndpoint = endpoint
           testParam.maxInSize = endpoint.maxPacketSize;
+          testParam.inEndpoint = endpoint
         }
-
       }
     }
     if (bfind) {
       testParam.interface = testParam.config.interfaces[j]
-      return true
+      return bfind
     }
     return false
   }
 
+  function getFlag(testParam, j) {
+    if (testParam.config.interfaces[j].endpoints.length == 0) {
+      return false
+    }
+
+    if (testParam.config.interfaces[j].clazz != 10 ||
+      testParam.config.interfaces[j].subclass != 0 ||
+      testParam.config.interfaces[j].protocol != 2) {
+      return false
+    }
+    return true
+  }
+
   function initPoint(testParam) {
     for (var j = 0; j < testParam.config.interfaces.length; j++) {
-      if (testParam.config.interfaces[j].endpoints.length == 0) {
-        continue
-      }
-
-      if (testParam.config.interfaces[j].clazz != 10 ||
-        testParam.config.interfaces[j].subclass != 0 ||
-        testParam.config.interfaces[j].protocol != 2) {
-        continue;
-      }
-      if (findInitPoint(testParam, j)) {
-        break
+      if (getFlag(testParam, j) == true) {
+        if (findInitPoint(testParam, j) == true) {
+          break
+        }
       }
     }
   }
@@ -103,12 +108,12 @@ describe('UsbDevicePipeJsFunctionsTest', function () {
   // 预制传输相关参数
   function getTransferTestParam() {
     var testParam = {
-      device: null,
       config: null,
+      device: null,
       pip: null,
       inEndpoint: null,
-      outEndpoint: null,
       interface: null,
+      outEndpoint: null,
       usbRequest: null,
       sendData: '',
       isClaimed: 0,
@@ -116,7 +121,7 @@ describe('UsbDevicePipeJsFunctionsTest', function () {
       maxOutSize: 1024
     }
 
-    console.info('usb case gDeviceList.length: ' + gDeviceList.length);
+    console.info('usb case  gDeviceList.length: ' + gDeviceList.length);
     for (var i = 0; i < gDeviceList.length; i++) {
       testParam.device = gDeviceList[i]
       testParam.config = testParam.device.configs[0]
@@ -205,7 +210,7 @@ describe('UsbDevicePipeJsFunctionsTest', function () {
     console.info('usb claim_interface_test_01 begin');
     if (gDeviceList.length == 0) {
       console.info('usb 01 case get_device_list is null')
-      expect(false).assertTrue();
+      expect(gDeviceList.length).assertEqual(-1);
       return
     }
 

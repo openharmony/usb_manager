@@ -156,15 +156,15 @@ describe('UsbPortJsFunctionsTestEx', function () {
    */
   it('set_port_roles_test_07', 0, function () {
     var portId = -1;
-    var powerRole = -1;
     var dataRole = -1;
+    var powerRole = -1;
 
     CheckEmptyUtils.sleep(2000)
     usb.setPortRoles(-1, -1, -1).then(data => {
-      console.info('usb case setPortRoles return: ' + data);
+      console.info('usb case setPortRoles 07 return: ' + data);
       expect(data).assertTrue();
     }).catch(error => {
-      console.info('usb case setPortRoles error : ' + error);
+      console.info('usb case setPortRoles 07 error : ' + error);
       expect(false).assertTrue();
     })
 
@@ -316,10 +316,10 @@ describe('UsbPortJsFunctionsTestEx', function () {
     CheckEmptyUtils.sleep(2000)
 
     usb.setPortRoles(-1, -1, -1).then(data => {
-      console.info('usb case setPortRoles return: ' + data);
+      console.info('usb case setPortRoles 14 return: ' + data);
       expect(data).assertTrue();
     }).catch(error => {
-      console.info('usb case setPortRoles error : ' + error);
+      console.info('usb case setPortRoles 14 error : ' + error);
       expect(false).assertTrue();
     })
 

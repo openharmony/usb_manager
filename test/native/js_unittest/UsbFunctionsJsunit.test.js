@@ -39,10 +39,10 @@ describe('UsbFunctionsJsFunctionsTest', function () {
     }
   })
   beforeEach(function () {
-    console.info('beforeEach: *************Usb Unit Test Case*************');
+    console.info('beforeEach: *************Usb Unit  Test Case*************');
   })
   afterEach(function () {
-    console.info('afterEach: *************Usb Unit Test Case*************');
+    console.info('afterEach: *************Usb Unit  Test Case*************');
   })
   afterAll(function () {
     console.log('*************Usb Unit UsbFunctionsJsFunctionsTest End*************');

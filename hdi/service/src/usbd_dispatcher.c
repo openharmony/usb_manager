@@ -47,6 +47,8 @@
 #define POS_STEP 3
 
 #define MULTIPLE 3
+#define ADD_NUM_50 50
+#define ERROR_0 0
 
 #define HEX_NUM_1F 0x1F
 #define HEX_NUM_1 0x1
@@ -74,20 +76,29 @@ void PrintBuffer(const char *title, const uint8_t *buffer, uint32_t length)
     if (title == NULL || buffer == NULL || length == 0) {
         return;
     }
-    uint32_t logLength = strlen(title) + length * MULTIPLE + 50;
+    uint32_t logLength = strlen(title) + length * MULTIPLE + ADD_NUM_50;
     char *logBuffer = (char *)OsalMemAlloc(logLength);
     if (logBuffer == NULL) {
         return;
     }
-    memset_s(logBuffer, logLength, 0, logLength);
-    int ret = sprintf_s(logBuffer, logLength, " %s << 二进制数据流，%u字节 >> :", title, length);
+    int ret = memset_s(logBuffer, logLength, 0, logLength);
+    if (ret < ERROR_0) {
+        HDF_LOGE("%{public}s:%{public}d memset_s ret %{public}d", __func__, __LINE__, ret);
+    }
+    ret = sprintf_s(logBuffer, logLength, " %s << 二进制数据流，%u字节 >> :", title, length);
+    if (ret < ERROR_0) {
+        HDF_LOGE("%{public}s:%{public}d sprintf_s ret %{public}d", __func__, __LINE__, ret);
+    }
     uint32_t pos = strlen(logBuffer);
     for (uint32_t i = 0; i < length; ++i) {
         ret = sprintf_s(logBuffer + pos, logLength - pos, " %02x", buffer[i]);
+        if (ret < ERROR_0) {
+            HDF_LOGE("%{public}s:%{public}d sprintf_s ret %{public}d", __func__, __LINE__, ret);
+        }
         pos += POS_STEP;
     }
     ret = sprintf_s(logBuffer + pos, logLength - pos, "  --> %s \n", buffer);
-    if (ret) {
+    if (ret < ERROR_0) {
         HDF_LOGE("%{public}s:%{public}d  ret %{public}d", __func__, __LINE__, ret);
     }
     HDF_LOGE("%{public}s", logBuffer);
@@ -686,11 +697,9 @@ static int32_t CtrlTranParamGetReqType(struct HdfSBuf *data, struct UsbControlPa
     }
     uint8_t *buffer = NULL;
     uint32_t length = 0;
-    int32_t target = 0;
-    int32_t direction = 0;
 
-    target = requestType & HEX_NUM_1F;
-    direction = (requestType >> DEC_NUM_7) & HEX_NUM_1;
+    int32_t target = requestType & HEX_NUM_1F;
+    int32_t direction = (requestType >> DEC_NUM_7) & HEX_NUM_1;
     int32_t cmdType = (requestType >> DEC_NUM_5) & HEX_NUM_3;
     HDF_LOGE(
         "%{public}s:%{public}d requestType:%{public}d direction:%{public}d target:%{public}d cmdType::%{public}d\n",

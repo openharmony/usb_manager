@@ -36,7 +36,7 @@ void UsbDevicePipeTest::SetUpTestCase(void)
     auto &srvClient = UsbSrvClient::GetInstance();
     auto ret = srvClient.SetPortRole(1, 1, 1);
     sleep(SLEEP_TIME);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbCoreTest:: [Device] SetPortRole=%{public}d", ret);
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest:: [Device] SetPortRole=%{public}d", ret);
     ASSERT_TRUE(ret == 0);
     if (ret != 0) {
         exit(0);
@@ -66,7 +66,7 @@ void UsbDevicePipeTest::PrintBuffer(const char *charstr, const uint8_t *databuff
         return;
     }
     oss.str("");
-    oss << charstr << " << 二进制数据流[" << datalength << "字节] >> :";
+    oss << charstr << " << PIPE 二进制数据流[" << datalength << "字节] >> :";
     for (uint32_t i = 0; i < datalength; ++i) {
         oss << " " << std::hex << (int)databuffer[i];
     }

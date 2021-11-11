@@ -751,7 +751,6 @@ declare namespace usb {
         USB_REQUEST_DIR_FROM_DEVICE = 0x80
     }
 
-
     /**
      * function 模式
      *
@@ -781,7 +780,43 @@ declare namespace usb {
          *
          * @since 8
          */
-        HDC = 4
+        HDC = 4,
+        /**
+         * MTP设备
+         *
+         * @since 8
+         */
+        MTP = 8,
+        /**
+         * PTP设备
+         *
+         * @since 8
+         */
+        PTP = 16,
+        /**
+         * RNDIS设备
+         *
+         * @since 8
+         */
+        RNDIS = 32,
+        /**
+         * MIDI设备
+         *
+         * @since 8
+         */
+        MIDI = 64,
+        /**
+         * AUDIO SOURCE设备
+         *
+         * @since 8
+         */
+        AUDIO_SOURCE = 128,
+        /**
+         * NCM设备
+         *
+         * @since 8
+         */
+        NCM = 256
     }
 
 }

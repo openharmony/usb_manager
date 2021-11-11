@@ -22,7 +22,7 @@ import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from
 describe('UsbCoreJsFunctionsTestEx', function () {
   var gDeviceList
   beforeAll(function () {
-    console.log('*************Usb Unit UsbCoreJsFunctionsTest Begin*************');
+    console.log('*************Usb Unit UsbCoreJsFunctionsTestEx Begin*************');
     var Version = usb.getVersion()
     console.info('begin test getversion :' + Version)
     // 切换为host
@@ -30,9 +30,9 @@ describe('UsbCoreJsFunctionsTestEx', function () {
     if (usbPortList.length > 0) {
       if (usbPortList[0].status.currentMode == 2) {
         usb.setPortRoles(usbPortList[0].id, 1, 1).then(data => {
-          console.info('usb case setPortRoles return: ' + data);
+          console.info('usb case setPortRolesEx return: ' + data);
         }).catch(error => {
-          console.info('usb case setPortRoles error : ' + error);
+          console.info('usb case setPortRolesEx error : ' + error);
         });
         console.log('*************Usb Unit Begin switch to host*************');
       }
@@ -40,13 +40,13 @@ describe('UsbCoreJsFunctionsTestEx', function () {
     gDeviceList = usb.getDevices();
   })
   beforeEach(function () {
-    console.info('beforeEach: *************Usb Unit Test Case*************');
+    console.info('beforeEach: *************Usb Unit Test CaseEx*************');
   })
   afterEach(function () {
-    console.info('afterEach: *************Usb Unit Test Case*************');
+    console.info('afterEach: *************Usb Unit Test CaseEx*************');
   })
   afterAll(function () {
-    console.log('*************Usb Unit UsbCoreJsFunctionsTest End*************');
+    console.log('*************Usb Unit UsbCoreJsFunctionsTestEx End*************');
   })
 
 

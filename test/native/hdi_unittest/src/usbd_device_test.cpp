@@ -17,13 +17,8 @@
 #include <vector>
 #include "delayed_sp_singleton.h"
 #include "hilog_wrapper.h"
-#include "if_system_ability_manager.h"
-#include "system_ability_definition.h"
 #include "usb_common.h"
-#include "usb_device.h"
-#include "usb_device_pipe.h"
 #include "usb_param.h"
-#include "usb_service.h"
 #include "usb_srv_client.h"
 #include "usbd_client.h"
 
