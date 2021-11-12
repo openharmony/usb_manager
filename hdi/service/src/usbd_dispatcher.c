@@ -1550,7 +1550,7 @@ static bool UsbdHdfReadBufAndMalloc(struct HdfSBuf *data, uint8_t **ptr, uint32_
             HDF_LOGE("%{public}s:%{public}d OsalMemAlloc fail size:%{public}d", __func__, __LINE__, *length);
             return HDF_ERR_MALLOC_FAIL;
         }
-        errno_t err = memcpy_s(*ptr, *length, tclientData, *length);
+        int err = memcpy_s(*ptr, *length, tclientData, *length);
         if (err != EOK) {
             HDF_LOGE("%{public}s:%{public}d memcpy_s fail size:%{public}d", __func__, __LINE__, *length);
             return HDF_ERR_MALLOC_FAIL;

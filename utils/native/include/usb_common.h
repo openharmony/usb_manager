@@ -17,8 +17,6 @@
 #define USB_COMMON_H
 
 #include <cstdint>
-#include <type_traits>
-
 #include "hilog_wrapper.h"
 
 namespace OHOS {

@@ -16,6 +16,9 @@
 #ifndef USB_PARAM_H
 #define USB_PARAM_H
 
+#include <string>
+#include <vector>
+
 namespace OHOS {
 namespace USB {
 struct UsbDev {

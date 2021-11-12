@@ -16,8 +16,8 @@
 #ifndef USBD_CLIENT_H
 #define USBD_CLIENT_H
 
-#include "usbd_subscriber.h"
 #include "usb_param.h"
+#include "usbd_subscriber.h"
 
 namespace OHOS {
 namespace USB {
