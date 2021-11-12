@@ -14,9 +14,6 @@
  */
 
 #include "usb_function_manager.h"
-#include <map>
-#include <string.h>
-#include <vector>
 #include "usb_errors.h"
 
 namespace OHOS {
