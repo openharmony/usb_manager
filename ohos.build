@@ -1,0 +1,30 @@
+{
+  "subsystem": "usb",
+  "parts": {
+    "usb_manager_native": {
+      "module_list": [
+        "//base/usb/usb_manager/hdi:hdi_group",
+        "//base/usb/usb_manager/interfaces/innerkits:usbsrv_client",
+        "//base/usb/usb_manager/sa_profile:usbmgr_sa_profile",
+        "//base/usb/usb_manager/services:usbservice", 
+        "//base/usb/usb_manager/services:usb_serveice.init", 
+        "//base/usb/usb_manager/interfaces/kits/js/napi:usb"
+      ],
+      "inner_kits": [
+        {
+          "name": "//base/usb/usb_manager/interfaces/innerkits:usbsrv_client",
+          "header": {
+            "header_files": [
+              "usb_srv_client.h",
+              "iusb_srv.h"
+            ],
+            "header_base": "//base/usb/usb_manager/interfaces/innerkits/native/include"
+          }
+        }
+      ],
+      "test_list": [
+        "//base/usb/usb_manager/test/native:usb_unittest_test"
+      ]
+    }
+  }
+}
