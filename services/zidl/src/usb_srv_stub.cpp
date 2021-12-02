@@ -25,21 +25,6 @@
 
 namespace OHOS {
 namespace USB {
-void PrintBuffer(const char *title, const uint8_t *buffer, uint32_t length)
-{
-    std::ostringstream oss;
-    if (title == nullptr || buffer == nullptr || length == 0) {
-        return;
-    }
-    oss.str("");
-    oss << title << " << BINARY DATA [" << length << "bytes] >> :";
-    for (uint32_t i = 0; i < length; ++i) {
-        oss << " " << std::hex << (int)buffer[i];
-    }
-    oss << "  -->  " << buffer << std::endl;
-    USB_HILOGD(MODULE_USB_SERVICE, "%{public}s", oss.str().c_str());
-}
-
 int32_t UsbServerStub::GetDeviceMessage(MessageParcel &data, uint8_t &busNum, uint8_t &devAddr)
 {
     if (!data.ReadUint8(busNum)) {
@@ -449,8 +434,6 @@ int32_t UsbServerStub::DoControlTransfer(MessageParcel &data, MessageParcel &rep
         if (UEC_OK != ret) {
             USB_HILOGW(MODULE_USBD, "%{public}s:%{public}d Set buffer message error length = %{public}d", __func__,
                        __LINE__, ret);
-        } else {
-            PrintBuffer("UsbServerStub::DoControlTransfer", (const uint8_t *)vdata.data(), vdata.size());
         }
     }
 

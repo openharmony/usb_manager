@@ -109,14 +109,13 @@ public:
     }
     std::string ToString() const
     {
-        std::string str;
         std::ostringstream ss;
         ss << "name=" << name << ","
            << "id=" << id << ","
            << "iConfiguration=" << (int32_t)iConfiguration << ","
            << "attributes=" << attributes << ","
            << "maxPower=" << maxPower << ";  ";
-        str = ss.str();
+        std::string str = "USBConfig[" + ss.str() + "]";
         ss.str("");
         for (size_t i = 0; i < interfaces.size(); ++i) {
             const UsbInterface &interface = interfaces[i];

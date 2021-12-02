@@ -31,7 +31,7 @@ class UsbHostManager {
 public:
     UsbHostManager(SystemAbility *systemAbility);
     ~UsbHostManager();
-    void getDevices(MAP_STR_DEVICE &devices);
+    void GetDevices(MAP_STR_DEVICE &devices);
     bool DelDevice(uint8_t busNum, uint8_t devNum);
     bool AddDevice(UsbDevice *dev);
 

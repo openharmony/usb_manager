@@ -132,7 +132,7 @@ declare namespace usb {
      * 获取接口
      *
      * @param pipe 用于确定总线号和设备地址 {@link USBDevicePipe}.
-     * @param iface 用于确定需要获取接口的索引 {@link USBInterface}.
+     * @param iface 用于确定需要获取接口 {@link USBInterface}.
      * @param force 是否强制获取
      * @return 成功：0；失败：错误码
      * @since 8
@@ -142,7 +142,7 @@ declare namespace usb {
      * 释放接口
      *
      * @param pipe 用于确定总线号和设备地址 {@link USBDevicePipe}.
-     * @param iface 用于确定需要释放接口的索引 {@link USBInterface}.
+     * @param iface 用于确定需要释放接口 {@link USBInterface}.
      * @return 成功：0；失败：错误码
      * @since 8
      */
@@ -151,7 +151,7 @@ declare namespace usb {
      * 设置设备配置
      *
      * @param pipe 用于确定总线号和设备地址 {@link USBDevicePipe}.
-     * @param config 用于确定需要设置配置的索引 {@link USBConfig}.
+     * @param config 用于确定需要设置配置 {@link USBConfig}.
      * @return 成功：0；失败：错误码
      * @since 8
      */
@@ -160,7 +160,7 @@ declare namespace usb {
      * 设置设备接口
      *
      * @param pipe 用于确定总线号和设备地址 {@link USBDevicePipe}.
-     * @param iface 用于确定需要设置接口的索引 {@link USBInterface}.
+     * @param iface 用于确定需要设置接口 {@link USBInterface}.
      * @return 成功：0；失败：错误码
      * @since 8
      */

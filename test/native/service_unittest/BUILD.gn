@@ -22,7 +22,7 @@ config("module_private_config") {
   include_dirs = [
     "include",
     "//utils/system/safwk/native/include",
-    "${usb_manager_path}/hdi/client/include",
+    "//drivers/peripheral/usb/hal/client/include",
   ]
 }
 
@@ -36,9 +36,9 @@ ohos_unittest("test_usbdevicepipe") {
   ]
 
   deps = [
-    "${usb_manager_path}/hdi/client:usbd_client",
     "${usb_manager_path}/interfaces/innerkits:usbsrv_client",
     "${usb_manager_path}/services:usbservice",
+    "//drivers/peripheral/usb/hal/client:usbd_client",
     "//third_party/googletest:gtest_main",
     "//utils/native/base:utils",
   ]
@@ -52,7 +52,7 @@ ohos_unittest("test_usbdevicepipe") {
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
-    "samgr_L2:samgr_proxy",
+    "samgr_standard:samgr_proxy",
   ]
 }
 
@@ -66,9 +66,9 @@ ohos_unittest("test_usbrequest") {
   ]
 
   deps = [
-    "${usb_manager_path}/hdi/client:usbd_client",
     "${usb_manager_path}/interfaces/innerkits:usbsrv_client",
     "${usb_manager_path}/services:usbservice",
+    "//drivers/peripheral/usb/hal/client:usbd_client",
     "//third_party/googletest:gtest_main",
     "//utils/native/base:utils",
   ]
@@ -82,7 +82,7 @@ ohos_unittest("test_usbrequest") {
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
-    "samgr_L2:samgr_proxy",
+    "samgr_standard:samgr_proxy",
   ]
 }
 
@@ -96,9 +96,9 @@ ohos_unittest("test_usbcore") {
   ]
 
   deps = [
-    "${usb_manager_path}/hdi/client:usbd_client",
     "${usb_manager_path}/interfaces/innerkits:usbsrv_client",
     "${usb_manager_path}/services:usbservice",
+    "//drivers/peripheral/usb/hal/client:usbd_client",
     "//third_party/googletest:gtest_main",
     "//utils/native/base:utils",
   ]
@@ -112,7 +112,7 @@ ohos_unittest("test_usbcore") {
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
-    "samgr_L2:samgr_proxy",
+    "samgr_standard:samgr_proxy",
   ]
 }
 

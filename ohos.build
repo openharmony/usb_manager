@@ -3,11 +3,10 @@
   "parts": {
     "usb_manager_native": {
       "module_list": [
-        "//base/usb/usb_manager/hdi:hdi_group",
         "//base/usb/usb_manager/interfaces/innerkits:usbsrv_client",
         "//base/usb/usb_manager/sa_profile:usbmgr_sa_profile",
         "//base/usb/usb_manager/services:usbservice", 
-        "//base/usb/usb_manager/services:usb_serveice.init", 
+        "//base/usb/usb_manager/services:usb_service.init", 
         "//base/usb/usb_manager/interfaces/kits/js/napi:usb"
       ],
       "inner_kits": [

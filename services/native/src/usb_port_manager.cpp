@@ -19,7 +19,7 @@
 
 namespace OHOS {
 namespace USB {
-const int32_t SUPPORTED_MODES = 2;
+const int32_t SUPPORTED_MODES = 3;
 
 UsbPortManager::UsbPortManager()
 {

@@ -59,21 +59,6 @@ void UsbDevicePipeTest::SetUp(void) {}
 
 void UsbDevicePipeTest::TearDown(void) {}
 
-void UsbDevicePipeTest::PrintBuffer(const char *charstr, const uint8_t *databuffer, uint32_t datalength)
-{
-    std::ostringstream oss;
-    if (charstr == NULL || datalength == 0 || databuffer == nullptr) {
-        return;
-    }
-    oss.str("");
-    oss << charstr << " << PIPE 二进制数据流[" << datalength << "字节] >> :";
-    for (uint32_t i = 0; i < datalength; ++i) {
-        oss << " " << std::hex << (int)databuffer[i];
-    }
-    oss << "  -->  " << databuffer << std::endl;
-    USB_HILOGD(MODULE_USB_INNERKIT, "%{public}s", oss.str().c_str());
-}
-
 /**
  * @tc.name: getDevices001
  * @tc.desc: Test functions to getDevices(std::vector<UsbDevice> &deviceList);
@@ -1543,7 +1528,6 @@ HWTEST_F(UsbDevicePipeTest, UsbBulkTransfer001, TestSize.Level1)
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer001 %{public}d BulkTransfer=%{public}d", __LINE__,
                ret);
     EXPECT_TRUE(ret == 0);
-    UsbDevicePipeTest::PrintBuffer("BulkTransferRead", buffer, len);
     bool close = UsbSrvClient.Close(pipe);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer001 %{public}d close=%{public}d", __LINE__,
                close);

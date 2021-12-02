@@ -14,7 +14,6 @@
  */
 
 import usb from '@ohos.usb';
-import CheckEmptyUtils from './CheckEmptyUtils.js';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from 'deccjsunit/index'
 
 /* usb core functions test */

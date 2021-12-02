@@ -31,23 +31,20 @@ void NapiUtil::JsValueToString(const napi_env &env, const napi_value &value, con
         return;
     }
 
-    char *buf = (char *)malloc(bufLen);
-    if (buf == nullptr) {
+    std::unique_ptr<char[]> buf = std::make_unique<char[]>(bufLen);
+    if (buf.get() == nullptr) {
         USB_HILOGE(MODULE_JS_NAPI, "%{public}s nullptr js object to string malloc failed", __func__);
         return;
     }
-    (void)memset_s(buf, bufLen, 0, bufLen);
+    (void)memset_s(buf.get(), bufLen, 0, bufLen);
     size_t result = 0;
-    napi_get_value_string_utf8(env, value, buf, bufLen, &result);
-
-    target = buf;
-    free(buf);
-    buf = nullptr;
+    napi_get_value_string_utf8(env, value, buf.get(), bufLen, &result);
+    target = buf.get();
 }
 
 void NapiUtil::JsObjectToString(const napi_env &env,
                                 const napi_value &object,
-                                const char *fieldStr,
+                                std::string fieldStr,
                                 const int bufLen,
                                 std::string &fieldRef)
 {
@@ -55,58 +52,56 @@ void NapiUtil::JsObjectToString(const napi_env &env,
         return;
 
     bool hasProperty = false;
-    napi_has_named_property(env, object, fieldStr, &hasProperty);
+    napi_has_named_property(env, object, fieldStr.c_str(), &hasProperty);
     if (hasProperty) {
         napi_value field;
         napi_valuetype valueType;
 
-        napi_get_named_property(env, object, fieldStr, &field);
+        napi_get_named_property(env, object, fieldStr.c_str(), &field);
         napi_typeof(env, field, &valueType);
         NAPI_ASSERT_RETURN_VOID(env, valueType == napi_string, "Wrong argument type. String expected.");
-        char *buf = (char *)malloc(bufLen);
-        if (buf == nullptr) {
+        std::unique_ptr<char[]> buf = std::make_unique<char[]>(bufLen);
+        if (buf.get() == nullptr) {
             USB_HILOGE(MODULE_JS_NAPI, "%{public}s nullptr js object to string malloc failed", __func__);
         }
-        (void)memset_s(buf, bufLen, 0, bufLen);
+        (void)memset_s(buf.get(), bufLen, 0, bufLen);
         size_t result = 0;
-        napi_get_value_string_utf8(env, field, buf, bufLen, &result);
-        fieldRef = buf;
-        free(buf);
-        buf = nullptr;
+        napi_get_value_string_utf8(env, field, buf.get(), bufLen, &result);
+        fieldRef = buf.get();
     } else {
-        USB_HILOGW(MODULE_JS_NAPI, "%{public}s js to str no property: %{public}s", __func__, fieldStr);
+        USB_HILOGW(MODULE_JS_NAPI, "%{public}s js to str no property: %{public}s", __func__, fieldStr.c_str());
     }
 }
 
 bool NapiUtil::JsObjectGetProperty(const napi_env &env,
                                    const napi_value &object,
-                                   const char *fieldStr,
-                                   napi_value *value)
+                                   std::string fieldStr,
+                                   napi_value &value)
 {
     bool hasProperty = false;
-    napi_has_named_property(env, object, fieldStr, &hasProperty);
+    napi_has_named_property(env, object, fieldStr.c_str(), &hasProperty);
     if (hasProperty) {
-        napi_get_named_property(env, object, fieldStr, value);
+        napi_get_named_property(env, object, fieldStr.c_str(), &value);
     } else {
-        USB_HILOGW(MODULE_JS_NAPI, "%{public}s js object has no property: %{public}s", __func__, fieldStr);
+        USB_HILOGW(MODULE_JS_NAPI, "%{public}s js object has no property: %{public}s", __func__, fieldStr.c_str());
     }
     return hasProperty;
 }
 
-void NapiUtil::JsObjectToInt(const napi_env &env, const napi_value &object, const char *fieldStr, int &fieldRef)
+void NapiUtil::JsObjectToInt(const napi_env &env, const napi_value &object, std::string fieldStr, int &fieldRef)
 {
     bool hasProperty = false;
-    napi_has_named_property(env, object, fieldStr, &hasProperty);
+    napi_has_named_property(env, object, fieldStr.c_str(), &hasProperty);
     if (hasProperty) {
         napi_value field;
         napi_valuetype valueType;
 
-        napi_get_named_property(env, object, fieldStr, &field);
+        napi_get_named_property(env, object, fieldStr.c_str(), &field);
         napi_typeof(env, field, &valueType);
         NAPI_ASSERT_RETURN_VOID(env, valueType == napi_number, "Wrong argument type. Number expected.");
         napi_get_value_int32(env, field, &fieldRef);
     } else {
-        USB_HILOGW(MODULE_JS_NAPI, "%{public}s js to int no property: %{public}s", __func__, fieldStr);
+        USB_HILOGW(MODULE_JS_NAPI, "%{public}s js to int no property: %{public}s", __func__, fieldStr.c_str());
     }
 }
 
@@ -140,39 +135,42 @@ bool NapiUtil::JsUint8ArrayParse(const napi_env &env,
     return true;
 }
 
-void NapiUtil::Uint8ArrayToJsValue(const napi_env &env, uint8_t *uint8Buffer, size_t bufferSize, napi_value &result)
+void NapiUtil::Uint8ArrayToJsValue(const napi_env &env,
+                                   std::vector<uint8_t> &uint8Buffer,
+                                   size_t bufferSize,
+                                   napi_value &result)
 {
-    if (uint8Buffer == nullptr || bufferSize < 0) {
+    if (bufferSize < 0) {
         napi_get_undefined(env, &result);
         return;
     }
 
-    uint8_t *nativeArraybuffer = new uint8_t[bufferSize];
+    uint8_t *nativeArraybuffer = nullptr;
     napi_value nativeValue = nullptr;
     napi_create_arraybuffer(env, bufferSize, (void **)&nativeArraybuffer, &nativeValue);
-    memcpy_s(nativeArraybuffer, bufferSize, uint8Buffer, bufferSize);
+    memcpy_s(nativeArraybuffer, bufferSize, (const char *)uint8Buffer.data(), bufferSize);
     napi_create_typedarray(env, napi_uint8_array, bufferSize, nativeValue, 0, &result);
 }
 
-void NapiUtil::SetValueUtf8String(const napi_env &env, const char *fieldStr, const char *str, napi_value &result)
+void NapiUtil::SetValueUtf8String(const napi_env &env, std::string fieldStr, std::string str, napi_value &result)
 {
     napi_value value;
-    napi_create_string_utf8(env, str, NAPI_AUTO_LENGTH, &value);
-    napi_set_named_property(env, result, fieldStr, value);
+    napi_create_string_utf8(env, str.c_str(), NAPI_AUTO_LENGTH, &value);
+    napi_set_named_property(env, result, fieldStr.c_str(), value);
 }
 
-void NapiUtil::SetValueInt32(const napi_env &env, const char *fieldStr, const int intValue, napi_value &result)
+void NapiUtil::SetValueInt32(const napi_env &env, std::string fieldStr, const int intValue, napi_value &result)
 {
     napi_value value;
     napi_create_int32(env, intValue, &value);
-    napi_set_named_property(env, result, fieldStr, value);
+    napi_set_named_property(env, result, fieldStr.c_str(), value);
 }
 
-void NapiUtil::SetValueBool(const napi_env &env, const char *fieldStr, const bool boolValue, napi_value &result)
+void NapiUtil::SetValueBool(const napi_env &env, std::string fieldStr, const bool boolValue, napi_value &result)
 {
     napi_value value;
     napi_get_boolean(env, boolValue, &value);
-    napi_set_named_property(env, result, fieldStr, value);
+    napi_set_named_property(env, result, fieldStr.c_str(), value);
 }
 } // namespace USB
 } // namespace OHOS

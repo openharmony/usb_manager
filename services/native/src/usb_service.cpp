@@ -47,6 +47,12 @@ const int32_t HALF = 2;
 const int32_t BIT_SHIFT_4 = 4;
 const int32_t BIT_HIGH_4 = 0xF0;
 const int32_t BIT_LOW_4 = 0x0F;
+/*
+ * set default port mode = device
+ */
+const int32_t DEFAULT_PORT_ID = 1;
+const int32_t DEFAULT_POWER_ROLE = 2;
+const int32_t DEFAULT_DATA_ROLE = 2;
 } // namespace
 
 auto pms = DelayedSpSingleton<UsbService>::GetInstance();
@@ -55,16 +61,12 @@ const bool G_REGISTER_RESULT =
 
 UsbService::UsbService() : SystemAbility(USB_MANAGER_USB_SERVICE_ID, true)
 {
-    usbHostManger_ = new UsbHostManager(nullptr);
-    usbRightManager = new UsbRightManager();
-    usbPortManager = new UsbPortManager();
-    usbFunctionManager = new UsbFunctionManager();
+    usbHostManger_ = std::make_shared<UsbHostManager>(nullptr);
+    usbRightManager_ = std::make_shared<UsbRightManager>();
+    usbPortManager_ = std::make_shared<UsbPortManager>();
 }
 UsbService::~UsbService()
 {
-    delete usbHostManger_;
-    delete usbRightManager;
-    delete usbPortManager;
 }
 
 void UsbService::OnStart()
@@ -82,7 +84,8 @@ void UsbService::OnStart()
         USB_HILOGE(MODULE_USB_SERVICE, "OnStart call initUsbd fail");
         return;
     }
-    usbPortManager->Init();
+    UsbdClient::SetPortRole(DEFAULT_PORT_ID, DEFAULT_POWER_ROLE, DEFAULT_DATA_ROLE);
+    usbPortManager_->Init();
     ready_ = true;
     USB_HILOGE(MODULE_USB_SERVICE, "OnStart and add system ability success");
 }
@@ -180,7 +183,7 @@ int32_t UsbService::HasRight(std::string deviceName)
     std::string bundleName;
     if (GetBundleName(bundleName)) {
         USB_HILOGI(MODULE_USB_SERVICE, "HasRight bundleName = %{public}s", bundleName.c_str());
-        return usbRightManager->HasRight(deviceName, bundleName);
+        return usbRightManager_->HasRight(deviceName, bundleName);
     }
     USB_HILOGE(MODULE_USB_SERVICE, "HasRight GetBundleName false");
     return UEC_SERVICE_INNER_ERR;
@@ -192,7 +195,7 @@ int32_t UsbService::RequestRight(std::string deviceName)
     std::string bundleName;
     if (GetBundleName(bundleName)) {
         USB_HILOGI(MODULE_USB_SERVICE, "RequestRight bundleName = %{public}s", bundleName.c_str());
-        return usbRightManager->RequestRight(deviceName, bundleName);
+        return usbRightManager_->RequestRight(deviceName, bundleName);
     }
     USB_HILOGI(MODULE_USB_SERVICE, "RequestRight GetBundleName false");
     return UEC_SERVICE_INNER_ERR;
@@ -200,7 +203,7 @@ int32_t UsbService::RequestRight(std::string deviceName)
 
 int32_t UsbService::RemoveRight(std::string deviceName)
 {
-    if (usbRightManager->RemoveDeviceRight(deviceName)) {
+    if (usbRightManager_->RemoveDeviceRight(deviceName)) {
         return UEC_OK;
     }
     return UEC_SERVICE_INNER_ERR;
@@ -209,7 +212,7 @@ int32_t UsbService::RemoveRight(std::string deviceName)
 int32_t UsbService::GetDevices(std::vector<UsbDevice> &deviceList)
 {
     std::map<std::string, UsbDevice *> devices;
-    usbHostManger_->getDevices(devices);
+    usbHostManger_->GetDevices(devices);
     USB_HILOGI(MODULE_USB_SERVICE, "%{public}s list size %{public}d", __func__, devices.size());
     for (auto it = devices.begin(); it != devices.end(); ++it) {
         deviceList.push_back(*it->second);
@@ -243,13 +246,13 @@ std::string UsbService::UsbFunctionsToString(int32_t funcs)
 int32_t UsbService::GetPorts(std::vector<UsbPort> &ports)
 {
     USB_HILOGI(MODULE_USB_SERVICE, "calling usbPortManager getPorts");
-    return usbPortManager->GetPorts(ports);
+    return usbPortManager_->GetPorts(ports);
 }
 
 int32_t UsbService::GetSupportedModes(int32_t portId, int32_t &supportedModes)
 {
     USB_HILOGI(MODULE_USB_SERVICE, "calling usbPortManager getSupportedModes");
-    return usbPortManager->GetSupportedModes(portId, supportedModes);
+    return usbPortManager_->GetSupportedModes(portId, supportedModes);
 }
 
 int32_t UsbService::SetPortRole(int32_t portId, int32_t powerRole, int32_t dataRole)
@@ -587,7 +590,7 @@ bool UsbService::DelDevice(uint8_t busNum, uint8_t devAddr)
 
 void UsbService::UpdateUsbPort(int32_t portId, int32_t powerRole, int32_t dataRole, int32_t mode)
 {
-    usbPortManager->UpdatePort(portId, powerRole, dataRole, mode);
+    usbPortManager_->UpdatePort(portId, powerRole, dataRole, mode);
 }
 
 bool UsbService::GetBundleName(std::string &bundleName)

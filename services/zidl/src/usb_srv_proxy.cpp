@@ -25,21 +25,6 @@
 
 namespace OHOS {
 namespace USB {
-void PrintBuffer(const char *title, const uint8_t *buffer, uint32_t length)
-{
-    std::ostringstream oss;
-    if (title == nullptr || buffer == nullptr || length == 0) {
-        return;
-    }
-    oss.str("");
-    oss << title << " < binary data [" << length << "bytes] > :";
-    for (uint32_t i = 0; i < length; ++i) {
-        oss << " " << std::hex << (int)buffer[i];
-    }
-    oss << "  ->  " << buffer << std::endl;
-    USB_HILOGD(MODULE_USBD, "%{public}s", oss.str().c_str());
-}
-
 int32_t UsbServerProxy::SetDeviceMessage(MessageParcel &data, uint8_t busNum, uint8_t devAddr)
 {
     WRITE_PARCEL_WITH_RET(data, Uint8, busNum, UEC_SERVICE_WRITE_PARCEL_ERROR);
@@ -633,7 +618,6 @@ int32_t UsbServerProxy::BulkTransferWrite(const UsbDev &dev,
     MessageParcel data;
     MessageParcel reply;
     MessageOption option;
-    PrintBuffer("UsbServerProxy::BulkTransferWrite", (const uint8_t *)vdata.data(), vdata.size());
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
         USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
         return ERR_ENOUGH_DATA;
@@ -693,7 +677,6 @@ int32_t UsbServerProxy::ControlTransfer(const UsbDev &dev, const UsbCtrlTransfer
                        __LINE__, ret);
             return ret;
         }
-        PrintBuffer("UsbServerProxy::ControlTransfer", (const uint8_t *)vdata.data(), vdata.size());
         USB_HILOGW(MODULE_USBD, "%{public}s Get buffer message. length = %{public}d", __func__, vdata.size());
     }
     return UEC_OK;

@@ -178,7 +178,6 @@ public:
 
     std::string ToString() const
     {
-        std::string str;
         std::ostringstream ss;
         ss << "mName=" << mName << ","
            << "mManufacturerName=" << mManufacturerName << ","
@@ -191,8 +190,8 @@ public:
            << "mProductId=" << mProductId << ","
            << "mClass=" << mClass << ","
            << "mSubclass=" << mSubclass << ","
-           << "mProtocol=" << mProtocol << ";    ";
-        str = ss.str();
+           << "mProtocol=" << mProtocol << "";
+        std::string str = "UsbDevice[" + ss.str() + "];    ";
         ss.str("");
         std::string strConfigs;
         for (size_t i = 0; i < configs.size(); ++i) {
@@ -231,7 +230,7 @@ public:
     {
         this->mSerial = Name;
     }
-    std::string GetmSerial()
+    const std::string GetmSerial() const
     {
         return this->mSerial;
     }

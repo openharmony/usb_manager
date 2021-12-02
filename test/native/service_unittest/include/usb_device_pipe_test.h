@@ -24,6 +24,5 @@ public:
     static void TearDownTestCase();
     void SetUp();
     void TearDown();
-    static void PrintBuffer(const char *title, const uint8_t *buffer, uint32_t length);
 };
 #endif
