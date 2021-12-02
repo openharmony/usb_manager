@@ -46,7 +46,7 @@ int32_t UsbSrvClient::Connect()
         USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s:fail to get Registry", __func__);
         return UEC_INTERFACE_GET_SYSTEM_ABILITY_MANAGER_FAILED;
     }
-    sptr<IRemoteObject> remoteObject_ = sm->CheckSystemAbility(USB_MANAGER_USB_SERVICE_ID);
+    sptr<IRemoteObject> remoteObject_ = sm->CheckSystemAbility(USB_SYSTEM_ABILITY_ID);
     if (remoteObject_ == nullptr) {
         USB_HILOGE(MODULE_USB_INNERKIT, "GetSystemAbility failed.");
         return UEC_INTERFACE_GET_USB_SERVICE_FAILED;

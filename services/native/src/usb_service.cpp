@@ -59,7 +59,7 @@ auto pms = DelayedSpSingleton<UsbService>::GetInstance();
 const bool G_REGISTER_RESULT =
     SystemAbility::MakeAndRegisterAbility(DelayedSpSingleton<UsbService>::GetInstance().GetRefPtr());
 
-UsbService::UsbService() : SystemAbility(USB_MANAGER_USB_SERVICE_ID, true)
+UsbService::UsbService() : SystemAbility(USB_SYSTEM_ABILITY_ID, true)
 {
     usbHostManger_ = std::make_shared<UsbHostManager>(nullptr);
     usbRightManager_ = std::make_shared<UsbRightManager>();
