@@ -31,7 +31,7 @@ base/usb/usb_manager
 └── utils                       # 工具和通用层
 ```
 ## 接口<a name="section19472752218"></a>
-### ​[外部接口](https://gitee.com/openharmony/usb_manager/blob/master/interfaces/kits/js/@ohos.usb.d.ts)
+### [外部接口](https://gitee.com/openharmony/usb_manager/blob/master/interfaces/kits/js/@ohos.usb.d.ts)
 
 ### 内部接口
 #### Host 功能接口
@@ -73,12 +73,15 @@ base/usb/usb_manager
 ## 开发示例<a name="section19472752219"></a>
 #### Host功能开发
 Usb设备作为host设备连接device设备进行数据传输。
-1、获取设备列表
+1. 获取设备列表
+```JS
 // 导入usb接口api包
 import usb from '@ohos.usb';
 // 获取设备列表
 var deviceList = usb.getDevices();
-2、获取设备操作权限
+```
+2. 获取设备操作权限
+```JS
 // device name
 var deviceName = deviceList[0].name;
 // 申请操作指定的device的操作权限
@@ -87,12 +90,16 @@ usb.requestRight(deviceName).then(hasRight => {
 }).catch(error => {
 	console.info("usb device request right failed : " + error);
 });
-3、打开USB设备
+```
+3. 打开USB设备
+```JS
 // 打开设备，获取数据传输通道
 var pipe = usb.connectDevice(deviceList[0]);
 // 打开对应接口
 usb.claimInterface(pipe , interface, true); // interface为device中需要操作的interface，选取合适的interface进行对应操作
-4、数据传输
+```
+4. 数据传输
+```JS
 // 读取数据，在device信息中选取对应数据接收的endpoint来做数据传（endpoint.direction == 0x80）；dataUint8Array要发送的数据
 usb.bulkTransfer(pipe, inEndpoint, dataUint8Array, 15000).then(dataLength => {
 if (dataLength >= 0) {
@@ -115,18 +122,22 @@ usb.bulkTransfer(this.pip, this.outEndpoint, dataUint8Array, 15000).then(dataLen
 }).catch(error => {
 	console.info("usb writeData error : " + JSON.stringify(error));
 });
-5、释放接口、关闭设备
+```
+5. 释放接口、关闭设备
+```JS
 usb.releaseInterface(pipe, interface);
 usb.closePipe(pipe);
-
+```
 #### Device功能开发
 Usb设备作为device设备，设置ACM、ECM、HDC等功能。
-1、设置USB function功能
+1. 设置USB function功能
+```JS
 usb.setCurrentFunctions(funType).then(data => {
 	console.info("usb setCurrentFunctions : " + data);
 }).catch(error => {
 	console.info("usb setCurrentFunctions error : " + error);
 });
+```
 
 ## 相关仓<a name="section63151229062"></a>
 
