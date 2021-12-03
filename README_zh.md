@@ -71,6 +71,7 @@ base/usb/usb_manager
 | int32_t GetSupportedModes(int32_t portId, int32_t &supportedModes); | 获取指定的端口支持的模式列表的组合掩码 |
 
 ## 开发示例<a name="section19472752219"></a>
+主要接口调用示例如下，详细业务流程代码可以参考测试用例代码 [js_unittest](test/native/js_unittest)
 #### Host功能开发
 Usb设备作为host设备连接device设备进行数据传输。
 1. 获取设备列表
