@@ -16,7 +16,7 @@ import("//base/usb/usb_manager/usbmgr.gni")
 config("usbsrv_private_config") {
   include_dirs = [
     "//utils/system/safwk/native/include",
-    "${usb_manager_path}/hdi/client/include",
+    "//drivers/peripheral/usb/hal/client/include",
   ]
 }
 
@@ -50,8 +50,8 @@ ohos_shared_library("usbservice") {
   public_configs = [ ":usbsrv_public_config" ]
 
   deps = [
-    "${usb_manager_path}/hdi/client:usbd_client",
     "${usb_manager_path}/interfaces/innerkits:usbsrv_client",
+    "//drivers/peripheral/usb/hal/client:usbd_client",
     "//utils/native/base:utils",
   ]
 
@@ -65,14 +65,14 @@ ohos_shared_library("usbservice") {
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
-    "samgr_L2:samgr_proxy",
+    "samgr_standard:samgr_proxy",
   ]
 
   part_name = "usb_manager_native"
 }
 
-ohos_prebuilt_etc("usb_serveice.init") {
-  source = "usb_serveice.cfg"
+ohos_prebuilt_etc("usb_service.init") {
+  source = "usb_service.cfg"
   relative_install_dir = "init"
   part_name = "usb_manager_native"
 }

@@ -84,7 +84,6 @@ private:
         DISALLOW_COPY_AND_MOVE(UsbSrvDeathRecipient);
     };
 
-    static void PrintBuffer(const char *title, const uint8_t *buffer, uint32_t length);
     int32_t Connect();
     sptr<IUsbSrv> proxy_ = nullptr;
     sptr<IRemoteObject::DeathRecipient> deathRecipient_ = nullptr;

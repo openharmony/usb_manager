@@ -35,20 +35,6 @@ UsbSrvClient::UsbSrvClient()
 }
 UsbSrvClient::~UsbSrvClient() {}
 
-void UsbSrvClient::PrintBuffer(const char *title, const uint8_t *buffer, uint32_t length)
-{
-    std::ostringstream oss;
-    if (title == NULL || buffer == nullptr || length == 0) {
-        return;
-    }
-    oss.str("");
-    oss << title << " << 二进制数据流[" << length << "字节] >> :";
-    for (uint32_t i = 0; i < length; ++i) {
-        oss << " " << std::hex << (int)buffer[i];
-    }
-    oss << "  -->  " << buffer << std::endl;
-    USB_HILOGD(MODULE_USB_INNERKIT, "%{public}s", oss.str().c_str());
-}
 int32_t UsbSrvClient::Connect()
 {
     std::lock_guard<std::mutex> lock(mutex_);
@@ -60,7 +46,7 @@ int32_t UsbSrvClient::Connect()
         USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s:fail to get Registry", __func__);
         return UEC_INTERFACE_GET_SYSTEM_ABILITY_MANAGER_FAILED;
     }
-    sptr<IRemoteObject> remoteObject_ = sm->CheckSystemAbility(USB_MANAGER_USB_SERVICE_ID);
+    sptr<IRemoteObject> remoteObject_ = sm->CheckSystemAbility(USB_SYSTEM_ABILITY_ID);
     if (remoteObject_ == nullptr) {
         USB_HILOGE(MODULE_USB_INNERKIT, "GetSystemAbility failed.");
         return UEC_INTERFACE_GET_USB_SERVICE_FAILED;
@@ -312,9 +298,6 @@ int32_t UsbSrvClient::PipeRequestWait(USBDevicePipe &pipe, int64_t timeout, UsbR
     req.SetPipe(pipe);
     req.SetClientData(cData);
     req.SetReqData(vData);
-
-    PrintBuffer("UsbSrvClient::PipeRequestWait ClientData", (const uint8_t *)cData.data(), cData.size());
-    PrintBuffer("UsbSrvClient::PipeRequestWait Buffer", (const uint8_t *)vData.data(), vData.size());
     return ret;
 }
 

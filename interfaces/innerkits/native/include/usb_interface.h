@@ -111,7 +111,6 @@ public:
     ~UsbInterface() {}
     std::string ToString() const
     {
-        std::string str;
         std::ostringstream ss;
         ss << "id=" << mId << ","
            << "mName=" << mName << ","
@@ -119,8 +118,8 @@ public:
            << "mClass=" << mClass << ","
            << "mSubClass=" << mSubClass << ","
            << "mProtocol=" << mProtocol << ","
-           << "mAlternateSetting=" << mAlternateSetting << ";  ";
-        str = ss.str();
+           << "mAlternateSetting=" << mAlternateSetting << "";
+        std::string str = "UsbInterface[" + ss.str() + "];    ";
         ss.str("");
         for (size_t i = 0; i < mEndpoints.size(); ++i) {
             const USBEndpoint &endpoint = mEndpoints[i];

@@ -16,8 +16,5 @@ import("//build/test.gni")
 
 group("usb_unittest_test") {
   testonly = true
-  deps = [
-    "hdi_unittest:unittest",
-    "service_unittest:unittest",
-  ]
+  deps = [ "service_unittest:unittest" ]
 }

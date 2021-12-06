@@ -109,10 +109,9 @@ private:
     bool ready_ = false;
     int32_t commEventRetryTimes_ = 0;
     std::mutex mutex_;
-    UsbHostManager *usbHostManger_ = nullptr;
-    UsbRightManager *usbRightManager = nullptr;
-    UsbPortManager *usbPortManager = nullptr;
-    UsbFunctionManager *usbFunctionManager = nullptr;
+    std::shared_ptr<UsbHostManager> usbHostManger_;
+    std::shared_ptr<UsbRightManager> usbRightManager_;
+    std::shared_ptr<UsbPortManager> usbPortManager_;
     std::shared_ptr<AppExecFwk::EventRunner> eventRunner_;
     std::shared_ptr<UsbServerEventHandler> handler_;
     sptr<UsbServiceSubscriber> usbdSubscriber_;

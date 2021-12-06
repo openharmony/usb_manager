@@ -26,7 +26,7 @@ UsbHostManager::UsbHostManager(SystemAbility *systemAbility)
 
 UsbHostManager::~UsbHostManager() {}
 
-void UsbHostManager::getDevices(MAP_STR_DEVICE &Devices)
+void UsbHostManager::GetDevices(MAP_STR_DEVICE &Devices)
 {
     Devices = devices_;
 }
