@@ -34,7 +34,11 @@ UsbPortManager::~UsbPortManager()
 void UsbPortManager::Init()
 {
     USB_HILOGI(MODULE_USB_SERVICE, "UsbPortManager::QueryPort start");
-    int ret = QueryPort();
+    int ret = UsbdClient::SetPortRole(DEFAULT_PORT_ID, DEFAULT_POWER_ROLE, DEFAULT_DATA_ROLE);
+    if (ret) {
+        USB_HILOGE(MODULE_USB_SERVICE, "UsbPortManager::SetDefaultPortRole false");
+    }
+    ret = QueryPort();
     if (ret) {
         USB_HILOGE(MODULE_USB_SERVICE, "UsbPortManager::QueryPort false");
     }
