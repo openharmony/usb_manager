@@ -20,6 +20,9 @@
 namespace OHOS {
 namespace USB {
 const int32_t SUPPORTED_MODES = 3;
+const int32_t DEFAULT_PORT_ID = 1;
+const int32_t DEFAULT_POWER_ROLE = 2;
+const int32_t DEFAULT_DATA_ROLE = 2;
 
 UsbPortManager::UsbPortManager()
 {
