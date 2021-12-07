@@ -17,6 +17,13 @@
 #include "usb_errors.h"
 #include "usbd_client.h"
 
+/*
+ * set default port mode
+ */
+#define DEFAULT_PORT_ID 1
+#define DEFAULT_POWER_ROLE 2
+#define DEFAULT_DATA_ROLE 2
+
 namespace OHOS {
 namespace USB {
 const int32_t SUPPORTED_MODES = 3;
