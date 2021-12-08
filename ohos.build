@@ -21,7 +21,9 @@
           }
         }
       ],
-      "test_list": []
+      "test_list": [
+        "//base/usb/usb_manager/test/native:usb_unittest_test"
+      ]
     }
   }
 }

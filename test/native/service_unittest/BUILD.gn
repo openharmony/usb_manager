@@ -120,7 +120,5 @@ group("unittest") {
   testonly = true
   deps = [
     ":test_usbcore",
-    ":test_usbdevicepipe",
-    ":test_usbrequest",
   ]
 }
