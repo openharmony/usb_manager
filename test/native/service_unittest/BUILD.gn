@@ -118,7 +118,5 @@ ohos_unittest("test_usbcore") {
 
 group("unittest") {
   testonly = true
-  deps = [
-    ":test_usbcore",
-  ]
+  deps = [":test_usbcore"]
 }
