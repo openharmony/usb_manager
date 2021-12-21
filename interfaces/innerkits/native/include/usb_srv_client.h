@@ -32,7 +32,7 @@ namespace OHOS {
 namespace USB {
 const std::string MAXVERSION = "001";
 const std::string SUBVERSION = "001";
-const std::string DLPVERSION = "017";
+const std::string DLPVERSION = "018";
 const std::string SEVVERSION = MAXVERSION + "." + SUBVERSION + "." + DLPVERSION;
 
 class UsbSrvClient final : public DelayedRefSingleton<UsbSrvClient> {

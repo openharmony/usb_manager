@@ -20,9 +20,6 @@
 namespace OHOS {
 namespace USB {
 const int32_t SUPPORTED_MODES = 3;
-const int32_t DEFAULT_PORT_ID = 1;
-const int32_t DEFAULT_POWER_ROLE = 2;
-const int32_t DEFAULT_DATA_ROLE = 2;
 
 UsbPortManager::UsbPortManager()
 {
@@ -37,11 +34,7 @@ UsbPortManager::~UsbPortManager()
 void UsbPortManager::Init()
 {
     USB_HILOGI(MODULE_USB_SERVICE, "UsbPortManager::QueryPort start");
-    int ret = UsbdClient::SetPortRole(DEFAULT_PORT_ID, DEFAULT_POWER_ROLE, DEFAULT_DATA_ROLE);
-    if (ret) {
-        USB_HILOGE(MODULE_USB_SERVICE, "UsbPortManager::SetDefaultPortRole false");
-    }
-    ret = QueryPort();
+    int ret = QueryPort();
     if (ret) {
         USB_HILOGE(MODULE_USB_SERVICE, "UsbPortManager::QueryPort false");
     }
