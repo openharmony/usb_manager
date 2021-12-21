@@ -48,6 +48,15 @@ int32_t UsbPortManager::GetPorts(std::vector<UsbPort> &ports)
         }
         USB_HILOGI(MODULE_USB_SERVICE, "UsbPortManager::GetPorts success");
         return UEC_OK;
+    } else {
+        int ret = QueryPort();
+        if (ret == UEC_OK) {
+            for (auto it = portMap.begin(); it != portMap.end(); ++it) {
+                ports.push_back(it->second);
+            }
+            USB_HILOGI(MODULE_USB_SERVICE, "UsbPortManager::QueryPort and GetPorts success");
+            return ret;
+        }
     }
     USB_HILOGE(MODULE_USB_SERVICE, "UsbPortManager::GetPorts false");
     return UEC_SERVICE_INVALID_VALUE;
