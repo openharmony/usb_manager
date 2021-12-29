@@ -28,7 +28,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
     // 切换为host
     var usbPortList = usb.getPorts()
     if (usbPortList.length > 0) {
-      if (usbPortList[0].status.currentMode == 2) {
+      if (usbPortList[0].status.currentMode == 1) {
         usb.setPortRoles(usbPortList[0].id, 1, 1).then(data => {
           console.info('usb case setPortRolesEx return: ' + data);
         }).catch(error => {
@@ -55,7 +55,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 错误参数 devAddress 打开设备
    */
-  it('connect_device_02', 0, function () {
+  it('SUB_USB_connect_device_02', 0, function () {
     console.info('usb connect_device_02 begin');
     if (gDeviceList.length == 0) {
       console.info('usb case get_device_list is null')
@@ -92,7 +92,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 busNum错误参数 打开设备
    */
-  it('connect_device_03', 0, function () {
+  it('SUB_USB_connect_device_03', 0, function () {
     console.info('usb connect_device_03 begin');
     if (gDeviceList.length == 0) {
       console.info('usb case get_device_list is null')
@@ -128,7 +128,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 serial错误参数 打开设备
    */
-  it('connect_device_04', 0, function () {
+  it('SUB_USB_connect_device_04', 0, function () {
     console.info('usb connect_device_04 begin');
     if (gDeviceList.length == 0) {
       console.info('usb case get_device_list is null')
@@ -167,7 +167,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 name错误参数 打开设备
    */
-  it('connect_device_05', 0, function () {
+  it('SUB_USB_connect_device_05', 0, function () {
     console.info('usb connect_device_05 begin');
     if (gDeviceList.length == 0) {
       console.info('usb case get_device_list is null')
@@ -205,7 +205,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 manufacturerName错误参数 打开设备
    */
-  it('connect_device_06', 0, function () {
+  it('SUB_USB_connect_device_06', 0, function () {
     console.info('usb connect_device_06 begin');
     if (gDeviceList.length == 0) {
       console.info('usb case get_device_list is null')
@@ -244,7 +244,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 productName错误参数 打开设备
    */
-  it('connect_device_07', 0, function () {
+  it('SUB_USB_connect_device_07', 0, function () {
     console.info('usb connect_device_07 begin');
     if (gDeviceList.length == 0) {
       console.info('usb case get_device_list is null')
@@ -283,7 +283,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 version错误参数 打开设备
    */
-  it('connect_device_08', 0, function () {
+  it('SUB_USB_connect_device_08', 0, function () {
     console.info('usb connect_device_08 begin');
     if (gDeviceList.length == 0) {
       console.info('usb case get_device_list is null')
@@ -322,7 +322,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 vendorId错误参数 打开设备
    */
-  it('connect_device_09', 0, function () {
+  it('SUB_USB_connect_device_09', 0, function () {
     console.info('usb connect_device_09 begin');
     if (gDeviceList.length == 0) {
       console.info('usb case get_device_list is null')
@@ -361,7 +361,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 productId错误参数 打开设备
    */
-  it('connect_device_10', 0, function () {
+  it('SUB_USB_connect_device_10', 0, function () {
     console.info('usb connect_device_10 begin');
     if (gDeviceList.length == 0) {
       console.info('usb case get_device_list is null')
@@ -400,7 +400,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 clazz错误参数 打开设备
    */
-  it('connect_device_11', 0, function () {
+  it('SUB_USB_connect_device_11', 0, function () {
     console.info('usb connect_device_11 begin');
     if (gDeviceList.length == 0) {
       console.info('usb case get_device_list is null')
@@ -438,7 +438,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 subclass错误参数 打开设备
    */
-  it('connect_device_12', 0, function () {
+  it('SUB_USB_connect_device_12', 0, function () {
     console.info('usb connect_device_12 begin');
     if (gDeviceList.length == 0) {
       console.info('usb case get_device_list is null')
@@ -476,7 +476,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 protocol错误参数 打开设备
    */
-  it('connect_device_13', 0, function () {
+  it('SUB_USB_connect_device_13', 0, function () {
     console.info('usb connect_device_13 begin');
     if (gDeviceList.length == 0) {
       console.info('usb case get_device_list is null')
@@ -514,7 +514,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
    * @tc.name      : hasRight
    * @tc.desc      : 反向测试 给错误设备名字
    */
-  it('has_right_02', 0, function () {
+  it('SUB_USB_has_right_02', 0, function () {
     console.info('usb has_right_02 begin');
     if (gDeviceList.length == 0) {
       console.info('usb case get_device_list is null')
@@ -539,7 +539,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
    * @tc.name      : hasRight
    * @tc.desc      : 反向测试 给设备名字为字母
    */
-  it('has_right_03', 0, function () {
+  it('SUB_USB_has_right_03', 0, function () {
     console.info('usb has_right_03 begin');
     if (gDeviceList.length == 0) {
       console.info('usb case get_device_list is null')
@@ -564,7 +564,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
    * @tc.name      : requestRight
    * @tc.desc      : 反向测试 错误设备名字 请求权限
    */
-  it('request_right_02', 0, function () {
+  it('SUB_USB_request_right_02', 0, function () {
     console.info('usb request_right_02 begin');
     if (gDeviceList.length == 0) {
       console.info('usb case get_device_list is null')
@@ -591,7 +591,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
    * @tc.name      : requestRight
    * @tc.desc      : 反向测试 设备名字为数字 请求权限
    */
-  it('request_right_03', 0, function () {
+  it('SUB_USB_request_right_03', 0, function () {
     console.info('usb request_right_03 begin');
     if (gDeviceList.length == 0) {
       console.info('usb case get_device_list is null')

@@ -47,12 +47,6 @@ const int32_t HALF = 2;
 const int32_t BIT_SHIFT_4 = 4;
 const int32_t BIT_HIGH_4 = 0xF0;
 const int32_t BIT_LOW_4 = 0x0F;
-/*
- * set default port mode = device
- */
-const int32_t DEFAULT_PORT_ID = 1;
-const int32_t DEFAULT_POWER_ROLE = 2;
-const int32_t DEFAULT_DATA_ROLE = 2;
 } // namespace
 
 auto pms = DelayedSpSingleton<UsbService>::GetInstance();
@@ -84,7 +78,6 @@ void UsbService::OnStart()
         USB_HILOGE(MODULE_USB_SERVICE, "OnStart call initUsbd fail");
         return;
     }
-    UsbdClient::SetPortRole(DEFAULT_PORT_ID, DEFAULT_POWER_ROLE, DEFAULT_DATA_ROLE);
     usbPortManager_->Init();
     ready_ = true;
     USB_HILOGE(MODULE_USB_SERVICE, "OnStart and add system ability success");
