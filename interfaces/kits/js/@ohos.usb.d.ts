@@ -563,17 +563,29 @@ declare namespace usb {
          */
         NONE = 0,
         /**
+         * device 数据上行，需要外部供电
+         *
+         * @since 8
+         */
+        UFP,
+        /**
          * host 数据下行，对外提供电源
          *
          * @since 8
          */
         DFP,
         /**
-         * device 数据上行，需要外部供电
+         * DRP既可以做DFP(Host)，也可以做UFP(Device)，当前不支持
          *
          * @since 8
          */
-        UFP
+        DRP,
+        /**
+         * 当前不支持
+         *
+         * @since 8
+         */
+        NUM_MODES
     }
 
     /**
