@@ -68,11 +68,11 @@ ohos_shared_library("usbservice") {
     "samgr_standard:samgr_proxy",
   ]
 
-  part_name = "usb_manager_native"
+  part_name = "usb_manager"
 }
 
 ohos_prebuilt_etc("usb_service.init") {
   source = "usb_service.cfg"
   relative_install_dir = "init"
-  part_name = "usb_manager_native"
+  part_name = "usb_manager"
 }
