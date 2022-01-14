@@ -14,7 +14,7 @@
 import("//base/usb/usb_manager/usbmgr.gni")
 import("//build/test.gni")
 
-module_output_path = "${usb_manager_native_part_name}/usb_unittest_test"
+module_output_path = "${usb_manager_part_name}/usb_unittest_test"
 
 config("module_private_config") {
   visibility = [ ":*" ]

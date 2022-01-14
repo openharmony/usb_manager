@@ -15,5 +15,5 @@ import("//build/ohos/sa_profile/sa_profile.gni")
 
 ohos_sa_profile("usbmgr_sa_profile") {
   sources = [ "4201.xml" ]
-  part_name = "usb_manager_native"
+  part_name = "usb_manager"
 }

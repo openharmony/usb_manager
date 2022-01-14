@@ -54,5 +54,5 @@ ohos_shared_library("usbsrv_client") {
     "samgr_standard:samgr_proxy",
   ]
 
-  part_name = "usb_manager_native"
+  part_name = "usb_manager"
 }
