@@ -14,5 +14,5 @@
 import("//build/ohos.gni")
 
 usb_manager_path = "//base/usb/usb_manager"
-usb_manager_native_part_name = "usb_manager_native"
+usb_manager_part_name = "usb_manager"
 utils_path = "${usb_manager_path}/utils"

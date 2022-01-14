@@ -50,5 +50,5 @@ ohos_shared_library("usb") {
   relative_install_dir = "module"
 
   subsystem_name = "usb"
-  part_name = "usb_manager_native"
+  part_name = "usb_manager"
 }
