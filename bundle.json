@@ -28,7 +28,8 @@
           "ipc_core",
           "system_ability_fwk",
           "samgr_proxy"
-        ]
+        ],
+        "third_party": []
       },
       "build": {
         "sub_component": [
