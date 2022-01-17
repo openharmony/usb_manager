@@ -3,8 +3,13 @@
     "version": "3.1.0",
     "description": "usb manager",
     "publishAs": "code-segment",
+    "segment": {
+      "destPath": "base/usb/usb_manager"
+    },
     "repository": "https://gitee.com/openharmony/usb_manager",
     "license": "Apache License 2.0",
+    "dirs": {},
+    "scripts": {},
     "component": {
       "name": "usb_manager",
       "subsystem": "usb",
