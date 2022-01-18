@@ -25,11 +25,11 @@ describe('UsbCoreJsFunctionsTestEx', function () {
     console.log('*************Usb Unit UsbCoreJsFunctionsTestEx Begin*************');
     var Version = usb.getVersion()
     console.info('begin test getversion :' + Version)
-    // 切换为host
+    // version > 17  host currentMode = 2 device currentMode = 1
     var usbPortList = usb.getPorts()
     if (usbPortList.length > 0) {
       if (usbPortList[0].status.currentMode == 1) {
-        usb.setPortRoles(usbPortList[0].id, 1, 1).then(data => {
+        usb.setPortRoles(usbPortList[0].id, usb.SOURCE, usb.HOST).then(data => {
           console.info('usb case setPortRolesEx return: ' + data);
         }).catch(error => {
           console.info('usb case setPortRolesEx error : ' + error);
@@ -51,7 +51,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
 
 
   /**
-   * @tc.number    : connect_device_02
+   * @tc.number    : SUB_USB_connect_device_02
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 错误参数 devAddress 打开设备
    */
@@ -88,7 +88,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
   })
 
   /**
-   * @tc.number    : connect_device_03
+   * @tc.number    : SUB_USB_connect_device_03
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 busNum错误参数 打开设备
    */
@@ -124,7 +124,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
   })
 
   /**
-   * @tc.number    : connect_device_04
+   * @tc.number    : SUB_USB_connect_device_04
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 serial错误参数 打开设备
    */
@@ -163,7 +163,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
   })
 
   /**
-   * @tc.number    : connect_device_05
+   * @tc.number    : SUB_USB_connect_device_05
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 name错误参数 打开设备
    */
@@ -201,7 +201,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
   })
 
   /**
-   * @tc.number    : connect_device_06
+   * @tc.number    : SUB_USB_connect_device_06
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 manufacturerName错误参数 打开设备
    */
@@ -240,7 +240,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
   })
 
   /**
-   * @tc.number    : connect_device_07
+   * @tc.number    : SUB_USB_connect_device_07
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 productName错误参数 打开设备
    */
@@ -279,7 +279,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
   })
 
   /**
-   * @tc.number    : connect_device_08
+   * @tc.number    : SUB_USB_connect_device_08
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 version错误参数 打开设备
    */
@@ -318,7 +318,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
   })
 
   /**
-   * @tc.number    : connect_device_09
+   * @tc.number    : SUB_USB_connect_device_09
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 vendorId错误参数 打开设备
    */
@@ -357,7 +357,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
   })
 
   /**
-   * @tc.number    : connect_device_10
+   * @tc.number    : SUB_USB_connect_device_10
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 productId错误参数 打开设备
    */
@@ -396,7 +396,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
   })
 
   /**
-   * @tc.number    : connect_device_11
+   * @tc.number    : SUB_USB_connect_device_11
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 clazz错误参数 打开设备
    */
@@ -434,7 +434,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
   })
 
   /**
-   * @tc.number    : connect_device_12
+   * @tc.number    : SUB_USB_connect_device_12
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 subclass错误参数 打开设备
    */
@@ -472,7 +472,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
   })
 
   /**
-   * @tc.number    : connect_device_13
+   * @tc.number    : SUB_USB_connect_device_13
    * @tc.name      : connectDevice
    * @tc.desc      : 反向测试 protocol错误参数 打开设备
    */
@@ -510,7 +510,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
   })
 
   /**
-   * @tc.number    : has_right_02
+   * @tc.number    : SUB_USB_has_right_02
    * @tc.name      : hasRight
    * @tc.desc      : 反向测试 给错误设备名字
    */
@@ -535,7 +535,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
   })
 
   /**
-   * @tc.number    : has_right_03
+   * @tc.number    : SUB_USB_has_right_03
    * @tc.name      : hasRight
    * @tc.desc      : 反向测试 给设备名字为字母
    */
@@ -560,7 +560,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
   })
 
   /**
-   * @tc.number    : request_right_02
+   * @tc.number    : SUB_USB_request_right_02
    * @tc.name      : requestRight
    * @tc.desc      : 反向测试 错误设备名字 请求权限
    */
@@ -587,7 +587,7 @@ describe('UsbCoreJsFunctionsTestEx', function () {
   })
 
   /**
-   * @tc.number    : request_right_03
+   * @tc.number    : SUB_USB_request_right_03
    * @tc.name      : requestRight
    * @tc.desc      : 反向测试 设备名字为数字 请求权限
    */

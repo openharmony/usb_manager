@@ -20,7 +20,7 @@ const twelve = 12;
  */
 export default class DateAndTimeUtil {
   constructor() {
-  };
+  }
 
   /**
    *
@@ -31,7 +31,7 @@ export default class DateAndTimeUtil {
     const hours = datetime.getHours();
     const minutes = datetime.getMinutes();
     return this.concatTime(hours, minutes);
-  };
+  }
 
   /**
    *
@@ -46,7 +46,7 @@ export default class DateAndTimeUtil {
     var now = this.concatTimeWithSeconds(hours, minutes, seconds);
     console.info('now concat: ' + now);
     return now;
-  };
+  }
 
   /**
    * format
@@ -55,7 +55,7 @@ export default class DateAndTimeUtil {
    */
   fill(value) {
     return (value > 9 ? '' : '0') + value;
-  };
+  }
 
   /**
    * concat date
@@ -64,15 +64,15 @@ export default class DateAndTimeUtil {
    */
   concatDate(year, month, date) {
     return year + this.year + month + this.month + date + this.day;
-  };
+  }
 
   concatTime(hours, minutes) {
     return `${this.fill(hours)}:${this.fill(minutes)}`;
-  };
+  }
 
   concatTimeWithSeconds(hours, minutes, milliseconds) {
     return `${this.fill(hours)}:${this.fill(minutes)}:${this.fill(milliseconds)}`;
-  };
+  }
 
   /**
    * Turn to 24-hour clock
@@ -97,7 +97,7 @@ export default class DateAndTimeUtil {
         return time;
       }
     }
-  };
+  }
 
   /**
    * Turn to 12-hour clock
@@ -116,5 +116,5 @@ export default class DateAndTimeUtil {
       const reduceHours = parseInt(hours) - twelve;
       return this.afternoon.concat(`${reduceHours}:${minutes}`);
     }
-  };
+  }
 }

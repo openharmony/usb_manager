@@ -54,7 +54,7 @@ int32_t UsbServiceSubscriber::PortChangedEvent(int32_t portId, int32_t powerRole
 
 int32_t Invoking(const UsbInfo &info, Want &want)
 {
-    int ret = 0;
+    int32_t ret = 0;
     switch (info.getDevInfoStatus()) {
         case ACT_DEVUP:
             want.SetAction(CommonEventSupport::COMMON_EVENT_USB_DEVICE_ATTACHED);
@@ -79,7 +79,7 @@ int32_t UsbServiceSubscriber::DeviceEvent(const UsbInfo &info)
 {
     struct timeval start;
     gettimeofday(&start, NULL);
-    int status = info.getDevInfoStatus();
+    int32_t status = info.getDevInfoStatus();
     int32_t ret = UEC_OK;
     Want want;
     USB_HILOGW(MODULE_USBD, "%{public}s:%{public}d status:%{public}d bus:%{public}d dev:%{public}d", __func__, __LINE__,
@@ -106,8 +106,8 @@ int32_t UsbServiceSubscriber::DeviceEvent(const UsbInfo &info)
     if ((ACT_UPDEVICE == status) || (ACT_DOWNDEVICE == status)) {
         return ret;
     }
-    int busNum = info.getDevInfoBusNum();
-    int devAddr = info.getDevInfoDevNum();
+    int32_t busNum = info.getDevInfoBusNum();
+    int32_t devAddr = info.getDevInfoDevNum();
     USB_HILOGW(MODULE_USBD, "%{public}s:%{public}d status:%{public}d bus:%{public}d dev:%{public}d", __func__, __LINE__,
                status, busNum, devAddr);
     auto pms = DelayedSpSingleton<UsbService>::GetInstance();
