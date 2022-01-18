@@ -503,7 +503,7 @@ declare namespace usb {
      *
      * @since 8
      */
-    enum PowerRoleType {
+    export enum PowerRoleType {
         /**
          * 无
          *
@@ -515,13 +515,13 @@ declare namespace usb {
          *
          * @since 8
          */
-        SOURCE,
+        SOURCE = 1,
         /**
          * 内部供电
          *
          * @since 8
          */
-        SINK
+        SINK = 2
     }
 
     /**
@@ -529,7 +529,7 @@ declare namespace usb {
      *
      * @since 8
      */
-    enum DataRoleType {
+    export enum DataRoleType {
         /**
          * 无
          *
@@ -541,13 +541,13 @@ declare namespace usb {
          *
          * @since 8
          */
-        HOST,
+        HOST = 1,
         /**
          * device模式，从设备模式
          *
          * @since 8
          */
-        DEVICE
+        DEVICE = 2
     }
 
     /**
@@ -555,7 +555,7 @@ declare namespace usb {
      *
      * @since 8
      */
-    enum PortModeType {
+    export enum PortModeType {
         /**
          * 无
          *
@@ -567,25 +567,25 @@ declare namespace usb {
          *
          * @since 8
          */
-        UFP,
+        UFP = 1,
         /**
          * host 数据下行，对外提供电源
          *
          * @since 8
          */
-        DFP,
+        DFP = 2,
         /**
          * DRP既可以做DFP(Host)，也可以做UFP(Device)，当前不支持
          *
          * @since 8
          */
-        DRP,
+        DRP = 3,
         /**
          * 当前不支持
          *
          * @since 8
          */
-        NUM_MODES
+        NUM_MODES = 4
     }
 
     /**
@@ -692,7 +692,7 @@ declare namespace usb {
      *
      * @since 8
      */
-    enum USBRequestTargetType {
+    export enum USBRequestTargetType {
         /**
          * 设备
          *
@@ -704,26 +704,26 @@ declare namespace usb {
          *
          * @since 8
          */
-        USB_REQUEST_TARGET_INTERFACE,
+        USB_REQUEST_TARGET_INTERFACE = 1,
         /**
          * 端点
          *
          * @since 8
          */
-        USB_REQUEST_TARGET_ENDPOINT,
+        USB_REQUEST_TARGET_ENDPOINT = 2,
         /**
          * 其他
          *
          * @since 8
          */
-        USB_REQUEST_TARGET_OTHER
+        USB_REQUEST_TARGET_OTHER = 3
     }
 
     /**
      * 控制请求类型
      * @since 8
      */
-    enum USBControlRequestType {
+    export enum USBControlRequestType {
         /**
          * 标准
          *
@@ -735,20 +735,20 @@ declare namespace usb {
          *
          * @since 8
          */
-        USB_REQUEST_TYPE_CLASS,
+        USB_REQUEST_TYPE_CLASS = 1,
         /**
          * 厂商
          *
          * @since 8
          */
-        USB_REQUEST_TYPE_VENDOR
+        USB_REQUEST_TYPE_VENDOR = 2
     }
 
     /**
      * 请求方向
      * @since 8
      */
-    enum USBRequestDirection {
+    export enum USBRequestDirection {
         /**
          * 写数据，主设备往从设备
          *
@@ -768,7 +768,7 @@ declare namespace usb {
      *
      * @since 8
      */
-    enum FunctionType {
+    export enum FunctionType {
         /**
          * 无
          *

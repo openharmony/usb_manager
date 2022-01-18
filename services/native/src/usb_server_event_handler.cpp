@@ -19,10 +19,10 @@
 namespace OHOS {
 namespace USB {
 UsbServerEventHandler::UsbServerEventHandler(const std::shared_ptr<AppExecFwk::EventRunner> &runner,
-                                             const wptr<UsbService> &service)
+    const wptr<UsbService> &service)
     : AppExecFwk::EventHandler(runner), service_(service)
 {
-    USB_HILOGE(MODULE_USB_SERVICE, "UsbServerEventHandler::UsbServerEventHandler instance created.");
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbServerEventHandler::UsbServerEventHandler instance created.");
 }
 
 void UsbServerEventHandler::ProcessEvent([[maybe_unused]] const AppExecFwk::InnerEvent::Pointer &event) {}

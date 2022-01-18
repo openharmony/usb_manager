@@ -36,7 +36,7 @@ describe('UsbPortJsFunctionsTest', function () {
   })
 
   /**
-   * @tc.number    : get_ports_test_01
+   * @tc.number    : SUB_USB_get_ports_test_01
    * @tc.name      : getPorts
    * @tc.desc      : 获取USB端口描述信息列表
    */
@@ -54,7 +54,7 @@ describe('UsbPortJsFunctionsTest', function () {
   })
 
   /**
-   * @tc.number    : get_supported_modes_test_01
+   * @tc.number    : SUB_USB_get_supported_modes_test_01
    * @tc.name      : getSupportedModes
    * @tc.desc      : 获取指定的端口支持的模式列表的组合掩码
    */
@@ -78,7 +78,7 @@ describe('UsbPortJsFunctionsTest', function () {
   })
 
   /**
-   * @tc.number    : set_port_roles_test_01
+   * @tc.number    : SUB_USB_set_port_roles_test_01
    * @tc.name      : setPortRoles
    * @tc.desc      : 切换为Device set powerRole 2 DataRole 2
    */
@@ -93,7 +93,7 @@ describe('UsbPortJsFunctionsTest', function () {
 
     for (var i = 0; i < usbPortList.length; i++) {
       console.info('usb case set data role 2, data role 2');
-      usb.setPortRoles(usbPortList[i].id, 2, 2).then(data => {
+      usb.setPortRoles(usbPortList[i].id, usb.SINK, usb.DEVICE).then(data => {
         console.info('usb case setPortRoles return: ' + data);
         expect(data).assertTrue();
       }).catch(error => {
@@ -107,7 +107,7 @@ describe('UsbPortJsFunctionsTest', function () {
   })
 
   /**
-   * @tc.number    : set_port_roles_test_02
+   * @tc.number    : SUB_USB_set_port_roles_test_02
    * @tc.name      : setPortRoles
    * @tc.desc      : 切换为host set powerRole 1 DataRole 1
    */
@@ -123,7 +123,7 @@ describe('UsbPortJsFunctionsTest', function () {
     for (var i = 0; i < usbPortList.length; i++) {
       console.info('usb case set data role 1, data role 1');
       CheckEmptyUtils.sleep(5000)
-      usb.setPortRoles(usbPortList[i].id, 1, 1).then(data => {
+      usb.setPortRoles(usbPortList[i].id, usb.SOURCE, usb.HOST).then(data => {
         expect(data).assertTrue();
         console.info('usb case setPortRoles return: ' + data);
       }).catch(error => {

@@ -44,37 +44,39 @@ public:
     virtual int32_t GetSupportedModes(int32_t portId, int32_t &supportedModes) override;
     virtual int32_t SetPortRole(int32_t portId, int32_t powerRole, int32_t dataRole) override;
 
-    virtual int32_t ClaimInterface(uint8_t busNum, uint8_t devAddr, uint8_t interfaceid) override;
+    virtual int32_t ClaimInterface(uint8_t busNum, uint8_t devAddr, uint8_t interfaceid, uint8_t force) override;
     virtual int32_t ReleaseInterface(uint8_t busNum, uint8_t devAddr, uint8_t interfaceid) override;
-    virtual int32_t
-        BulkTransferRead(const UsbDev &dev, const UsbPipe &pipe, std::vector<uint8_t> &vdata, int32_t timeout) override;
-    virtual int32_t BulkTransferWrite(const UsbDev &dev,
-                                      const UsbPipe &pipe,
-                                      const std::vector<uint8_t> &vdata,
-                                      int32_t timeout) override;
-    virtual int32_t
-        ControlTransfer(const UsbDev &dev, const UsbCtrlTransfer &ctrl, std::vector<uint8_t> &vdata) override;
+    virtual int32_t BulkTransferRead(const UsbDev &dev, const UsbPipe &pipe, std::vector<uint8_t> &bufferData,
+        int32_t timeOut) override;
+    virtual int32_t BulkTransferWrite(const UsbDev &dev, const UsbPipe &pipe, const std::vector<uint8_t> &bufferData,
+        int32_t timeOut) override;
+
+    virtual int32_t ControlTransfer(const UsbDev &dev, const UsbCtrlTransfer &ctrl,
+        std::vector<uint8_t> &bufferData) override;
     virtual int32_t SetActiveConfig(uint8_t busNum, uint8_t devAddr, uint8_t configIndex) override;
     virtual int32_t GetActiveConfig(uint8_t busNum, uint8_t devAddr, uint8_t &configIndex) override;
     virtual int32_t SetInterface(uint8_t busNum, uint8_t devAddr, uint8_t interfaceid, uint8_t altIndex) override;
-    virtual int32_t GetRawDescriptor(uint8_t busNum, uint8_t devAddr, std::vector<uint8_t> &vdata) override;
-    virtual int32_t RequestQueue(const UsbDev &dev,
-                                 const UsbPipe &pipe,
-                                 const std::vector<uint8_t> &cData,
-                                 const std::vector<uint8_t> &vData) override;
-    virtual int32_t RequestWait(const UsbDev &dev,
-                                int32_t timeout,
-                                std::vector<uint8_t> &cData,
-                                std::vector<uint8_t> &vData) override;
+    virtual int32_t GetRawDescriptor(uint8_t busNum, uint8_t devAddr, std::vector<uint8_t> &bufferData) override;
+    virtual int32_t GetFileDescriptor(uint8_t busNum, uint8_t devAddr, int32_t &fd) override;
+    virtual int32_t RequestQueue(const UsbDev &dev, const UsbPipe &pipe, const std::vector<uint8_t> &clientData,
+        const std::vector<uint8_t> &bufferData) override;
+    virtual int32_t RequestWait(const UsbDev &dev, int32_t timeOut, std::vector<uint8_t> &clientData,
+        std::vector<uint8_t> &bufferData) override;
     virtual int32_t RequestCancel(uint8_t busNum, uint8_t devAddr, uint8_t interfaceid, uint8_t endpointId) override;
     virtual int32_t Close(uint8_t busNum, uint8_t devAddr) override;
+
+    virtual int32_t RegBulkCallback(const UsbDev &dev, const UsbPipe &pipe, const sptr<IRemoteObject> &cb) override;
+    virtual int32_t UnRegBulkCallback(const UsbDev &dev, const UsbPipe &pipe) override;
+    virtual int32_t BulkRead(const UsbDev &dev, const UsbPipe &pipe, sptr<Ashmem> &ashmem) override;
+    virtual int32_t BulkWrite(const UsbDev &dev, const UsbPipe &pipe, sptr<Ashmem> &ashmem) override;
+    virtual int32_t BulkCancel(const UsbDev &dev, const UsbPipe &pipe) override;
 
 private:
     static inline BrokerDelegator<UsbServerProxy> delegator_;
     int32_t ParseUsbPort(MessageParcel &reply, std::vector<UsbPort> &result);
     int32_t SetDeviceMessage(MessageParcel &data, uint8_t busNum, uint8_t devAddr);
-    int32_t SetBufferMessage(MessageParcel &data, const std::vector<uint8_t> &vData);
-    int32_t GetBufferMessage(MessageParcel &data, std::vector<uint8_t> &vData);
+    int32_t SetBufferMessage(MessageParcel &data, const std::vector<uint8_t> &bufferData);
+    int32_t GetBufferMessage(MessageParcel &data, std::vector<uint8_t> &bufferData);
     int32_t GetDeviceListMessageParcel(MessageParcel &data, std::vector<UsbDevice> &deviceList);
     int32_t GetDeviceMessageParcel(MessageParcel &data, UsbDevice &devInfo);
     int32_t GetDeviceConfigsMessageParcel(MessageParcel &data, std::vector<USBConfig> &configs);
