@@ -28,7 +28,7 @@
 namespace OHOS {
 namespace USB {
 #define USB_MAX_REQUEST_DATA_SIZE 1024
-
+const uint8_t CLAIM_FORCE_1 = 1;
 UsbSrvClient::UsbSrvClient()
 {
     Connect();
@@ -83,7 +83,7 @@ int32_t UsbSrvClient::OpenDevice(const UsbDevice &device, USBDevicePipe &pipe)
     RETURN_IF_WITH_RET(Connect() != UEC_OK, UEC_INTERFACE_NO_INIT);
     int32_t ret = proxy_->OpenDevice(device.GetBusNum(), device.GetDevAddr());
     if (ret != UEC_OK) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s : failed width ret = %{public}d !", __func__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s : failed width ret = %{public}d !", __func__, ret);
         return ret;
     }
 
@@ -98,7 +98,7 @@ int32_t UsbSrvClient::HasRight(std::string deviceName)
     RETURN_IF_WITH_RET(Connect() != UEC_OK, UEC_INTERFACE_NO_INIT);
     int32_t ret = proxy_->HasRight(deviceName);
     if (ret != UEC_OK) {
-        USB_HILOGI(MODULE_USB_INNERKIT, " Calling HasRight False!");
+        USB_HILOGE(MODULE_USB_INNERKIT, " Calling HasRight False!");
     }
     return ret;
 }
@@ -108,7 +108,7 @@ int32_t UsbSrvClient::RequestRight(std::string deviceName)
     RETURN_IF_WITH_RET(Connect() != UEC_OK, UEC_INTERFACE_NO_INIT);
     int32_t ret = proxy_->RequestRight(deviceName);
     if (ret != UEC_OK) {
-        USB_HILOGI(MODULE_USB_INNERKIT, " Calling RequestRight False!");
+        USB_HILOGE(MODULE_USB_INNERKIT, " Calling RequestRight False!");
     }
     return ret;
 }
@@ -118,7 +118,7 @@ int32_t UsbSrvClient::RemoveRight(std::string deviceName)
     RETURN_IF_WITH_RET(Connect() != UEC_OK, UEC_INTERFACE_NO_INIT);
     int32_t ret = proxy_->RemoveRight(deviceName);
     if (ret != UEC_OK) {
-        USB_HILOGI(MODULE_USB_INNERKIT, " Calling RequestRight False!");
+        USB_HILOGE(MODULE_USB_INNERKIT, " Calling RequestRight False!");
     }
     return ret;
 }
@@ -128,7 +128,7 @@ int32_t UsbSrvClient::GetDevices(std::vector<UsbDevice> &deviceList)
     RETURN_IF_WITH_RET(Connect() != UEC_OK, UEC_INTERFACE_NO_INIT);
     int32_t ret = proxy_->GetDevices(deviceList);
     if (ret != UEC_OK) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s failed ret = %{public}d!", __func__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s failed ret = %{public}d!", __func__, ret);
     }
     USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s list size = %{public}d!", __func__, deviceList.size());
     return ret;
@@ -139,7 +139,7 @@ int32_t UsbSrvClient::GetCurrentFunctions(int32_t &funcs)
     RETURN_IF_WITH_RET(Connect() != UEC_OK, UEC_INTERFACE_NO_INIT);
     int32_t ret = proxy_->GetCurrentFunctions(funcs);
     if (ret != UEC_OK) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s failed ret = %{public}d!", __func__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s failed ret = %{public}d!", __func__, ret);
     }
     USB_HILOGI(MODULE_USB_INNERKIT, " Calling GetCurrentFunctions Success!");
     return ret;
@@ -149,7 +149,7 @@ int32_t UsbSrvClient::SetCurrentFunctions(int32_t funcs)
     RETURN_IF_WITH_RET(Connect() != UEC_OK, false);
     int32_t ret = proxy_->SetCurrentFunctions(funcs);
     if (ret != UEC_OK) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s failed ret = %{public}d!", __func__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s failed ret = %{public}d!", __func__, ret);
         return ret;
     }
     USB_HILOGI(MODULE_USB_INNERKIT, " Calling SetCurrentFunctions Success!");
@@ -179,7 +179,7 @@ int32_t UsbSrvClient::GetPorts(std::vector<UsbPort> &usbports)
     USB_HILOGI(MODULE_USB_INNERKIT, " Calling GetPorts");
     int32_t ret = proxy_->GetPorts(usbports);
     if (ret != UEC_OK) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s failed ret = %{public}d!", __func__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s failed ret = %{public}d!", __func__, ret);
     }
     return ret;
 }
@@ -190,7 +190,7 @@ int32_t UsbSrvClient::GetSupportedModes(int32_t portId, int32_t &result)
     USB_HILOGI(MODULE_USB_INNERKIT, " Calling GetSupportedModes");
     int32_t ret = proxy_->GetSupportedModes(portId, result);
     if (ret != UEC_OK) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s failed ret = %{public}d!", __func__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s failed ret = %{public}d!", __func__, ret);
     }
     return ret;
 }
@@ -201,7 +201,7 @@ int32_t UsbSrvClient::SetPortRole(int32_t portId, int32_t powerRole, int32_t dat
     USB_HILOGI(MODULE_USB_INNERKIT, " Calling SetPortRole");
     int32_t ret = proxy_->SetPortRole(portId, powerRole, dataRole);
     if (ret != UEC_OK) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s failed ret = %{public}d!", __func__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s failed ret = %{public}d!", __func__, ret);
     }
     return ret;
 }
@@ -209,9 +209,9 @@ int32_t UsbSrvClient::SetPortRole(int32_t portId, int32_t powerRole, int32_t dat
 int32_t UsbSrvClient::ClaimInterface(USBDevicePipe &pipe, const UsbInterface &interface, bool force)
 {
     RETURN_IF_WITH_RET(proxy_ == nullptr, UEC_INTERFACE_NO_INIT);
-    int32_t ret = proxy_->ClaimInterface(pipe.GetBusNum(), pipe.GetDevAddr(), interface.GetId());
+    int32_t ret = proxy_->ClaimInterface(pipe.GetBusNum(), pipe.GetDevAddr(), interface.GetId(), force);
     if (ret != UEC_OK) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s : failed width ret = %{public}d !", __func__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s : failed width ret = %{public}d !", __func__, ret);
     }
     return ret;
 }
@@ -220,36 +220,35 @@ int32_t UsbSrvClient::ReleaseInterface(USBDevicePipe &pipe, const UsbInterface &
     RETURN_IF_WITH_RET(proxy_ == nullptr, UEC_INTERFACE_NO_INIT);
     int32_t ret = proxy_->ReleaseInterface(pipe.GetBusNum(), pipe.GetDevAddr(), interface.GetId());
     if (ret != UEC_OK) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s : failed width ret = %{public}d !", __func__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s : failed width ret = %{public}d !", __func__, ret);
     }
     return ret;
 }
-int32_t UsbSrvClient::BulkTransfer(USBDevicePipe &pipe,
-                                   const USBEndpoint &endpoint,
-                                   std::vector<uint8_t> &vdata,
-                                   int32_t timeout)
+int32_t UsbSrvClient::BulkTransfer(USBDevicePipe &pipe, const USBEndpoint &endpoint, std::vector<uint8_t> &bufferData,
+    int32_t timeOut)
 {
     RETURN_IF_WITH_RET(proxy_ == nullptr, UEC_INTERFACE_NO_INIT);
-    int32_t ret = ERR_INVALID_VALUE;
+    int32_t ret = UEC_INTERFACE_INVALID_VALUE;
     const UsbDev tdev = {pipe.GetBusNum(), pipe.GetDevAddr()};
     const UsbPipe tpipe = {endpoint.GetInterfaceId(), endpoint.GetAddress()};
     if (USB_ENDPOINT_DIR_IN == endpoint.GetDirection()) {
-        ret = proxy_->BulkTransferRead(tdev, tpipe, vdata, timeout);
+        ret = proxy_->BulkTransferRead(tdev, tpipe, bufferData, timeOut);
     } else if (USB_ENDPOINT_DIR_OUT == endpoint.GetDirection()) {
-        ret = proxy_->BulkTransferWrite(tdev, tpipe, vdata, timeout);
+        ret = proxy_->BulkTransferWrite(tdev, tpipe, bufferData, timeOut);
     }
     if (ret != UEC_OK) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s : failed width ret = %{public}d !", __func__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s : failed width ret = %{public}d !", __func__, ret);
     }
     return ret;
 }
-int32_t UsbSrvClient::ControlTransfer(USBDevicePipe &pipe, const UsbCtrlTransfer &ctrl, std::vector<uint8_t> &vdata)
+int32_t UsbSrvClient::ControlTransfer(USBDevicePipe &pipe, const UsbCtrlTransfer &ctrl,
+    std::vector<uint8_t> &bufferData)
 {
     RETURN_IF_WITH_RET(proxy_ == nullptr, UEC_INTERFACE_NO_INIT);
     const UsbDev dev = {pipe.GetBusNum(), pipe.GetDevAddr()};
-    int32_t ret = proxy_->ControlTransfer(dev, ctrl, vdata);
+    int32_t ret = proxy_->ControlTransfer(dev, ctrl, bufferData);
     if (ret != UEC_OK) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s : failed width ret = %{public}d !", __func__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s : failed width ret = %{public}d !", __func__, ret);
     }
 
     return ret;
@@ -266,13 +265,23 @@ int32_t UsbSrvClient::SetInterface(USBDevicePipe &pipe, const UsbInterface &inte
     return proxy_->SetInterface(pipe.GetBusNum(), pipe.GetDevAddr(), interface.GetId(),
                                 interface.GetAlternateSetting());
 }
-int32_t UsbSrvClient::GetRawDescriptors(std::vector<uint8_t> &vdata)
+int32_t UsbSrvClient::GetRawDescriptors(USBDevicePipe &pipe, std::vector<uint8_t> &bufferData)
 {
-    return UEC_OK;
+    RETURN_IF_WITH_RET(Connect() != UEC_OK, UEC_INTERFACE_NO_INIT);
+    int32_t ret = proxy_->GetRawDescriptor(pipe.GetBusNum(), pipe.GetDevAddr(), bufferData);
+    if (ret != UEC_OK) {
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s failed ret = %{public}d!", __func__, ret);
+    }
+    return ret;
 }
-int32_t UsbSrvClient::GetFileDescriptor()
+int32_t UsbSrvClient::GetFileDescriptor(USBDevicePipe &pipe, int32_t &fd)
 {
-    return UEC_OK;
+    RETURN_IF_WITH_RET(Connect() != UEC_OK, UEC_INTERFACE_NO_INIT);
+    int32_t ret = proxy_->GetFileDescriptor(pipe.GetBusNum(), pipe.GetDevAddr(), fd);
+    if (ret != UEC_OK) {
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s failed ret = %{public}d!", __func__, ret);
+    }
+    return ret;
 }
 
 bool UsbSrvClient::Close(const USBDevicePipe &pipe)
@@ -282,22 +291,22 @@ bool UsbSrvClient::Close(const USBDevicePipe &pipe)
     return (ret == UEC_OK);
 }
 
-int32_t UsbSrvClient::PipeRequestWait(USBDevicePipe &pipe, int64_t timeout, UsbRequest &req)
+int32_t UsbSrvClient::PipeRequestWait(USBDevicePipe &pipe, int64_t timeOut, UsbRequest &req)
 {
     RETURN_IF_WITH_RET(proxy_ == nullptr, UEC_INTERFACE_NO_INIT);
-    std::vector<uint8_t> cData;
-    std::vector<uint8_t> vData;
+    std::vector<uint8_t> clientData;
+    std::vector<uint8_t> bufferData;
     const UsbDev tdev = {pipe.GetBusNum(), pipe.GetDevAddr()};
-    int32_t ret = proxy_->RequestWait(tdev, timeout, cData, vData);
+    int32_t ret = proxy_->RequestWait(tdev, timeOut, clientData, bufferData);
     if (ret != UEC_OK) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "UsbSrvClient::%{public}s:%{public}d :failed width ret = %{public}d.", __func__,
+        USB_HILOGE(MODULE_USB_INNERKIT, "UsbSrvClient::%{public}s:%{public}d :failed width ret = %{public}d.", __func__,
                    __LINE__, ret);
         return ret;
     }
 
     req.SetPipe(pipe);
-    req.SetClientData(cData);
-    req.SetReqData(vData);
+    req.SetClientData(clientData);
+    req.SetReqData(bufferData);
     return ret;
 }
 
@@ -306,7 +315,7 @@ int32_t UsbSrvClient::RequestInitialize(UsbRequest &request)
     RETURN_IF_WITH_RET(proxy_ == nullptr, UEC_INTERFACE_NO_INIT);
     const USBDevicePipe &pipe = request.GetPipe();
     const USBEndpoint &endpoint = request.GetEndpoint();
-    return proxy_->ClaimInterface(pipe.GetBusNum(), pipe.GetDevAddr(), endpoint.GetInterfaceId());
+    return proxy_->ClaimInterface(pipe.GetBusNum(), pipe.GetDevAddr(), endpoint.GetInterfaceId(), CLAIM_FORCE_1);
 }
 
 int32_t UsbSrvClient::RequestFree(UsbRequest &request)
@@ -314,7 +323,7 @@ int32_t UsbSrvClient::RequestFree(UsbRequest &request)
     RETURN_IF_WITH_RET(proxy_ == nullptr, UEC_INTERFACE_NO_INIT);
     const USBDevicePipe &pipe = request.GetPipe();
     const USBEndpoint &ep = request.GetEndpoint();
-    return proxy_->ReleaseInterface(pipe.GetBusNum(), pipe.GetDevAddr(), ep.GetInterfaceId());
+    return proxy_->RequestCancel(pipe.GetBusNum(), pipe.GetDevAddr(), ep.GetInterfaceId(), ep.GetAddress());
 }
 
 int32_t UsbSrvClient::RequestAbort(UsbRequest &request)
@@ -333,6 +342,61 @@ int32_t UsbSrvClient::RequestQueue(UsbRequest &request)
     const UsbDev tdev = {pipe.GetBusNum(), pipe.GetDevAddr()};
     const UsbPipe tpipe = {ep.GetInterfaceId(), ep.GetAddress()};
     return proxy_->RequestQueue(tdev, tpipe, request.GetClientData(), request.GetReqData());
+}
+int32_t UsbSrvClient::RegBulkCallback(USBDevicePipe &pip, const USBEndpoint &endpoint, const sptr<IRemoteObject> &cb)
+{
+    RETURN_IF_WITH_RET(proxy_ == nullptr, UEC_INTERFACE_NO_INIT);
+    const UsbDev tdev = {pip.GetBusNum(), pip.GetDevAddr()};
+    const UsbPipe tpipe = {endpoint.GetInterfaceId(), endpoint.GetAddress()};
+    int32_t ret = proxy_->RegBulkCallback(tdev, tpipe, cb);
+    if (ret != UEC_OK) {
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s : failed width ret = %{public}d !", __func__, ret);
+    }
+    return ret;
+}
+int32_t UsbSrvClient::UnRegBulkCallback(USBDevicePipe &pip, const USBEndpoint &endpoint)
+{
+    RETURN_IF_WITH_RET(proxy_ == nullptr, UEC_INTERFACE_NO_INIT);
+    const UsbDev tdev = {pip.GetBusNum(), pip.GetDevAddr()};
+    const UsbPipe tpipe = {endpoint.GetInterfaceId(), endpoint.GetAddress()};
+    int32_t ret = proxy_->UnRegBulkCallback(tdev, tpipe);
+    if (ret != UEC_OK) {
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s : failed width ret = %{public}d !", __func__, ret);
+    }
+    return ret;
+}
+int32_t UsbSrvClient::BulkRead(USBDevicePipe &pip, const USBEndpoint &endpoint, sptr<Ashmem> &ashmem)
+{
+    RETURN_IF_WITH_RET(proxy_ == nullptr, UEC_INTERFACE_NO_INIT);
+    const UsbDev tdev = {pip.GetBusNum(), pip.GetDevAddr()};
+    const UsbPipe tpipe = {endpoint.GetInterfaceId(), endpoint.GetAddress()};
+    int32_t ret = proxy_->BulkRead(tdev, tpipe, ashmem);
+    if (ret != UEC_OK) {
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s : failed width ret = %{public}d !", __func__, ret);
+    }
+    return ret;
+}
+int32_t UsbSrvClient::BulkWrite(USBDevicePipe &pip, const USBEndpoint &endpoint, sptr<Ashmem> &ashmem)
+{
+    RETURN_IF_WITH_RET(proxy_ == nullptr, UEC_INTERFACE_NO_INIT);
+    const UsbDev tdev = {pip.GetBusNum(), pip.GetDevAddr()};
+    const UsbPipe tpipe = {endpoint.GetInterfaceId(), endpoint.GetAddress()};
+    int32_t ret = proxy_->BulkWrite(tdev, tpipe, ashmem);
+    if (ret != UEC_OK) {
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s : failed width ret = %{public}d !", __func__, ret);
+    }
+    return ret;
+}
+int32_t UsbSrvClient::BulkCancel(USBDevicePipe &pip, const USBEndpoint &endpoint)
+{
+    RETURN_IF_WITH_RET(proxy_ == nullptr, UEC_INTERFACE_NO_INIT);
+    const UsbDev tdev = {pip.GetBusNum(), pip.GetDevAddr()};
+    const UsbPipe tpipe = {endpoint.GetInterfaceId(), endpoint.GetAddress()};
+    int32_t ret = proxy_->BulkCancel(tdev, tpipe);
+    if (ret != UEC_OK) {
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s : failed width ret = %{public}d !", __func__, ret);
+    }
+    return ret;
 }
 } // namespace USB
 } // namespace OHOS

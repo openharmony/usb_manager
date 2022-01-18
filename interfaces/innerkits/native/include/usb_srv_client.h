@@ -32,7 +32,7 @@ namespace OHOS {
 namespace USB {
 const std::string MAXVERSION = "001";
 const std::string SUBVERSION = "001";
-const std::string DLPVERSION = "018";
+const std::string DLPVERSION = "025";
 const std::string SEVVERSION = MAXVERSION + "." + SUBVERSION + "." + DLPVERSION;
 
 class UsbSrvClient final : public DelayedRefSingleton<UsbSrvClient> {
@@ -54,14 +54,15 @@ public:
     std::string UsbFunctionsToString(int32_t funcs);
     int32_t ClaimInterface(USBDevicePipe &pip, const UsbInterface &interface, bool force);
     int32_t ReleaseInterface(USBDevicePipe &pip, const UsbInterface &interface);
-    int32_t BulkTransfer(USBDevicePipe &pip, const USBEndpoint &endpoint, std::vector<uint8_t> &vdata, int32_t timeout);
-    int32_t ControlTransfer(USBDevicePipe &pip, const UsbCtrlTransfer &ctrl, std::vector<uint8_t> &vdata);
+    int32_t BulkTransfer(USBDevicePipe &pip, const USBEndpoint &endpoint, std::vector<uint8_t> &bufferData,
+        int32_t timeOut);
+    int32_t ControlTransfer(USBDevicePipe &pip, const UsbCtrlTransfer &ctrl, std::vector<uint8_t> &bufferData);
     int32_t SetConfiguration(USBDevicePipe &pip, const USBConfig &config);
     int32_t SetInterface(USBDevicePipe &pipe, const UsbInterface &interface);
-    int32_t GetRawDescriptors(std::vector<uint8_t> &vdata);
-    int32_t GetFileDescriptor();
+    int32_t GetRawDescriptors(USBDevicePipe &pipe, std::vector<uint8_t> &bufferData);
+    int32_t GetFileDescriptor(USBDevicePipe &pipe, int32_t &fd);
     bool Close(const USBDevicePipe &pip);
-    int32_t PipeRequestWait(USBDevicePipe &pip, int64_t timeout, UsbRequest &req);
+    int32_t PipeRequestWait(USBDevicePipe &pip, int64_t timeOut, UsbRequest &req);
 
     int32_t RequestInitialize(UsbRequest &request);
     int32_t RequestFree(UsbRequest &request);
@@ -72,6 +73,11 @@ public:
     {
         return SEVVERSION;
     }
+    int32_t RegBulkCallback(USBDevicePipe &pip, const USBEndpoint &endpoint, const sptr<IRemoteObject> &cb);
+    int32_t UnRegBulkCallback(USBDevicePipe &pip, const USBEndpoint &endpoint);
+    int32_t BulkRead(USBDevicePipe &pip, const USBEndpoint &endpoint, sptr<Ashmem> &ashmem);
+    int32_t BulkWrite(USBDevicePipe &pip, const USBEndpoint &endpoint, sptr<Ashmem> &ashmem);
+    int32_t BulkCancel(USBDevicePipe &pip, const USBEndpoint &endpoint);
 
 private:
     class UsbSrvDeathRecipient : public IRemoteObject::DeathRecipient {
