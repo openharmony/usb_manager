@@ -58,7 +58,7 @@ int32_t UsbFunctionManager::FromStringFunctions(std::string strFun)
     std::vector<std::string> vModeStr;
     size_t pos = 0;
     while (pos < len) {
-        int find_pos = strFun.find(",", pos);
+        int32_t find_pos = strFun.find(",", pos);
         if (find_pos < 0) {
             vModeStr.push_back(strFun.substr(pos, len - pos));
             break;
@@ -73,7 +73,7 @@ int32_t UsbFunctionManager::FromStringFunctions(std::string strFun)
         if (it != FUNCTION_MAPPING_N2C.end()) {
             ret |= it->second;
         } else {
-            USB_HILOGI(MODULE_USB_SERVICE, "UsbFunctionManager::FromStringFunctions Invalid argument of usb function");
+            USB_HILOGE(MODULE_USB_SERVICE, "UsbFunctionManager::FromStringFunctions Invalid argument of usb function");
             return UEC_SERVICE_INVALID_VALUE;
         }
     }

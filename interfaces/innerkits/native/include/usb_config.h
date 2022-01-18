@@ -28,11 +28,8 @@ namespace OHOS {
 namespace USB {
 class USBConfig {
 public:
-    USBConfig(uint32_t id,
-              uint32_t attributes,
-              std::string name,
-              uint32_t maxPower,
-              std::vector<UsbInterface> interfaces)
+    USBConfig(uint32_t id, uint32_t attributes, std::string name, uint32_t maxPower,
+        std::vector<UsbInterface> interfaces)
     {
         this->id = id;
         this->attributes = attributes;

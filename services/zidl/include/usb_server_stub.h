@@ -31,7 +31,7 @@ public:
     UsbServerStub() = default;
     virtual ~UsbServerStub() = default;
 
-    int OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option) override;
+    int32_t OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option) override;
 
 private:
     bool StubHost(uint32_t code, int32_t &result, MessageParcel &data, MessageParcel &reply, MessageOption &option);
@@ -58,6 +58,7 @@ private:
     int32_t DoGetActiveConfig(MessageParcel &data, MessageParcel &reply, MessageOption &option);
     int32_t DoSetInterface(MessageParcel &data, MessageParcel &reply, MessageOption &option);
     int32_t DoGetRawDescriptor(MessageParcel &data, MessageParcel &reply, MessageOption &option);
+    int32_t DoGetFileDescriptor(MessageParcel &data, MessageParcel &reply, MessageOption &option);
     int32_t DoRequestQueue(MessageParcel &data, MessageParcel &reply, MessageOption &option);
     int32_t DoRequestWait(MessageParcel &data, MessageParcel &reply, MessageOption &option);
     int32_t DoRequestCancel(MessageParcel &data, MessageParcel &reply, MessageOption &option);
@@ -68,13 +69,19 @@ private:
     int32_t WriteUsbPort(MessageParcel &reply, const UsbPort &port);
 
     int32_t GetDeviceMessage(MessageParcel &data, uint8_t &busNum, uint8_t &devAddr);
-    int32_t SetBufferMessage(MessageParcel &data, const std::vector<uint8_t> &vData);
-    int32_t GetBufferMessage(MessageParcel &data, std::vector<uint8_t> &vData);
+    int32_t SetBufferMessage(MessageParcel &data, const std::vector<uint8_t> &bufferData);
+    int32_t GetBufferMessage(MessageParcel &data, std::vector<uint8_t> &bufferData);
     int32_t SetDeviceListMessageParcel(std::vector<UsbDevice> &deviceList, MessageParcel &data);
     int32_t SetDeviceMessageParcel(UsbDevice &devInfo, MessageParcel &data);
     int32_t SetDeviceConfigsMessageParcel(std::vector<USBConfig> &configs, MessageParcel &data);
     int32_t SetDeviceInterfacesMessageParcel(std::vector<UsbInterface> &interfaces, MessageParcel &data);
     int32_t SetDeviceEndpointsMessageParcel(std::vector<USBEndpoint> &eps, MessageParcel &data);
+
+    int32_t DoRegBulkCallback(MessageParcel &data, MessageParcel &reply, MessageOption &option);
+    int32_t DoUnRegBulkCallback(MessageParcel &data, MessageParcel &reply, MessageOption &option);
+    int32_t DoBulkRead(MessageParcel &data, MessageParcel &reply, MessageOption &option);
+    int32_t DoBulkWrite(MessageParcel &data, MessageParcel &reply, MessageOption &option);
+    int32_t DoBulkCancel(MessageParcel &data, MessageParcel &reply, MessageOption &option);
 };
 } // namespace USB
 } // namespace OHOS
