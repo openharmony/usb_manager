@@ -45,7 +45,7 @@ public:
 private:
     static const int32_t FUNCTION_SETTABLE;
     static const std::map<std::string, int32_t> FUNCTION_MAPPING_N2C;
-    static int currentFunctions;
+    static int32_t currentFunctions;
 };
 } // namespace USB
 } // namespace OHOS

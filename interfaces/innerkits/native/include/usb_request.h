@@ -38,13 +38,13 @@ public:
     {
         this->endpoint = endpoint;
     }
-    void SetClientData(std::vector<uint8_t> vdata)
+    void SetClientData(std::vector<uint8_t> bufferData)
     {
-        clientData = vdata;
+        clientData = bufferData;
     }
-    void SetReqData(std::vector<uint8_t> vdata)
+    void SetReqData(std::vector<uint8_t> bufferData)
     {
-        reqData = vdata;
+        reqData = bufferData;
     }
     std::vector<uint8_t> &GetClientData()
     {

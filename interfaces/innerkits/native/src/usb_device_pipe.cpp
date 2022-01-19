@@ -50,16 +50,16 @@ int32_t USBDevicePipe::ReleaseInterface(const UsbInterface &interface)
     return ((UsbSrvClient *)usbClient)->ReleaseInterface(*this, interface);
 }
 
-int32_t USBDevicePipe::BulkTransfer(const USBEndpoint &endpoint, std::vector<uint8_t> &vdata, int32_t timeout)
+int32_t USBDevicePipe::BulkTransfer(const USBEndpoint &endpoint, std::vector<uint8_t> &bufferData, int32_t timeOut)
 {
     RETURN_IF_WITH_RET(usbClient == nullptr, ERR_NO_INIT);
-    return ((UsbSrvClient *)usbClient)->BulkTransfer(*this, endpoint, vdata, timeout);
+    return ((UsbSrvClient *)usbClient)->BulkTransfer(*this, endpoint, bufferData, timeOut);
 }
 
-int32_t USBDevicePipe::ControlTransfer(const UsbCtrlTransfer &ctrl, std::vector<uint8_t> &vdata)
+int32_t USBDevicePipe::ControlTransfer(const UsbCtrlTransfer &ctrl, std::vector<uint8_t> &bufferData)
 {
     RETURN_IF_WITH_RET(usbClient == nullptr, ERR_NO_INIT);
-    return ((UsbSrvClient *)usbClient)->ControlTransfer(*this, ctrl, vdata);
+    return ((UsbSrvClient *)usbClient)->ControlTransfer(*this, ctrl, bufferData);
 }
 int32_t USBDevicePipe::SetConfiguration(const USBConfig &config)
 {
