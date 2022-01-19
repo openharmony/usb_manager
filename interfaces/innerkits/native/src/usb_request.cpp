@@ -26,7 +26,7 @@ int32_t UsbRequest::Initialize(const USBDevicePipe &pipe, const USBEndpoint &end
     this->endpoint = endpoint;
     int32_t ret = ((UsbSrvClient *)usbClient)->RequestInitialize(*this);
     if (ERR_OK != ret) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed width ret = %{public}d.", __func__,
+        USB_HILOGE(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed width ret = %{public}d.", __func__,
                    __LINE__, ret);
     }
     return ret;
@@ -36,7 +36,7 @@ int32_t UsbRequest::Queue()
 {
     int32_t ret = ((UsbSrvClient *)usbClient)->RequestQueue(*this);
     if (ERR_OK != ret) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed width ret = %{public}d.", __func__,
+        USB_HILOGE(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed width ret = %{public}d.", __func__,
                    __LINE__, ret);
     }
     return ret;
@@ -46,7 +46,7 @@ int32_t UsbRequest::Free()
 {
     int32_t ret = ((UsbSrvClient *)usbClient)->RequestFree(*this);
     if (ERR_OK != ret) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed width ret = %{public}d.", __func__,
+        USB_HILOGE(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed width ret = %{public}d.", __func__,
                    __LINE__, ret);
     }
     return ret;
@@ -56,7 +56,7 @@ int32_t UsbRequest::Abort()
 {
     int32_t ret = ((UsbSrvClient *)usbClient)->RequestAbort(*this);
     if (ERR_OK != ret) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed width ret = %{public}d.", __func__,
+        USB_HILOGE(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed width ret = %{public}d.", __func__,
                    __LINE__, ret);
     }
     return ret;

@@ -23,6 +23,40 @@
 
 namespace OHOS {
 namespace USB {
+const int32_t NONE = 0;
+const int32_t SOURCE = 1;
+const int32_t SINK = 2;
+
+const int32_t HOST = 1;
+const int32_t DEVICE = 2;
+
+const int32_t UFP = 1;
+const int32_t DFP = 2;
+const int32_t DRP = 3;
+const int32_t NUM_MODES = 4;
+
+const int32_t USB_REQUEST_TARGET_DEVICE = 0;
+const int32_t USB_REQUEST_TARGET_INTERFACE = 1;
+const int32_t USB_REQUEST_TARGET_ENDPOINT = 2;
+const int32_t USB_REQUEST_TARGET_OTHER = 3;
+
+const int32_t USB_REQUEST_TYPE_STANDARD = 0;
+const int32_t USB_REQUEST_TYPE_CLASS = 1;
+const int32_t USB_REQUEST_TYPE_VENDOR = 2;
+
+const int32_t USB_REQUEST_DIR_TO_DEVICE = 0;
+const int32_t USB_REQUEST_DIR_FROM_DEVICE = 0x80;
+
+const int32_t ACM = 1;
+const int32_t ECM = 2;
+const int32_t HDC = 4;
+const int32_t MTP = 8;
+const int32_t PTP = 16;
+const int32_t RNDIS = 32;
+const int32_t MIDI = 64;
+const int32_t AUDIO_SOURCE = 128;
+const int32_t NCM = 256;
+
 struct USBAsyncContext {
     napi_env env;
     napi_async_work work;
@@ -56,13 +90,13 @@ struct USBControlTransferAsyncContext : USBAsyncContext {
     int32_t index;
     uint8_t *buffer;
     uint32_t bufferLength;
-    int32_t timeout = 0;
+    int32_t timeOut = 0;
 };
 
 struct USBBulkTransferAsyncContext : USBAsyncContext {
     uint8_t *buffer;
     uint32_t bufferLength;
-    int32_t timeout = 0;
+    int32_t timeOut = 0;
     USBDevicePipe pipe;
     USBEndpoint endpoint;
 };

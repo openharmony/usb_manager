@@ -34,7 +34,7 @@ UsbPortManager::~UsbPortManager()
 void UsbPortManager::Init()
 {
     USB_HILOGI(MODULE_USB_SERVICE, "UsbPortManager::QueryPort start");
-    int ret = QueryPort();
+    int32_t ret = QueryPort();
     if (ret) {
         USB_HILOGE(MODULE_USB_SERVICE, "UsbPortManager::QueryPort false");
     }
@@ -49,7 +49,7 @@ int32_t UsbPortManager::GetPorts(std::vector<UsbPort> &ports)
         USB_HILOGI(MODULE_USB_SERVICE, "UsbPortManager::GetPorts success");
         return UEC_OK;
     } else {
-        int ret = QueryPort();
+        int32_t ret = QueryPort();
         if (ret == UEC_OK) {
             for (auto it = portMap.begin(); it != portMap.end(); ++it) {
                 ports.push_back(it->second);
@@ -81,11 +81,11 @@ int32_t UsbPortManager::QueryPort()
     int32_t powerRole = 0;
     int32_t dataRole = 0;
     int32_t mode = 0;
-    int ret = UsbdClient::QueryPort(portId, powerRole, dataRole, mode);
+    int32_t ret = UsbdClient::GetInstance().QueryPort(portId, powerRole, dataRole, mode);
     USB_HILOGE(MODULE_USB_SERVICE, "portId:%{public}d powerRole:%{public}d dataRole:%{public}d mode:%{public}d ",
                portId, powerRole, dataRole, mode);
     if (ret) {
-        USB_HILOGE(MODULE_USB_SERVICE, "UsbdClient::queryPorts false");
+        USB_HILOGE(MODULE_USB_SERVICE, "UsbdClient::GetInstance().queryPorts false");
         return ret;
     }
     UsbPortStatus usbPortStatus;

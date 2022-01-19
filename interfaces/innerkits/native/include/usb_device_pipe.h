@@ -27,8 +27,8 @@ public:
     USBDevicePipe(uint8_t busNum, uint8_t devAddr);
     int32_t ClaimInterface(const UsbInterface &interface, bool force);
     int32_t ReleaseInterface(const UsbInterface &interface);
-    int32_t BulkTransfer(const USBEndpoint &endpoint, std::vector<uint8_t> &vdata, int32_t timeout);
-    int32_t ControlTransfer(const UsbCtrlTransfer &ctrl, std::vector<uint8_t> &vdata);
+    int32_t BulkTransfer(const USBEndpoint &endpoint, std::vector<uint8_t> &bufferData, int32_t timeOut);
+    int32_t ControlTransfer(const UsbCtrlTransfer &ctrl, std::vector<uint8_t> &bufferData);
     int32_t SetConfiguration(const USBConfig &config);
     int32_t SetInterface(const UsbInterface &interface);
     int32_t Close();

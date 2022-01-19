@@ -36,10 +36,10 @@ int32_t UsbServerStub::GetDeviceMessage(MessageParcel &data, uint8_t &busNum, ui
     return UEC_OK;
 }
 
-int32_t UsbServerStub::SetBufferMessage(MessageParcel &data, const std::vector<uint8_t> &vdata)
+int32_t UsbServerStub::SetBufferMessage(MessageParcel &data, const std::vector<uint8_t> &bufferData)
 {
-    uint32_t length = vdata.size();
-    const uint8_t *ptr = vdata.data();
+    uint32_t length = bufferData.size();
+    const uint8_t *ptr = bufferData.data();
     if (!ptr) {
         length = 0;
     }
@@ -55,10 +55,10 @@ int32_t UsbServerStub::SetBufferMessage(MessageParcel &data, const std::vector<u
     return UEC_OK;
 }
 
-int32_t UsbServerStub::GetBufferMessage(MessageParcel &data, std::vector<uint8_t> &vdata)
+int32_t UsbServerStub::GetBufferMessage(MessageParcel &data, std::vector<uint8_t> &bufferData)
 {
     uint32_t dataSize = 0;
-    vdata.clear();
+    bufferData.clear();
     if (!data.ReadUint32(dataSize)) {
         USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d failed", __func__, __LINE__);
         return UEC_SERVICE_READ_PARCEL_ERROR;
@@ -70,19 +70,16 @@ int32_t UsbServerStub::GetBufferMessage(MessageParcel &data, std::vector<uint8_t
 
     const uint8_t *readData = data.ReadUnpadBuffer(dataSize);
     if (readData == nullptr) {
-        USB_HILOGW(MODULE_USBD, "%{public}s:%{public}d failed size:%{public}d", __func__, __LINE__, dataSize);
+        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d failed size:%{public}d", __func__, __LINE__, dataSize);
         return UEC_SERVICE_READ_PARCEL_ERROR;
     }
     std::vector<uint8_t> tdata(readData, readData + dataSize);
-    vdata.swap(tdata);
+    bufferData.swap(tdata);
     return UEC_OK;
 }
 
-bool UsbServerStub::StubDevice(uint32_t code,
-                               int32_t &result,
-                               MessageParcel &data,
-                               MessageParcel &reply,
-                               MessageOption &option)
+bool UsbServerStub::StubDevice(uint32_t code, int32_t &result, MessageParcel &data, MessageParcel &reply,
+    MessageOption &option)
 {
     switch (code) {
         case static_cast<int>(IUsbSrv::USB_FUN_OPEN_DEVICE):
@@ -121,16 +118,22 @@ bool UsbServerStub::StubDevice(uint32_t code,
         case static_cast<int>(IUsbSrv::USB_FUN_CONTROL_TRANSFER):
             result = DoControlTransfer(data, reply, option);
             return true;
+        case static_cast<int>(IUsbSrv::USB_FUN_REG_BULK_CALLBACK):
+            result = DoRegBulkCallback(data, reply, option);
+            return true;
+        case static_cast<int>(IUsbSrv::USB_FUN_UNREG_BULK_CALLBACK):
+            result = DoUnRegBulkCallback(data, reply, option);
+            return true;
+        case static_cast<int>(IUsbSrv::USB_FUN_GET_FILEDESCRIPTOR):
+            result = DoGetFileDescriptor(data, reply, option);
+            return true;
         default:;
     }
     return false;
 }
 
-bool UsbServerStub::StubHost(uint32_t code,
-                             int32_t &result,
-                             MessageParcel &data,
-                             MessageParcel &reply,
-                             MessageOption &option)
+bool UsbServerStub::StubHost(uint32_t code, int32_t &result, MessageParcel &data, MessageParcel &reply,
+    MessageOption &option)
 {
     switch (code) {
         case static_cast<int>(IUsbSrv::USB_FUN_GET_DEVICES):
@@ -166,12 +169,24 @@ bool UsbServerStub::StubHost(uint32_t code,
         case static_cast<int>(IUsbSrv::USB_FUN_REQUEST_CANCEL):
             result = DoRequestCancel(data, reply, option);
             return true;
+        case static_cast<int>(IUsbSrv::USB_FUN_BULK_AYSNC_READ):
+            result = DoBulkRead(data, reply, option);
+            return true;
+        case static_cast<int>(IUsbSrv::USB_FUN_BULK_AYSNC_WRITE):
+            result = DoBulkWrite(data, reply, option);
+            return true;
+        case static_cast<int>(IUsbSrv::USB_FUN_BULK_AYSNC_CANCEL):
+            result = DoBulkCancel(data, reply, option);
+            return true;
+        case static_cast<int>(IUsbSrv::USB_FUN_GET_DESCRIPTOR):
+            result = DoGetRawDescriptor(data, reply, option);
+            return true;
         default:;
     }
     return false;
 }
 
-int UsbServerStub::OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
+int32_t UsbServerStub::OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
     USB_HILOGD(MODULE_USB_SERVICE, "UsbServerStub::OnRemoteRequest, cmd = %{public}d, flags = %{public}d", code,
                option.GetFlags());
@@ -268,15 +283,15 @@ int32_t UsbServerStub::DoRemoveRight(MessageParcel &data, MessageParcel &reply, 
 int32_t UsbServerStub::DoGetPorts(MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
     std::vector<UsbPort> ports;
-    int ret = GetPorts(ports);
+    int32_t ret = GetPorts(ports);
     USB_HILOGI(MODULE_SERVICE, "UsbServerStub::GetPorts ret %{public}d ", ret);
     if (ret != UEC_OK) {
         return ret;
     }
-    unsigned int size = ports.size();
+    uint32_t size = ports.size();
     USB_HILOGI(MODULE_SERVICE, "UsbServerStub::GetPorts size %{public}d ", size);
     WRITE_PARCEL_WITH_RET(reply, Int32, size, UEC_SERVICE_WRITE_PARCEL_ERROR);
-    for (unsigned int i = 0; i < size; ++i) {
+    for (uint32_t i = 0; i < size; ++i) {
         ret = WriteUsbPort(reply, ports[i]);
         if (ret) {
             return ret;
@@ -325,11 +340,14 @@ int32_t UsbServerStub::DoClaimInterface(MessageParcel &data, MessageParcel &repl
     uint8_t busNum = 0;
     uint8_t devAddr = 0;
     uint8_t interface = 0;
+    uint8_t force = 0;
     READ_PARCEL_WITH_RET(data, Uint8, busNum, UEC_SERVICE_READ_PARCEL_ERROR);
     READ_PARCEL_WITH_RET(data, Uint8, devAddr, UEC_SERVICE_READ_PARCEL_ERROR);
     READ_PARCEL_WITH_RET(data, Uint8, interface, UEC_SERVICE_READ_PARCEL_ERROR);
-    return ClaimInterface(busNum, devAddr, interface);
+    READ_PARCEL_WITH_RET(data, Uint8, force, UEC_SERVICE_READ_PARCEL_ERROR);
+    return ClaimInterface(busNum, devAddr, interface, force);
 }
+
 int32_t UsbServerStub::DoReleaseInterface(MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
     uint8_t busNum = 0;
@@ -347,23 +365,23 @@ int32_t UsbServerStub::DoBulkTransferRead(MessageParcel &data, MessageParcel &re
     uint8_t devAddr = 0;
     uint8_t interface = 0;
     uint8_t endpoint = 0;
-    int32_t timeout = 0;
+    int32_t timeOut = 0;
     READ_PARCEL_WITH_RET(data, Uint8, busNum, UEC_SERVICE_WRITE_PARCEL_ERROR);
     READ_PARCEL_WITH_RET(data, Uint8, devAddr, UEC_SERVICE_WRITE_PARCEL_ERROR);
     READ_PARCEL_WITH_RET(data, Uint8, interface, UEC_SERVICE_WRITE_PARCEL_ERROR);
     READ_PARCEL_WITH_RET(data, Uint8, endpoint, UEC_SERVICE_WRITE_PARCEL_ERROR);
-    READ_PARCEL_WITH_RET(data, Int32, timeout, UEC_SERVICE_WRITE_PARCEL_ERROR);
-    std::vector<uint8_t> vdata;
-    const UsbDev tdev = {busNum, devAddr};
-    const UsbPipe tpipe = {interface, endpoint};
-    int32_t ret = BulkTransferRead(tdev, tpipe, vdata, timeout);
+    READ_PARCEL_WITH_RET(data, Int32, timeOut, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    std::vector<uint8_t> bufferData;
+    const UsbDev tmpDev = {busNum, devAddr};
+    const UsbPipe tmpPipe = {interface, endpoint};
+    int32_t ret = BulkTransferRead(tmpDev, tmpPipe, bufferData, timeOut);
     if (ret != UEC_OK) {
-        USB_HILOGW(MODULE_USBD, "%{public}s:%{public}d ret:%{public}d", __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d ret:%{public}d", __func__, __LINE__, ret);
         return ret;
     }
-    ret = SetBufferMessage(reply, vdata);
+    ret = SetBufferMessage(reply, bufferData);
     if (ret != UEC_OK) {
-        USB_HILOGW(MODULE_USBD, "%{public}s:%{public}d ret:%{public}d", __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d ret:%{public}d", __func__, __LINE__, ret);
     }
     return ret;
 }
@@ -374,23 +392,23 @@ int32_t UsbServerStub::DoBulkTransferWrite(MessageParcel &data, MessageParcel &r
     uint8_t devAddr = 0;
     uint8_t interface = 0;
     uint8_t endpoint = 0;
-    int32_t timeout = 0;
+    int32_t timeOut = 0;
     READ_PARCEL_WITH_RET(data, Uint8, busNum, UEC_SERVICE_WRITE_PARCEL_ERROR);
     READ_PARCEL_WITH_RET(data, Uint8, devAddr, UEC_SERVICE_WRITE_PARCEL_ERROR);
     READ_PARCEL_WITH_RET(data, Uint8, interface, UEC_SERVICE_WRITE_PARCEL_ERROR);
     READ_PARCEL_WITH_RET(data, Uint8, endpoint, UEC_SERVICE_WRITE_PARCEL_ERROR);
-    READ_PARCEL_WITH_RET(data, Int32, timeout, UEC_SERVICE_WRITE_PARCEL_ERROR);
-    std::vector<uint8_t> vdata;
-    const UsbDev tdev = {busNum, devAddr};
-    const UsbPipe tpipe = {interface, endpoint};
-    int32_t ret = GetBufferMessage(data, vdata);
+    READ_PARCEL_WITH_RET(data, Int32, timeOut, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    std::vector<uint8_t> bufferData;
+    const UsbDev tmpDev = {busNum, devAddr};
+    const UsbPipe tmpPipe = {interface, endpoint};
+    int32_t ret = GetBufferMessage(data, bufferData);
     if (UEC_OK != ret) {
-        USB_HILOGW(MODULE_USBD, "%{public}s:%{public}d ret:%{public}d", __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d ret:%{public}d", __func__, __LINE__, ret);
         return ret;
     }
-    ret = BulkTransferWrite(tdev, tpipe, vdata, timeout);
+    ret = BulkTransferWrite(tmpDev, tmpPipe, bufferData, timeOut);
     if (UEC_OK != ret) {
-        USB_HILOGW(MODULE_USBD, "%{public}s:%{public}d BulkTransferWrite error ret:%{public}d", __func__, __LINE__,
+        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d BulkTransferWrite error ret:%{public}d", __func__, __LINE__,
                    ret);
     }
     return ret;
@@ -404,7 +422,7 @@ int32_t UsbServerStub::DoControlTransfer(MessageParcel &data, MessageParcel &rep
     int32_t request;
     int32_t value;
     int32_t index;
-    int32_t timeout;
+    int32_t timeOut;
 
     READ_PARCEL_WITH_RET(data, Uint8, busNum, UEC_SERVICE_WRITE_PARCEL_ERROR);
     READ_PARCEL_WITH_RET(data, Uint8, devAddr, UEC_SERVICE_WRITE_PARCEL_ERROR);
@@ -412,27 +430,27 @@ int32_t UsbServerStub::DoControlTransfer(MessageParcel &data, MessageParcel &rep
     READ_PARCEL_WITH_RET(data, Int32, request, UEC_SERVICE_WRITE_PARCEL_ERROR);
     READ_PARCEL_WITH_RET(data, Int32, value, UEC_SERVICE_WRITE_PARCEL_ERROR);
     READ_PARCEL_WITH_RET(data, Int32, index, UEC_SERVICE_WRITE_PARCEL_ERROR);
-    READ_PARCEL_WITH_RET(data, Int32, timeout, UEC_SERVICE_WRITE_PARCEL_ERROR);
-    std::vector<uint8_t> vdata;
-    int32_t ret = GetBufferMessage(data, vdata);
+    READ_PARCEL_WITH_RET(data, Int32, timeOut, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    std::vector<uint8_t> bufferData;
+    int32_t ret = GetBufferMessage(data, bufferData);
     if (UEC_OK != ret) {
-        USB_HILOGW(MODULE_USBD, "%{public}s:%{public}d get error ret:%{public}d", __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d get error ret:%{public}d", __func__, __LINE__, ret);
         return ret;
     }
     // 写数据
     bool bWrite = ((requestType & USB_ENDPOINT_DIR_MASK) == USB_ENDPOINT_DIR_OUT);
-    const UsbDev tdev = {busNum, devAddr};
-    const UsbCtrlTransfer tctrl = {requestType, request, value, index, timeout};
-    ret = ControlTransfer(tdev, tctrl, vdata);
+    const UsbDev tmpDev = {busNum, devAddr};
+    const UsbCtrlTransfer tctrl = {requestType, request, value, index, timeOut};
+    ret = ControlTransfer(tmpDev, tctrl, bufferData);
     if (ret != UEC_OK) {
-        USB_HILOGW(MODULE_USBD, "%{public}s:%{public}d ControlTransfer error ret:%{public}d", __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d ControlTransfer error ret:%{public}d", __func__, __LINE__, ret);
         return ret;
     }
     // 读数据
     if (!bWrite) {
-        ret = SetBufferMessage(reply, vdata);
+        ret = SetBufferMessage(reply, bufferData);
         if (UEC_OK != ret) {
-            USB_HILOGW(MODULE_USBD, "%{public}s:%{public}d Set buffer message error length = %{public}d", __func__,
+            USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d Set buffer message error length = %{public}d", __func__,
                        __LINE__, ret);
         }
     }
@@ -484,20 +502,31 @@ int32_t UsbServerStub::DoGetRawDescriptor(MessageParcel &data, MessageParcel &re
     uint8_t devAddr = 0;
     READ_PARCEL_WITH_RET(data, Uint8, busNum, UEC_SERVICE_WRITE_PARCEL_ERROR);
     READ_PARCEL_WITH_RET(data, Uint8, devAddr, UEC_SERVICE_WRITE_PARCEL_ERROR);
-    std::vector<uint8_t> vdata;
-    int32_t ret = GetBufferMessage(data, vdata);
-    if (UEC_OK != ret) {
-        USB_HILOGW(MODULE_USBD, "%{public}s:%{public}d ret:%{public}d", __func__, __LINE__, ret);
-        return ret;
-    }
-    ret = GetRawDescriptor(busNum, devAddr, vdata);
+    std::vector<uint8_t> bufferData;
+    int32_t ret = GetRawDescriptor(busNum, devAddr, bufferData);
     if (UEC_OK == ret) {
-        ret = SetBufferMessage(reply, vdata);
+        ret = SetBufferMessage(reply, bufferData);
         if (UEC_OK != ret) {
-            USB_HILOGW(MODULE_USBD, "%{public}s:%{public}d ret:%{public}d", __func__, __LINE__, ret);
+            USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d ret:%{public}d", __func__, __LINE__, ret);
         }
     } else {
         USB_HILOGW(MODULE_USBD, "%{public}s:%{public}d ret:%{public}d", __func__, __LINE__, ret);
+    }
+    return ret;
+}
+
+int32_t UsbServerStub::DoGetFileDescriptor(MessageParcel &data, MessageParcel &reply, MessageOption &option)
+{
+    uint8_t busNum = 0;
+    uint8_t devAddr = 0;
+    READ_PARCEL_WITH_RET(data, Uint8, busNum, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    READ_PARCEL_WITH_RET(data, Uint8, devAddr, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    int32_t fd = -1;
+    int32_t ret = GetFileDescriptor(busNum, devAddr, fd);
+    if (UEC_OK == ret) {
+        WRITE_PARCEL_WITH_RET(reply, Int32, fd, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    } else {
+        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d ret:%{public}d", __func__, __LINE__, ret);
     }
     return ret;
 }
@@ -512,24 +541,24 @@ int32_t UsbServerStub::DoRequestQueue(MessageParcel &data, MessageParcel &reply,
     READ_PARCEL_WITH_RET(data, Uint8, devAddr, UEC_SERVICE_WRITE_PARCEL_ERROR);
     READ_PARCEL_WITH_RET(data, Uint8, ifId, UEC_SERVICE_WRITE_PARCEL_ERROR);
     READ_PARCEL_WITH_RET(data, Uint8, endpoint, UEC_SERVICE_WRITE_PARCEL_ERROR);
-    std::vector<uint8_t> cData;
-    std::vector<uint8_t> vData;
+    std::vector<uint8_t> clientData;
+    std::vector<uint8_t> bufferData;
 
-    int32_t ret = UsbServerStub::GetBufferMessage(data, cData);
+    int32_t ret = UsbServerStub::GetBufferMessage(data, clientData);
     if (UEC_OK != ret) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s:%{public}d failed  ret:%{public}d", __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s:%{public}d failed  ret:%{public}d", __func__, __LINE__, ret);
         return ret;
     }
-    ret = UsbServerStub::GetBufferMessage(data, vData);
+    ret = UsbServerStub::GetBufferMessage(data, bufferData);
     if (UEC_OK != ret) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s:%{public}d failed  ret:%{public}d", __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s:%{public}d failed  ret:%{public}d", __func__, __LINE__, ret);
         return ret;
     }
-    const UsbDev tdev = {busNum, devAddr};
-    const UsbPipe tpipe = {ifId, endpoint};
-    ret = RequestQueue(tdev, tpipe, cData, vData);
+    const UsbDev tmpDev = {busNum, devAddr};
+    const UsbPipe tmpPipe = {ifId, endpoint};
+    ret = RequestQueue(tmpDev, tmpPipe, clientData, bufferData);
     if (UEC_OK != ret) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s:%{public}d failed  ret:%{public}d", __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s:%{public}d failed  ret:%{public}d", __func__, __LINE__, ret);
     }
     return ret;
 }
@@ -538,29 +567,29 @@ int32_t UsbServerStub::DoRequestWait(MessageParcel &data, MessageParcel &reply, 
 {
     uint8_t busNum = 0;
     uint8_t devAddr = 0;
-    int32_t timeout = 0;
-    std::vector<uint8_t> cData;
-    std::vector<uint8_t> vData;
+    int32_t timeOut = 0;
+    std::vector<uint8_t> clientData;
+    std::vector<uint8_t> bufferData;
     READ_PARCEL_WITH_RET(data, Uint8, busNum, UEC_SERVICE_WRITE_PARCEL_ERROR);
     READ_PARCEL_WITH_RET(data, Uint8, devAddr, UEC_SERVICE_WRITE_PARCEL_ERROR);
-    READ_PARCEL_WITH_RET(data, Int32, timeout, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    READ_PARCEL_WITH_RET(data, Int32, timeOut, UEC_SERVICE_WRITE_PARCEL_ERROR);
 
-    const UsbDev tdev = {busNum, devAddr};
-    int32_t ret = RequestWait(tdev, timeout, cData, vData);
+    const UsbDev tmpDev = {busNum, devAddr};
+    int32_t ret = RequestWait(tmpDev, timeOut, clientData, bufferData);
     if (ret != UEC_OK) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s:%{public}d failed ret:%{public}d", __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s:%{public}d failed ret:%{public}d", __func__, __LINE__, ret);
         return ret;
     }
 
-    ret = SetBufferMessage(reply, cData);
+    ret = SetBufferMessage(reply, clientData);
     if (ret != UEC_OK) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s:%{public}d failed ret:%{public}d", __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s:%{public}d failed ret:%{public}d", __func__, __LINE__, ret);
         return ret;
     }
 
-    ret = SetBufferMessage(reply, vData);
+    ret = SetBufferMessage(reply, bufferData);
     if (ret != UEC_OK) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s:%{public}d failed ret:%{public}d", __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s:%{public}d failed ret:%{public}d", __func__, __LINE__, ret);
         return ret;
     }
     return ret;
@@ -578,7 +607,7 @@ int32_t UsbServerStub::DoRequestCancel(MessageParcel &data, MessageParcel &reply
     READ_PARCEL_WITH_RET(data, Uint8, endpointId, UEC_SERVICE_WRITE_PARCEL_ERROR);
     int32_t ret = RequestCancel(busNum, devAddr, interfaceId, endpointId);
     if (UEC_OK != ret) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s:%{public}d failed ret:%{public}d", __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s:%{public}d failed ret:%{public}d", __func__, __LINE__, ret);
     }
     return ret;
 }
@@ -591,7 +620,7 @@ int32_t UsbServerStub::DoClose(MessageParcel &data, MessageParcel &reply, Messag
     READ_PARCEL_WITH_RET(data, Uint8, devAddr, UEC_SERVICE_WRITE_PARCEL_ERROR);
     int32_t ret = Close(busNum, devAddr);
     if (UEC_OK != ret) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s:%{public}d failed ret:%{public}d", __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s:%{public}d failed ret:%{public}d", __func__, __LINE__, ret);
     }
     return ret;
 }
@@ -607,7 +636,7 @@ int32_t UsbServerStub::DoGetDevices(MessageParcel &data, MessageParcel &reply, M
     USB_HILOGE(MODULE_SERVICE, "%{public}s: list size = %{public}d", __func__, deviceList.size());
     ret = SetDeviceListMessageParcel(deviceList, reply);
     if (UEC_OK != ret) {
-        USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s:%{public}d failed ret:%{public}d", __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s:%{public}d failed ret:%{public}d", __func__, __LINE__, ret);
     }
     return ret;
 }
@@ -710,6 +739,109 @@ int32_t UsbServerStub::SetDeviceEndpointsMessageParcel(std::vector<USBEndpoint> 
         USB_HILOGI(MODULE_USB_SERVICE, "%{public}s devInfo=%{public}s", __func__, ep.ToString().c_str());
     }
     return UEC_OK;
+}
+
+int32_t UsbServerStub::DoRegBulkCallback(MessageParcel &data, MessageParcel &reply, MessageOption &option)
+{
+    uint8_t busNum = 0;
+    uint8_t devAddr = 0;
+    uint8_t interface = 0;
+    uint8_t endpoint = 0;
+    READ_PARCEL_WITH_RET(data, Uint8, busNum, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    READ_PARCEL_WITH_RET(data, Uint8, devAddr, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    READ_PARCEL_WITH_RET(data, Uint8, interface, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    READ_PARCEL_WITH_RET(data, Uint8, endpoint, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    const sptr<IRemoteObject> cb = data.ReadRemoteObject();
+    const UsbDev tmpDev = {busNum, devAddr};
+    const UsbPipe tmpPipe = {interface, endpoint};
+    int32_t ret = RegBulkCallback(tmpDev, tmpPipe, cb);
+    if (ret != UEC_OK) {
+        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d ret:%{public}d", __func__, __LINE__, ret);
+        return ret;
+    }
+    return ret;
+}
+
+int32_t UsbServerStub::DoUnRegBulkCallback(MessageParcel &data, MessageParcel &reply, MessageOption &option)
+{
+    uint8_t busNum = 0;
+    uint8_t devAddr = 0;
+    uint8_t interface = 0;
+    uint8_t endpoint = 0;
+    READ_PARCEL_WITH_RET(data, Uint8, busNum, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    READ_PARCEL_WITH_RET(data, Uint8, devAddr, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    READ_PARCEL_WITH_RET(data, Uint8, interface, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    READ_PARCEL_WITH_RET(data, Uint8, endpoint, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    const UsbDev tmpDev = {busNum, devAddr};
+    const UsbPipe tmpPipe = {interface, endpoint};
+    int32_t ret = UnRegBulkCallback(tmpDev, tmpPipe);
+    if (ret != UEC_OK) {
+        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d ret:%{public}d", __func__, __LINE__, ret);
+        return ret;
+    }
+    return ret;
+}
+
+int32_t UsbServerStub::DoBulkRead(MessageParcel &data, MessageParcel &reply, MessageOption &option)
+{
+    uint8_t busNum = 0;
+    uint8_t devAddr = 0;
+    uint8_t interface = 0;
+    uint8_t endpoint = 0;
+    READ_PARCEL_WITH_RET(data, Uint8, busNum, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    READ_PARCEL_WITH_RET(data, Uint8, devAddr, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    READ_PARCEL_WITH_RET(data, Uint8, interface, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    READ_PARCEL_WITH_RET(data, Uint8, endpoint, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    sptr<Ashmem> ashmem = data.ReadAshmem();
+    const UsbDev tmpDev = {busNum, devAddr};
+    const UsbPipe tmpPipe = {interface, endpoint};
+    int32_t ret = BulkRead(tmpDev, tmpPipe, ashmem);
+    if (ret != UEC_OK) {
+        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d ret:%{public}d", __func__, __LINE__, ret);
+        return ret;
+    }
+    return ret;
+}
+
+int32_t UsbServerStub::DoBulkWrite(MessageParcel &data, MessageParcel &reply, MessageOption &option)
+{
+    uint8_t busNum = 0;
+    uint8_t devAddr = 0;
+    uint8_t interface = 0;
+    uint8_t endpoint = 0;
+    READ_PARCEL_WITH_RET(data, Uint8, busNum, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    READ_PARCEL_WITH_RET(data, Uint8, devAddr, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    READ_PARCEL_WITH_RET(data, Uint8, interface, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    READ_PARCEL_WITH_RET(data, Uint8, endpoint, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    sptr<Ashmem> ashmem = data.ReadAshmem();
+    const UsbDev tmpDev = {busNum, devAddr};
+    const UsbPipe tmpPipe = {interface, endpoint};
+    int32_t ret = BulkWrite(tmpDev, tmpPipe, ashmem);
+    if (ret != UEC_OK) {
+        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d ret:%{public}d", __func__, __LINE__, ret);
+        return ret;
+    }
+    return ret;
+}
+
+int32_t UsbServerStub::DoBulkCancel(MessageParcel &data, MessageParcel &reply, MessageOption &option)
+{
+    uint8_t busNum = 0;
+    uint8_t devAddr = 0;
+    uint8_t interface = 0;
+    uint8_t endpoint = 0;
+    READ_PARCEL_WITH_RET(data, Uint8, busNum, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    READ_PARCEL_WITH_RET(data, Uint8, devAddr, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    READ_PARCEL_WITH_RET(data, Uint8, interface, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    READ_PARCEL_WITH_RET(data, Uint8, endpoint, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    const UsbDev tmpDev = {busNum, devAddr};
+    const UsbPipe tmpPipe = {interface, endpoint};
+    int32_t ret = BulkCancel(tmpDev, tmpPipe);
+    if (ret != UEC_OK) {
+        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d ret:%{public}d", __func__, __LINE__, ret);
+        return ret;
+    }
+    return ret;
 }
 } // namespace USB
 } // namespace OHOS

@@ -46,7 +46,7 @@ const int32_t PARAM_COUNT_4 = 4;
 const int32_t STR_DEFAULT_SIZE = 256;
 const int32_t DEFAULT_DESCRIPTION_SIZE = 32;
 
-static void ParseUsbDevicePipe(const napi_env env, const napi_value &obj, USBDevicePipe &pip)
+static void ParseUsbDevicePipe(const napi_env env, const napi_value &obj, USBDevicePipe &pipe)
 {
     napi_valuetype valueType;
     napi_typeof(env, obj, &valueType);
@@ -54,10 +54,10 @@ static void ParseUsbDevicePipe(const napi_env env, const napi_value &obj, USBDev
 
     int32_t busNum = 0;
     NapiUtil::JsObjectToInt(env, obj, "busNum", busNum);
-    pip.SetBusNum((uint8_t)busNum);
+    pipe.SetBusNum((uint8_t)busNum);
     int32_t devAddr = 0;
     NapiUtil::JsObjectToInt(env, obj, "devAddress", devAddr);
-    pip.SetDevAddr((uint8_t)devAddr);
+    pipe.SetDevAddr((uint8_t)devAddr);
 }
 
 static void ProcessPromise(const napi_env env, const USBAsyncContext &asyncContext, napi_value &result)
@@ -71,11 +71,11 @@ static void ProcessPromise(const napi_env env, const USBAsyncContext &asyncConte
     }
 }
 
-static void CreateUsbDevicePipe(const napi_env env, napi_value &obj, const USBDevicePipe &pip)
+static void CreateUsbDevicePipe(const napi_env env, napi_value &obj, const USBDevicePipe &pipe)
 {
     napi_create_object(env, &obj);
-    NapiUtil::SetValueInt32(env, "busNum", pip.GetBusNum(), obj);
-    NapiUtil::SetValueInt32(env, "devAddress", pip.GetDevAddr(), obj);
+    NapiUtil::SetValueInt32(env, "busNum", pipe.GetBusNum(), obj);
+    NapiUtil::SetValueInt32(env, "devAddress", pipe.GetDevAddr(), obj);
 }
 
 static void CtoJSUsbEndpoint(const napi_env &env, napi_value &obj, const USBEndpoint &usbEndpoint)
@@ -383,7 +383,7 @@ static napi_value CoreGetDevices(napi_env env, napi_callback_info info)
     napi_value result;
     if (ret != UEC_OK) {
         napi_get_undefined(env, &result);
-        USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, get device faild ret : %{public}d", __func__, ret);
+        USB_HILOGE(MODULE_JS_NAPI, "end call %{public}s, get device faild ret : %{public}d", __func__, ret);
         return result;
     }
 
@@ -420,11 +420,11 @@ static napi_value CoreConnectDevice(napi_env env, napi_callback_info info)
     UsbDevice dev;
     ParseDeviceObj(env, deviceObj, dev);
 
-    USBDevicePipe pip;
-    int32_t ret = g_usbClient.OpenDevice(dev, pip);
+    USBDevicePipe pipe;
+    int32_t ret = g_usbClient.OpenDevice(dev, pipe);
     napi_value pipObj = nullptr;
     if (ret == UEC_OK) {
-        CreateUsbDevicePipe(env, pipObj, pip);
+        CreateUsbDevicePipe(env, pipObj, pipe);
     } else if (ret == UEC_SERVICE_PERMISSION_DENIED || ret == UEC_INTERFACE_PERMISSION_DENIED) {
         napi_throw_error(env, nullptr, "permission denied, need call requestRight to get permission");
     } else {
@@ -660,7 +660,7 @@ static napi_value CoreGetCurrentFunctions(napi_env env, napi_callback_info info)
     napi_value result;
     if (ret != UEC_OK) {
         napi_get_undefined(env, &result);
-        USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, get ports faild ret : %{public}d", __func__, ret);
+        USB_HILOGE(MODULE_JS_NAPI, "end call %{public}s, get ports faild ret : %{public}d", __func__, ret);
         return result;
     }
     napi_create_int32(env, cfuncs, &result);
@@ -687,7 +687,7 @@ static napi_value CoreGetPorts(napi_env env, napi_callback_info info)
     napi_value result;
     if (ret != UEC_OK) {
         napi_get_undefined(env, &result);
-        USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, get ports faild ret : %{public}d", __func__, ret);
+        USB_HILOGE(MODULE_JS_NAPI, "end call %{public}s, get ports faild ret : %{public}d", __func__, ret);
         return result;
     }
 
@@ -834,8 +834,8 @@ static napi_value PipeClaimInterface(napi_env env, napi_callback_info info)
     napi_typeof(env, obj, &type);
     NAPI_ASSERT(env, type == napi_object, "Wrong argument type. Object expected.");
 
-    USBDevicePipe pip;
-    ParseUsbDevicePipe(env, obj, pip);
+    USBDevicePipe pipe;
+    ParseUsbDevicePipe(env, obj, pipe);
 
     UsbInterface interface;
     napi_value obj2 = argv[INDEX_1];
@@ -850,8 +850,8 @@ static napi_value PipeClaimInterface(napi_env env, napi_callback_info info)
         napi_get_value_bool(env, argv[INDEX_2], &isForce);
     }
 
-    int32_t ret = pip.ClaimInterface(interface, isForce);
-    USB_HILOGD(MODULE_JS_NAPI, "pip call ClaimInterface ret: %{public}d", ret);
+    int32_t ret = pipe.ClaimInterface(interface, isForce);
+    USB_HILOGD(MODULE_JS_NAPI, "pipe call ClaimInterface ret: %{public}d", ret);
     napi_value result;
     napi_create_int32(env, ret, &result);
     struct timeval end = {0};
@@ -877,14 +877,14 @@ static napi_value PipeReleaseInterface(napi_env env, napi_callback_info info)
     napi_typeof(env, obj, &type);
     NAPI_ASSERT(env, type == napi_object, "Wrong argument type. Object expected.");
 
-    USBDevicePipe pip;
-    ParseUsbDevicePipe(env, obj, pip);
+    USBDevicePipe pipe;
+    ParseUsbDevicePipe(env, obj, pipe);
 
     UsbInterface interface;
     napi_value obj2 = argv[INDEX_1];
     ParseInterfaceObj(env, obj2, interface);
-    int32_t ret = pip.ReleaseInterface(interface);
-    USB_HILOGD(MODULE_JS_NAPI, "pip call PipeReleaseInterface ret: %{public}d", ret);
+    int32_t ret = pipe.ReleaseInterface(interface);
+    USB_HILOGD(MODULE_JS_NAPI, "pipe call PipeReleaseInterface ret: %{public}d", ret);
     napi_value result;
     napi_create_int32(env, ret, &result);
     struct timeval end = {0};
@@ -909,8 +909,8 @@ static napi_value PipeSetInterface(napi_env env, napi_callback_info info)
     napi_typeof(env, pipeObj, &type);
     NAPI_ASSERT(env, type == napi_object, "Wrong argument type. Object expected.");
 
-    USBDevicePipe pip;
-    ParseUsbDevicePipe(env, pipeObj, pip);
+    USBDevicePipe pipe;
+    ParseUsbDevicePipe(env, pipeObj, pipe);
 
     napi_value interfaceObj = argv[INDEX_1];
     napi_typeof(env, interfaceObj, &type);
@@ -918,7 +918,7 @@ static napi_value PipeSetInterface(napi_env env, napi_callback_info info)
 
     UsbInterface interface;
     ParseInterfaceObj(env, interfaceObj, interface);
-    int32_t ret = g_usbClient.SetInterface(pip, interface);
+    int32_t ret = g_usbClient.SetInterface(pipe, interface);
     napi_value result;
     napi_create_int32(env, ret, &result);
     struct timeval end = {0};
@@ -943,8 +943,8 @@ static napi_value PipeSetConfiguration(napi_env env, napi_callback_info info)
 
     napi_typeof(env, pipeObj, &type);
     NAPI_ASSERT(env, type == napi_object, "Wrong argument type. Object expected.");
-    USBDevicePipe pip;
-    ParseUsbDevicePipe(env, pipeObj, pip);
+    USBDevicePipe pipe;
+    ParseUsbDevicePipe(env, pipeObj, pipe);
 
     napi_value configObj = argv[INDEX_1];
     napi_typeof(env, configObj, &type);
@@ -952,7 +952,7 @@ static napi_value PipeSetConfiguration(napi_env env, napi_callback_info info)
     USBConfig config;
     ParseConfigObj(env, configObj, config);
 
-    int32_t ret = g_usbClient.SetConfiguration(pip, config);
+    int32_t ret = g_usbClient.SetConfiguration(pipe, config);
     napi_value result;
     napi_create_int32(env, ret, &result);
     struct timeval end = {0};
@@ -977,14 +977,14 @@ static napi_value PipeGetRawDescriptors(napi_env env, napi_callback_info info)
     napi_typeof(env, obj, &type);
     NAPI_ASSERT(env, type == napi_object, "Wrong argument type. Object expected.");
 
-    USBDevicePipe pip;
-    ParseUsbDevicePipe(env, obj, pip);
+    USBDevicePipe pipe;
+    ParseUsbDevicePipe(env, obj, pipe);
 
     napi_value result;
-    std::vector<uint8_t> vdata;
-    int32_t ret = g_usbClient.GetRawDescriptors(vdata);
+    std::vector<uint8_t> bufferData;
+    int32_t ret = g_usbClient.GetRawDescriptors(pipe, bufferData);
     if (ret == UEC_OK) {
-        NapiUtil::Uint8ArrayToJsValue(env, vdata, vdata.size(), result);
+        NapiUtil::Uint8ArrayToJsValue(env, bufferData, bufferData.size(), result);
     } else {
         napi_get_undefined(env, &result);
     }
@@ -1000,18 +1000,27 @@ static napi_value PipeGetFileDescriptor(napi_env env, napi_callback_info info)
     USB_HILOGD(MODULE_JS_NAPI, "begin call %{public}s", __func__);
     struct timeval start = {0};
     gettimeofday(&start, nullptr);
-
     size_t argc = PARAM_COUNT_1;
     napi_value argv[PARAM_COUNT_1] = {0};
-    napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
-    NAPI_ASSERT(env, (argc == PARAM_COUNT_0), "PipeGetFileDescriptor failed to get cb info");
 
-    int32_t fd = g_usbClient.GetFileDescriptor();
+    napi_status status = napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
+    NAPI_ASSERT(env, (status == napi_ok) && (argc >= PARAM_COUNT_1), "PipeGetFileDescriptor failed to get cb info");
+    napi_value obj = argv[INDEX_0];
+    napi_valuetype type;
+    napi_typeof(env, obj, &type);
+    NAPI_ASSERT(env, type == napi_object, "Wrong argument type. Object expected.");
+
+    USBDevicePipe pipe;
+    ParseUsbDevicePipe(env, obj, pipe);
+
+    int32_t fd = -1;
     napi_value result;
+    int32_t ret = g_usbClient.GetFileDescriptor(pipe, fd);
     napi_create_int32(env, fd, &result);
     struct timeval end = {0};
     gettimeofday(&end, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, takes : %{public}ld ms", __func__, getTimeDiff(start, end));
+    USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, ret : %{public}d, takes : %{public}ld ms",
+               __func__, ret, getTimeDiff(start, end));
     return result;
 }
 
@@ -1019,17 +1028,17 @@ static auto g_controlTransferExecute = [](napi_env env, void *data) {
     struct timeval beginAsync = {0};
     gettimeofday(&beginAsync, nullptr);
     USBControlTransferAsyncContext *asyncContext = (USBControlTransferAsyncContext *)data;
-    std::vector<uint8_t> vdata(asyncContext->buffer, asyncContext->buffer + asyncContext->bufferLength);
+    std::vector<uint8_t> bufferData(asyncContext->buffer, asyncContext->buffer + asyncContext->bufferLength);
     const UsbCtrlTransfer tctrl = {asyncContext->reqType, asyncContext->request, asyncContext->value,
-                                   asyncContext->index, asyncContext->timeout};
-    int32_t ret = asyncContext->pipe.ControlTransfer(tctrl, vdata);
+                                   asyncContext->index, asyncContext->timeOut};
+    int32_t ret = asyncContext->pipe.ControlTransfer(tctrl, bufferData);
     if ((asyncContext->reqType & USB_ENDPOINT_DIR_MASK) == USB_ENDPOINT_DIR_OUT) {
         delete asyncContext->buffer;
         asyncContext->buffer = nullptr;
     } else {
-        (vdata.size() > asyncContext->bufferLength) ? asyncContext->bufferLength = asyncContext->bufferLength
-                                                    : asyncContext->bufferLength = vdata.size();
-        memcpy_s(asyncContext->buffer, asyncContext->bufferLength, vdata.data(), asyncContext->bufferLength);
+        (bufferData.size() > asyncContext->bufferLength) ? asyncContext->bufferLength = asyncContext->bufferLength
+                                                    : asyncContext->bufferLength = bufferData.size();
+        memcpy_s(asyncContext->buffer, asyncContext->bufferLength, bufferData.data(), asyncContext->bufferLength);
     }
     if (ret == UEC_OK) {
         asyncContext->status = napi_ok;
@@ -1080,10 +1089,10 @@ static napi_value PipeControlTransfer(napi_env env, napi_callback_info info)
     PipeControlParam controlParam = {0};
     ParsePipeControlParam(env, argv[INDEX_1], controlParam);
 
-    // timeout param
-    int32_t timeout = 0;
+    // timeOut param
+    int32_t timeOut = 0;
     if (argc >= PARAM_COUNT_3) {
-        napi_get_value_int32(env, argv[INDEX_2], &timeout);
+        napi_get_value_int32(env, argv[INDEX_2], &timeOut);
     }
 
     auto asyncContext = new USBControlTransferAsyncContext();
@@ -1104,7 +1113,7 @@ static napi_value PipeControlTransfer(napi_env env, napi_callback_info info)
     }
 
     asyncContext->bufferLength = controlParam.dataLength;
-    asyncContext->timeout = timeout;
+    asyncContext->timeOut = timeOut;
     napi_value result = nullptr;
     napi_create_promise(env, &asyncContext->deferred, &result);
 
@@ -1125,16 +1134,16 @@ static auto g_bulkTransferExecute = [](napi_env env, void *data) {
     gettimeofday(&beginAsync, nullptr);
 
     USBBulkTransferAsyncContext *asyncContext = (USBBulkTransferAsyncContext *)data;
-    std::vector<uint8_t> vdata(asyncContext->buffer, asyncContext->buffer + asyncContext->bufferLength);
-    int32_t ret = asyncContext->pipe.BulkTransfer(asyncContext->endpoint, vdata, asyncContext->timeout);
+    std::vector<uint8_t> bufferData(asyncContext->buffer, asyncContext->buffer + asyncContext->bufferLength);
+    int32_t ret = asyncContext->pipe.BulkTransfer(asyncContext->endpoint, bufferData, asyncContext->timeOut);
 
     if (asyncContext->endpoint.GetDirection() == USB_ENDPOINT_DIR_OUT) {
         delete asyncContext->buffer;
         asyncContext->buffer = nullptr;
     } else {
-        (vdata.size() > asyncContext->bufferLength) ? asyncContext->bufferLength = asyncContext->bufferLength
-                                                    : asyncContext->bufferLength = vdata.size();
-        memcpy_s(asyncContext->buffer, asyncContext->bufferLength, vdata.data(), asyncContext->bufferLength);
+        (bufferData.size() > asyncContext->bufferLength) ? asyncContext->bufferLength = asyncContext->bufferLength
+                                                    : asyncContext->bufferLength = bufferData.size();
+        memcpy_s(asyncContext->buffer, asyncContext->bufferLength, bufferData.data(), asyncContext->bufferLength);
     }
 
     USB_HILOGD(MODULE_JS_NAPI, "call pipe result %{public}d", ret);
@@ -1172,19 +1181,19 @@ static bool GetBulkTransferParams(napi_env env, napi_callback_info info, USBBulk
     NAPI_ASSERT(env, (status == napi_ok) && (argc >= PARAM_COUNT_3), "BulkTransfer failed to get cb info");
 
     napi_valuetype type;
-    USBDevicePipe pip;
+    USBDevicePipe pipe;
     napi_typeof(env, argv[INDEX_0], &type);
     NAPI_ASSERT(env, type == napi_object, "BulkTransfer wrong argument type index 0, object expected");
-    ParseUsbDevicePipe(env, argv[INDEX_0], pip);
+    ParseUsbDevicePipe(env, argv[INDEX_0], pipe);
 
     USBEndpoint ep;
     napi_typeof(env, argv[INDEX_1], &type);
     NAPI_ASSERT(env, type == napi_object, "BulkTransfer wrong argument type index 1. Object expected.");
     ParseEndpointObj(env, argv[INDEX_1], ep);
 
-    int32_t timeout = 0;
+    int32_t timeOut = 0;
     if (argc > PARAM_COUNT_3) {
-        napi_get_value_int32(env, argv[INDEX_3], &timeout);
+        napi_get_value_int32(env, argv[INDEX_3], &timeOut);
     }
 
     uint8_t *buffer = nullptr;
@@ -1192,11 +1201,11 @@ static bool GetBulkTransferParams(napi_env env, napi_callback_info info, USBBulk
     size_t bufferSize;
     bool hasBuffer = NapiUtil::JsUint8ArrayParse(env, argv[INDEX_2], &buffer, bufferSize, offset);
     if (!hasBuffer) {
-        USB_HILOGD(MODULE_JS_NAPI, "BulkTransfer wrong argument, buffer is null");
+        USB_HILOGE(MODULE_JS_NAPI, "BulkTransfer wrong argument, buffer is null");
         return false;
     }
     asyncContext.env = env;
-    asyncContext.pipe = pip;
+    asyncContext.pipe = pipe;
     asyncContext.endpoint = ep;
 
     if (ep.GetDirection() == USB_ENDPOINT_DIR_OUT) {
@@ -1207,7 +1216,7 @@ static bool GetBulkTransferParams(napi_env env, napi_callback_info info, USBBulk
         asyncContext.buffer = buffer;
     }
     asyncContext.bufferLength = bufferSize;
-    asyncContext.timeout = timeout;
+    asyncContext.timeOut = timeOut;
     return true;
 }
 
@@ -1221,7 +1230,7 @@ static napi_value PipeBulkTransfer(napi_env env, napi_callback_info info)
     napi_value result = nullptr;
     napi_create_promise(env, &asyncContext->deferred, &result);
     if (!GetBulkTransferParams(env, info, *asyncContext)) {
-        USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s %{public}d : invalid arg", __func__, __LINE__);
+        USB_HILOGE(MODULE_JS_NAPI, "end call %{public}s %{public}d : invalid arg", __func__, __LINE__);
         asyncContext->status = napi_invalid_arg;
         napi_value queryResult = nullptr;
         napi_create_int32(env, -1, &queryResult);
@@ -1238,7 +1247,7 @@ static napi_value PipeBulkTransfer(napi_env env, napi_callback_info info)
     struct timeval end = {0};
     gettimeofday(&end, nullptr);
     if (status != napi_ok) {
-        USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, create async work failed, takes : %{public}ld ms", __func__,
+        USB_HILOGE(MODULE_JS_NAPI, "end call %{public}s, create async work failed, takes : %{public}ld ms", __func__,
                    getTimeDiff(start, end));
         return result;
     }
@@ -1265,9 +1274,9 @@ static napi_value PipeClose(napi_env env, napi_callback_info info)
     napi_typeof(env, obj, &type);
     NAPI_ASSERT(env, type == napi_object, "Wrong argument type. Object expected.");
 
-    USBDevicePipe pip;
-    ParseUsbDevicePipe(env, obj, pip);
-    int32_t ret = pip.Close();
+    USBDevicePipe pipe;
+    ParseUsbDevicePipe(env, obj, pipe);
+    int32_t ret = pipe.Close();
     napi_value result;
     napi_create_int32(env, ret, &result);
     struct timeval end = {0};
@@ -1284,6 +1293,61 @@ static napi_value GetVersion(napi_env env, napi_callback_info info)
     napi_value result;
     napi_create_string_utf8(env, version.c_str(), NAPI_AUTO_LENGTH, &result);
     return result;
+}
+
+static napi_value ToInt32Value(napi_env env, int32_t value)
+{
+    napi_value staticValue = nullptr;
+    napi_create_int32(env, value, &staticValue);
+    return staticValue;
+}
+
+static napi_value DeclareEnum(napi_env env, napi_value exports)
+{
+    napi_property_descriptor desc[] = {
+        /* Declare Enum PowerRoleType */
+        DECLARE_NAPI_STATIC_PROPERTY("NONE", ToInt32Value(env, NONE)),
+        DECLARE_NAPI_STATIC_PROPERTY("SOURCE", ToInt32Value(env, SOURCE)),
+        DECLARE_NAPI_STATIC_PROPERTY("SINK", ToInt32Value(env, SINK)),
+
+        /* Declare Enum DataRoleType */
+        DECLARE_NAPI_STATIC_PROPERTY("HOST", ToInt32Value(env, HOST)),
+        DECLARE_NAPI_STATIC_PROPERTY("DEVICE", ToInt32Value(env, DEVICE)),
+
+        /* Declare Enum PortModeType */
+        DECLARE_NAPI_STATIC_PROPERTY("UFP", ToInt32Value(env, UFP)),
+        DECLARE_NAPI_STATIC_PROPERTY("DFP", ToInt32Value(env, DFP)),
+        DECLARE_NAPI_STATIC_PROPERTY("DRP", ToInt32Value(env, DRP)),
+        DECLARE_NAPI_STATIC_PROPERTY("NUM_MODES", ToInt32Value(env, NUM_MODES)),
+
+        /* Declare Enum USBRequestTargetType */
+        DECLARE_NAPI_STATIC_PROPERTY("USB_REQUEST_TARGET_DEVICE", ToInt32Value(env, USB_REQUEST_TARGET_DEVICE)),
+        DECLARE_NAPI_STATIC_PROPERTY("USB_REQUEST_TARGET_INTERFACE", ToInt32Value(env, USB_REQUEST_TARGET_INTERFACE)),
+        DECLARE_NAPI_STATIC_PROPERTY("USB_REQUEST_TARGET_ENDPOINT", ToInt32Value(env, USB_REQUEST_TARGET_ENDPOINT)),
+        DECLARE_NAPI_STATIC_PROPERTY("USB_REQUEST_TARGET_OTHER", ToInt32Value(env, USB_REQUEST_TARGET_OTHER)),
+
+        /* Declare Enum USBControlRequestType */
+        DECLARE_NAPI_STATIC_PROPERTY("USB_REQUEST_TYPE_STANDARD", ToInt32Value(env, USB_REQUEST_TYPE_STANDARD)),
+        DECLARE_NAPI_STATIC_PROPERTY("USB_REQUEST_TYPE_CLASS", ToInt32Value(env, USB_REQUEST_TYPE_CLASS)),
+        DECLARE_NAPI_STATIC_PROPERTY("USB_REQUEST_TYPE_VENDOR", ToInt32Value(env, USB_REQUEST_TYPE_VENDOR)),
+
+        /* Declare Enum USBRequestDirection */
+        DECLARE_NAPI_STATIC_PROPERTY("USB_REQUEST_DIR_TO_DEVICE", ToInt32Value(env, USB_REQUEST_DIR_TO_DEVICE)),
+        DECLARE_NAPI_STATIC_PROPERTY("USB_REQUEST_DIR_FROM_DEVICE", ToInt32Value(env, USB_REQUEST_DIR_FROM_DEVICE)),
+
+        /* Declare Enum FunctionType */
+        DECLARE_NAPI_STATIC_PROPERTY("ACM", ToInt32Value(env, ACM)),
+        DECLARE_NAPI_STATIC_PROPERTY("ECM", ToInt32Value(env, ECM)),
+        DECLARE_NAPI_STATIC_PROPERTY("HDC", ToInt32Value(env, HDC)),
+        DECLARE_NAPI_STATIC_PROPERTY("MTP", ToInt32Value(env, MTP)),
+        DECLARE_NAPI_STATIC_PROPERTY("PTP", ToInt32Value(env, PTP)),
+        DECLARE_NAPI_STATIC_PROPERTY("RNDIS", ToInt32Value(env, RNDIS)),
+        DECLARE_NAPI_STATIC_PROPERTY("MIDI", ToInt32Value(env, MIDI)),
+        DECLARE_NAPI_STATIC_PROPERTY("AUDIO_SOURCE", ToInt32Value(env, AUDIO_SOURCE)),
+        DECLARE_NAPI_STATIC_PROPERTY("NCM", ToInt32Value(env, NCM)),
+    };
+    NAPI_CALL(env, napi_define_properties(env, exports, sizeof(desc) / sizeof(desc[0]), desc));
+    return exports;
 }
 
 EXTERN_C_START
@@ -1320,8 +1384,11 @@ static napi_value UsbInit(napi_env env, napi_value exports)
         DECLARE_NAPI_FUNCTION("closePipe", PipeClose),
 
         /* fort test get usb service version */
-        DECLARE_NAPI_FUNCTION("getVersion", GetVersion)};
+        DECLARE_NAPI_FUNCTION("getVersion", GetVersion),
+    };
     NAPI_CALL(env, napi_define_properties(env, exports, sizeof(desc) / sizeof(desc[0]), desc));
+
+    DeclareEnum(env, exports);
 
     USB_HILOGD(MODULE_JS_NAPI, "return");
 

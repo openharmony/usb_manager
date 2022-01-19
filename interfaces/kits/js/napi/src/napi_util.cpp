@@ -24,7 +24,7 @@
 namespace OHOS {
 namespace USB {
 const int32_t MAX_STR_LENGTH = 1024;
-void NapiUtil::JsValueToString(const napi_env &env, const napi_value &value, const int bufLen, std::string &target)
+void NapiUtil::JsValueToString(const napi_env &env, const napi_value &value, const int32_t bufLen, std::string &target)
 {
     if (bufLen <= 0 || bufLen > MAX_STR_LENGTH) {
         USB_HILOGE(MODULE_JS_NAPI, "%{public}s string too long malloc failed", __func__);
@@ -42,11 +42,8 @@ void NapiUtil::JsValueToString(const napi_env &env, const napi_value &value, con
     target = buf.get();
 }
 
-void NapiUtil::JsObjectToString(const napi_env &env,
-                                const napi_value &object,
-                                std::string fieldStr,
-                                const int bufLen,
-                                std::string &fieldRef)
+void NapiUtil::JsObjectToString(const napi_env &env, const napi_value &object, std::string fieldStr,
+    const int32_t bufLen, std::string &fieldRef)
 {
     if (bufLen <= 0)
         return;
@@ -73,10 +70,8 @@ void NapiUtil::JsObjectToString(const napi_env &env,
     }
 }
 
-bool NapiUtil::JsObjectGetProperty(const napi_env &env,
-                                   const napi_value &object,
-                                   std::string fieldStr,
-                                   napi_value &value)
+bool NapiUtil::JsObjectGetProperty(const napi_env &env, const napi_value &object, std::string fieldStr,
+    napi_value &value)
 {
     bool hasProperty = false;
     napi_has_named_property(env, object, fieldStr.c_str(), &hasProperty);
@@ -88,7 +83,7 @@ bool NapiUtil::JsObjectGetProperty(const napi_env &env,
     return hasProperty;
 }
 
-void NapiUtil::JsObjectToInt(const napi_env &env, const napi_value &object, std::string fieldStr, int &fieldRef)
+void NapiUtil::JsObjectToInt(const napi_env &env, const napi_value &object, std::string fieldStr, int32_t &fieldRef)
 {
     bool hasProperty = false;
     napi_has_named_property(env, object, fieldStr.c_str(), &hasProperty);
@@ -101,15 +96,12 @@ void NapiUtil::JsObjectToInt(const napi_env &env, const napi_value &object, std:
         NAPI_ASSERT_RETURN_VOID(env, valueType == napi_number, "Wrong argument type. Number expected.");
         napi_get_value_int32(env, field, &fieldRef);
     } else {
-        USB_HILOGW(MODULE_JS_NAPI, "%{public}s js to int no property: %{public}s", __func__, fieldStr.c_str());
+        USB_HILOGW(MODULE_JS_NAPI, "%{public}s js to int32_t no property: %{public}s", __func__, fieldStr.c_str());
     }
 }
 
-bool NapiUtil::JsUint8ArrayParse(const napi_env &env,
-                                 const napi_value &object,
-                                 uint8_t **uint8Buffer,
-                                 size_t &bufferSize,
-                                 size_t &offset)
+bool NapiUtil::JsUint8ArrayParse(const napi_env &env, const napi_value &object, uint8_t **uint8Buffer,
+    size_t &bufferSize, size_t &offset)
 {
     bool isTypedArray = false;
     if (napi_is_typedarray(env, object, &isTypedArray) != napi_ok || !isTypedArray) {
@@ -135,10 +127,8 @@ bool NapiUtil::JsUint8ArrayParse(const napi_env &env,
     return true;
 }
 
-void NapiUtil::Uint8ArrayToJsValue(const napi_env &env,
-                                   std::vector<uint8_t> &uint8Buffer,
-                                   size_t bufferSize,
-                                   napi_value &result)
+void NapiUtil::Uint8ArrayToJsValue(const napi_env &env, std::vector<uint8_t> &uint8Buffer, size_t bufferSize,
+    napi_value &result)
 {
     if (bufferSize < 0) {
         napi_get_undefined(env, &result);
@@ -159,7 +149,7 @@ void NapiUtil::SetValueUtf8String(const napi_env &env, std::string fieldStr, std
     napi_set_named_property(env, result, fieldStr.c_str(), value);
 }
 
-void NapiUtil::SetValueInt32(const napi_env &env, std::string fieldStr, const int intValue, napi_value &result)
+void NapiUtil::SetValueInt32(const napi_env &env, std::string fieldStr, const int32_t intValue, napi_value &result)
 {
     napi_value value;
     napi_create_int32(env, intValue, &value);
