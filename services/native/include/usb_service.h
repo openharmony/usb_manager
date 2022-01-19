@@ -65,41 +65,36 @@ public:
     int32_t GetSupportedModes(int32_t portId, int32_t &result) override;
     int32_t SetPortRole(int32_t portId, int32_t powerRole, int32_t dataRole) override;
 
-    int32_t ClaimInterface(uint8_t busNum, uint8_t devAddr, uint8_t interfaceid) override;
+    int32_t ClaimInterface(uint8_t busNum, uint8_t devAddr, uint8_t interfaceid, uint8_t force) override;
     int32_t ReleaseInterface(uint8_t busNum, uint8_t devAddr, uint8_t interfaceid) override;
-    int32_t
-        BulkTransferRead(const UsbDev &dev, const UsbPipe &pipe, std::vector<uint8_t> &vdata, int32_t timeout) override;
-    int32_t BulkTransferWrite(const UsbDev &dev,
-                              const UsbPipe &pipe,
-                              const std::vector<uint8_t> &vdata,
-                              int32_t timeout) override;
-    int32_t ControlTransfer(const UsbDev &dev, const UsbCtrlTransfer &ctrl, std::vector<uint8_t> &vdata) override;
+    int32_t BulkTransferRead(const UsbDev &dev, const UsbPipe &pipe, std::vector<uint8_t> &bufferData,
+        int32_t timeOut) override;
+    int32_t BulkTransferWrite(const UsbDev &dev, const UsbPipe &pipe, const std::vector<uint8_t> &bufferData,
+        int32_t timeOut) override;
+    int32_t ControlTransfer(const UsbDev &dev, const UsbCtrlTransfer &ctrl, std::vector<uint8_t> &bufferData) override;
     int32_t SetActiveConfig(uint8_t busNum, uint8_t devAddr, uint8_t configIndex) override;
     int32_t GetActiveConfig(uint8_t busNum, uint8_t devAddr, uint8_t &configIndex) override;
     int32_t SetInterface(uint8_t busNum, uint8_t devAddr, uint8_t interfaceid, uint8_t altIndex) override;
-    int32_t GetRawDescriptor(uint8_t busNum, uint8_t devAddr, std::vector<uint8_t> &vdata) override;
-    int32_t RequestQueue(const UsbDev &dev,
-                         const UsbPipe &pipe,
-                         const std::vector<uint8_t> &cData,
-                         const std::vector<uint8_t> &vData) override;
-    int32_t RequestWait(const UsbDev &dev,
-                        int32_t timeout,
-                        std::vector<uint8_t> &cData,
-                        std::vector<uint8_t> &vData) override;
+    int32_t GetRawDescriptor(uint8_t busNum, uint8_t devAddr, std::vector<uint8_t> &bufferData) override;
+    int32_t GetFileDescriptor(uint8_t busNum, uint8_t devAddr, int32_t &fd) override;
+    int32_t RequestQueue(const UsbDev &dev, const UsbPipe &pipe, const std::vector<uint8_t> &clientData,
+        const std::vector<uint8_t> &bufferData) override;
+    int32_t RequestWait(const UsbDev &dev, int32_t timeOut, std::vector<uint8_t> &clientData,
+        std::vector<uint8_t> &bufferData) override;
     int32_t RequestCancel(uint8_t busNum, uint8_t devAddr, uint8_t interfaceid, uint8_t endpointId) override;
     int32_t Close(uint8_t busNum, uint8_t devAddr) override;
     bool AddDevice(uint8_t busNum, uint8_t devAddr);
     bool DelDevice(uint8_t busNum, uint8_t devAddr);
     void UpdateUsbPort(int32_t portId, int32_t powerRole, int32_t dataRole, int32_t mode);
     int32_t GetDeviceInfo(uint8_t busNum, uint8_t devAddr, UsbDevice &dev);
-    int32_t GetDeviceInfoDescriptor(const UsbDev &uDev,
-                                    std::vector<uint8_t> &decriptor,
-                                    uint32_t &length,
-                                    UsbDevice &dev);
-    int32_t GetConfigDescriptor(const UsbDev &uDev,
-                                std::vector<uint8_t> &decriptor,
-                                std::vector<USBConfig> &configs,
-                                UsbDevice &dev);
+    int32_t GetDeviceInfoDescriptor(const UsbDev &uDev, std::vector<uint8_t> &decriptor, UsbDevice &dev);
+    int32_t GetConfigDescriptor(UsbDevice &dev, std::vector<uint8_t> &decriptor);
+
+    int32_t RegBulkCallback(const UsbDev &devInfo, const UsbPipe &pipe, const sptr<IRemoteObject> &cb) override;
+    int32_t UnRegBulkCallback(const UsbDev &devInfo, const UsbPipe &pipe) override;
+    int32_t BulkRead(const UsbDev &devInfo, const UsbPipe &pipe, sptr<Ashmem> &ashmem) override;
+    int32_t BulkWrite(const UsbDev &devInfo, const UsbPipe &pipe, sptr<Ashmem> &ashmem) override;
+    int32_t BulkCancel(const UsbDev &devInfo, const UsbPipe &pipe) override;
 
 private:
     bool Init();
