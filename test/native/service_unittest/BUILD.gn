@@ -44,7 +44,6 @@ ohos_unittest("test_usbdevicepipe") {
   ]
 
   external_deps = [
-    "ability_runtime:base",
     "ability_runtime:want",
     "appexecfwk_standard:appexecfwk_base",
     "appexecfwk_standard:libeventhandler",
@@ -74,7 +73,6 @@ ohos_unittest("test_usbrequest") {
   ]
 
   external_deps = [
-    "ability_runtime:base",
     "ability_runtime:want",
     "appexecfwk_standard:appexecfwk_base",
     "appexecfwk_standard:libeventhandler",
@@ -104,7 +102,6 @@ ohos_unittest("test_usbcore") {
   ]
 
   external_deps = [
-    "ability_runtime:base",
     "ability_runtime:want",
     "appexecfwk_standard:appexecfwk_base",
     "appexecfwk_standard:libeventhandler",
