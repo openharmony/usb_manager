@@ -19,11 +19,7 @@ module_output_path = "${usb_manager_part_name}/usb_unittest_test"
 config("module_private_config") {
   visibility = [ ":*" ]
 
-  include_dirs = [
-    "include",
-    "//utils/system/safwk/native/include",
-    "//drivers/peripheral/usb/hal/client/include",
-  ]
+  include_dirs = [ "include" ]
 }
 
 ohos_unittest("test_usbdevicepipe") {
@@ -38,9 +34,7 @@ ohos_unittest("test_usbdevicepipe") {
   deps = [
     "${usb_manager_path}/interfaces/innerkits:usbsrv_client",
     "${usb_manager_path}/services:usbservice",
-    "//drivers/peripheral/usb/hal/client:usbd_client",
     "//third_party/googletest:gtest_main",
-    "//utils/native/base:utils",
   ]
 
   external_deps = [
@@ -53,6 +47,8 @@ ohos_unittest("test_usbdevicepipe") {
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
     "samgr_standard:samgr_proxy",
+    "usb_device_driver:usbd_client",
+    "utils_base:utils",
   ]
 }
 
@@ -68,9 +64,7 @@ ohos_unittest("test_usbrequest") {
   deps = [
     "${usb_manager_path}/interfaces/innerkits:usbsrv_client",
     "${usb_manager_path}/services:usbservice",
-    "//drivers/peripheral/usb/hal/client:usbd_client",
     "//third_party/googletest:gtest_main",
-    "//utils/native/base:utils",
   ]
 
   external_deps = [
@@ -83,6 +77,8 @@ ohos_unittest("test_usbrequest") {
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
     "samgr_standard:samgr_proxy",
+    "usb_device_driver:usbd_client",
+    "utils_base:utils",
   ]
 }
 
@@ -98,9 +94,7 @@ ohos_unittest("test_usbcore") {
   deps = [
     "${usb_manager_path}/interfaces/innerkits:usbsrv_client",
     "${usb_manager_path}/services:usbservice",
-    "//drivers/peripheral/usb/hal/client:usbd_client",
     "//third_party/googletest:gtest_main",
-    "//utils/native/base:utils",
   ]
 
   external_deps = [
@@ -113,6 +107,8 @@ ohos_unittest("test_usbcore") {
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
     "samgr_standard:samgr_proxy",
+    "usb_device_driver:usbd_client",
+    "utils_base:utils",
   ]
 }
 

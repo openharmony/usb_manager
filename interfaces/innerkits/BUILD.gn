@@ -14,15 +14,7 @@
 import("//base/usb/usb_manager/usbmgr.gni")
 
 config("usbsrv_private_config") {
-  include_dirs = [
-    "${usb_manager_path}/services/zidl/include",
-    "//drivers/peripheral/usb/hal/client/include",
-    "//utils/system/safwk/native/include",
-    "//drivers/framework/include/utils",
-    "//drivers/adapter/uhdf2/osal/include",
-    "//drivers/adapter/uhdf2/ipc/include",
-    "//utils/native/base/include",
-  ]
+  include_dirs = [ "${usb_manager_path}/services/zidl/include" ]
 }
 
 config("usbsrv_public_config") {
@@ -46,17 +38,18 @@ ohos_shared_library("usbsrv_client") {
 
   public_configs = [ ":usbsrv_public_config" ]
 
-  deps = [
-    "//drivers/peripheral/usb/hal/client:usbd_client",
-    "//utils/native/base:utils",
-  ]
+  deps = []
 
   external_deps = [
     "appexecfwk_standard:libeventhandler",
+    "device_driver_framework:libhdf_ipc_adapter",
+    "device_driver_framework:libhdf_utils",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
     "samgr_standard:samgr_proxy",
+    "usb_device_driver:usbd_client",
+    "utils_base:utils",
   ]
 
   part_name = "usb_manager"
