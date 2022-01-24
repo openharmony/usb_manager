@@ -15,15 +15,11 @@ import("//base/usb/usb_manager/usbmgr.gni")
 
 config("usbnapi_private_config") {
   include_dirs = [
-    "//drivers/peripheral/usb/hal/client/include",
     "//foundation/ace/napi/native_engine",
     "//foundation/ace/napi/interfaces/kits",
-    "//utils/system/safwk/native/include",
     "//third_party/node/src",
-    "//base/usb/usb_manager/interfaces/kits/js/napi/include",
-    "//base/usb/usb_manager/interfaces/innerkits/native/include",
-    "//foundation/distributedschedule/samgr/interfaces/innerkits/samgr_proxy/include",
-    "//foundation/distributedschedule/samgr/adapter/interfaces/innerkits/include",
+    "${usb_manager_path}/interfaces/kits/js/napi/include",
+    "${usb_manager_path}/interfaces/innerkits/native/include",
   ]
 }
 
@@ -37,14 +33,15 @@ ohos_shared_library("usb") {
     ":usbnapi_private_config",
   ]
   deps = [
-    "//base/usb/usb_manager/interfaces/innerkits:usbsrv_client",
-    "//drivers/peripheral/usb/hal/client:usbd_client",
+    "${usb_manager_path}/interfaces/innerkits:usbsrv_client",
     "//foundation/ace/napi:ace_napi",
-    "//utils/native/base:utils",
   ]
   external_deps = [
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
+    "samgr_standard:lsamgr",
+    "usb_device_driver:usbd_client",
+    "utils_base:utils",
   ]
 
   relative_install_dir = "module"
