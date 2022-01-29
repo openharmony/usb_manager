@@ -38,7 +38,6 @@ ohos_unittest("test_usbdevicepipe") {
   ]
 
   external_deps = [
-    "ability_runtime:base",
     "ability_runtime:want",
     "bundle_framework:appexecfwk_base",
     "ces_standard:cesfwk_innerkits",
@@ -68,7 +67,6 @@ ohos_unittest("test_usbrequest") {
   ]
 
   external_deps = [
-    "ability_runtime:base",
     "ability_runtime:want",
     "bundle_framework:appexecfwk_base",
     "ces_standard:cesfwk_innerkits",
@@ -98,7 +96,6 @@ ohos_unittest("test_usbcore") {
   ]
 
   external_deps = [
-    "ability_runtime:base",
     "ability_runtime:want",
     "bundle_framework:appexecfwk_base",
     "ces_standard:cesfwk_innerkits",
