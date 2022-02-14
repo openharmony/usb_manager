@@ -18,6 +18,7 @@ declare namespace usb {
      * 获取USB服务版本号，测试用
      *
      * @return USB服务当前的版本号.
+     * @SysCap SystemCapability.USB.USBManager
      * @since 8
      */
     function getVersion(): string;
@@ -27,6 +28,7 @@ declare namespace usb {
      * 获取USB设备列表
      *
      * @return 设备信息{@link USBDevice}列表.
+     * @SysCap SystemCapability.USB.USBManager
      * @since 8
      */
     function getDevices(): Array<Readonly<USBDevice>>;
@@ -36,6 +38,7 @@ declare namespace usb {
      *
      * @param device 设备信息，{@link getDevices()}返回的列表中的一个设备信息
      * @return 指定的传输通道 {@link USBDevicePipe} 对象.
+     * @SysCap SystemCapability.USB.USBManager
      * @since 8
      */
     function connectDevice(device: USBDevice): Readonly<USBDevicePipe>;
@@ -45,6 +48,7 @@ declare namespace usb {
      *
      * @param deviceName 设备名称，{@link USBDevice.name}
      * @return true 有权限， false 没有权限
+     * @SysCap SystemCapability.USB.USBManager
      * @since 8
      */
     function hasRight(deviceName: string): boolean;
@@ -54,6 +58,7 @@ declare namespace usb {
      *
      * @param deviceName 设备名称，{@link USBDevice.name}
      * @return true 请求权限成功， false 请求权限失败
+     * @SysCap SystemCapability.USB.USBManager
      * @since 8
      */
     function requestRight(deviceName: string): Promise<boolean>;
@@ -64,6 +69,7 @@ declare namespace usb {
      * @param funcs 支持的功能列表描述符
      * @return 功能列表的数字组合掩码
      * @systemapi
+     * @SysCap SystemCapability.USB.USBManager
      * @since 8
      */
     function usbFunctionsFromString(funcs: string): number;
@@ -74,6 +80,7 @@ declare namespace usb {
      * @param funcs 支持的功能列表的数字组合掩码
      * @return 支持的功能列表描述字符串
      * @systemapi
+     * @SysCap SystemCapability.USB.USBManager
      * @since 8
      */
     function usbFunctionsToString(funcs: FunctionType): string;
@@ -84,6 +91,7 @@ declare namespace usb {
      * @param funcs 设置支持的功能列表的数字组合掩码{@link FunctionType}
      * @return true 设置成功， false 设置失败
      * @systemapi
+     * @SysCap SystemCapability.USB.USBManager
      * @since 8
      */
     function setCurrentFunctions(funcs: FunctionType): Promise<boolean>;
@@ -92,6 +100,7 @@ declare namespace usb {
      *
      * @return 支持的功能列表的数字组合掩码{@link FunctionType}
      * @systemapi
+     * @SysCap SystemCapability.USB.USBManager
      * @since 8
      */
     function getCurrentFunctions(): FunctionType;
@@ -102,6 +111,7 @@ declare namespace usb {
      *
      * @return {@link USBPort}列表
      * @systemapi
+     * @SysCap SystemCapability.USB.USBManager
      * @since 8
      */
     function getPorts(): Array<USBPort>;
@@ -111,6 +121,7 @@ declare namespace usb {
      *
      * @return 支持的模式列表的组合掩码{@link PortModeType}
      * @systemapi
+     * @SysCap SystemCapability.USB.USBManager
      * @since 8
      */
     function getSupportedModes(portId: number): PortModeType;
@@ -123,6 +134,7 @@ declare namespace usb {
      * @param dataRole 数据传输的角色{@link DataRoleType}
      * @return 支持的模式
      * @systemapi
+     * @SysCap SystemCapability.USB.USBManager
      * @since 8
      */
     function setPortRoles(portId: number, powerRole: PowerRoleType, dataRole: DataRoleType): Promise<boolean>;
@@ -135,6 +147,7 @@ declare namespace usb {
      * @param iface 用于确定需要获取接口 {@link USBInterface}.
      * @param force 是否强制获取
      * @return 成功：0；失败：错误码
+     * @SysCap SystemCapability.USB.USBManager
      * @since 8
      */
     function claimInterface(pipe: USBDevicePipe, iface: USBInterface, force?: boolean): number;
@@ -144,6 +157,7 @@ declare namespace usb {
      * @param pipe 用于确定总线号和设备地址 {@link USBDevicePipe}.
      * @param iface 用于确定需要释放接口 {@link USBInterface}.
      * @return 成功：0；失败：错误码
+     * @SysCap SystemCapability.USB.USBManager
      * @since 8
      */
     function releaseInterface(pipe: USBDevicePipe, iface: USBInterface): number;
@@ -153,6 +167,7 @@ declare namespace usb {
      * @param pipe 用于确定总线号和设备地址 {@link USBDevicePipe}.
      * @param config 用于确定需要设置配置 {@link USBConfig}.
      * @return 成功：0；失败：错误码
+     * @SysCap SystemCapability.USB.USBManager
      * @since 8
      */
     function setConfiguration(pipe: USBDevicePipe, config: USBConfig): number;
@@ -162,6 +177,7 @@ declare namespace usb {
      * @param pipe 用于确定总线号和设备地址 {@link USBDevicePipe}.
      * @param iface 用于确定需要设置接口 {@link USBInterface}.
      * @return 成功：0；失败：错误码
+     * @SysCap SystemCapability.USB.USBManager
      * @since 8
      */
     function setInterface(pipe: USBDevicePipe, iface: USBInterface): number;
@@ -170,6 +186,7 @@ declare namespace usb {
      *
      * @param pipe 用于确定总线号和设备地址 {@link USBDevicePipe}.
      * @return 返回获取的原始数据
+     * @SysCap SystemCapability.USB.USBManager
      * @since 8
      */
     function getRawDescriptor(pipe: USBDevicePipe): Uint8Array;
@@ -178,6 +195,7 @@ declare namespace usb {
      *
      * @param pipe 用于确定设备 {@link USBDevicePipe}.
      * @return 返回设备对应的文件描述符
+     * @SysCap SystemCapability.USB.USBManager
      * @since 8
      */
     function getFileDescriptor(pipe: USBDevicePipe): number;
@@ -188,6 +206,7 @@ declare namespace usb {
      * @param contrlparam 控制传输参数
      * @param timeout 超时时间，可选参数，默认为0不超时
      * @return 传输或接收到的数据块大小，异常返回-1
+     * @SysCap SystemCapability.USB.USBManager
      * @since 8
      */
     function controlTransfer(pipe: USBDevicePipe, contrlparam: USBControlParams, timeout?: number): Promise<number>;
@@ -200,6 +219,7 @@ declare namespace usb {
      * @param buffer 用于写入或读取的缓冲区
      * @param timeout 超时时间，可选参数，默认为0不超时
      * @return 传输或接收到的数据块大小，异常返回-1
+     * @SysCap SystemCapability.USB.USBManager
      * @since 8
      */
     function bulkTransfer(pipe: USBDevicePipe, endpoint: USBEndpoint, buffer: Uint8Array,
@@ -210,6 +230,7 @@ declare namespace usb {
      *
      * @param pipe 用于确定pipe {@link USBDevicePipe}.
      * @return 成功：0；失败：错误码
+     * @SysCap SystemCapability.USB.USBManager
      * @since 8
      */
     function closePipe(pipe: USBDevicePipe): number;
