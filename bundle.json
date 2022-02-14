@@ -18,8 +18,7 @@
       "ram": "6M",
       "deps": {
         "components": [
-          "base",
-          "want",
+          "ability_base",
           "appexecfwk_base",
           "appexecfwk_core",
           "libeventhandler",
