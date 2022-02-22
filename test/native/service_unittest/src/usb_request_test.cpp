@@ -46,7 +46,7 @@ void UsbRequestTest::SetUpTestCase(void)
     if (ret != 0) {
         exit(0);
     }
-    std::cout << "请连接设备，连接完后按回车键继续" << std::endl;
+    std::cout << "please connect device, press enter to continue" << std::endl;
     int32_t c;
     while ((c = getchar()) != '\n' && c != EOF) {
         ;

@@ -51,6 +51,38 @@ ohos_unittest("test_usbdevicepipe") {
   ]
 }
 
+ohos_unittest("test_bulkcallback") {
+  module_out_path = module_output_path
+  sources = [
+    "src/usb_bulkcallback_test.cpp",
+    "src/usb_callback_test.cpp",
+  ]
+
+  configs = [
+    "${utils_path}:utils_config",
+    ":module_private_config",
+  ]
+
+  deps = [
+    "${usb_manager_path}/interfaces/innerkits:usbsrv_client",
+    "${usb_manager_path}/services:usbservice",
+    "//third_party/googletest:gtest_main",
+  ]
+
+  external_deps = [
+    "ability_base:want",
+    "bundle_framework:appexecfwk_base",
+    "ces_standard:cesfwk_innerkits",
+    "eventhandler:libeventhandler",
+    "hiviewdfx_hilog_native:libhilog",
+    "ipc:ipc_core",
+    "safwk:system_ability_fwk",
+    "samgr_standard:samgr_proxy",
+    "usb_device_driver:usbd_client",
+    "utils_base:utils",
+  ]
+}
+
 ohos_unittest("test_usbrequest") {
   module_out_path = module_output_path
   sources = [ "src/usb_request_test.cpp" ]

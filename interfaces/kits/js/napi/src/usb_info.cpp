@@ -1033,7 +1033,7 @@ static auto g_controlTransferExecute = [](napi_env env, void *data) {
                                    asyncContext->index, asyncContext->timeOut};
     int32_t ret = asyncContext->pipe.ControlTransfer(tctrl, bufferData);
     if ((asyncContext->reqType & USB_ENDPOINT_DIR_MASK) == USB_ENDPOINT_DIR_OUT) {
-        delete asyncContext->buffer;
+        delete [] asyncContext->buffer;
         asyncContext->buffer = nullptr;
     } else {
         (bufferData.size() > asyncContext->bufferLength) ? asyncContext->bufferLength = asyncContext->bufferLength
@@ -1138,7 +1138,7 @@ static auto g_bulkTransferExecute = [](napi_env env, void *data) {
     int32_t ret = asyncContext->pipe.BulkTransfer(asyncContext->endpoint, bufferData, asyncContext->timeOut);
 
     if (asyncContext->endpoint.GetDirection() == USB_ENDPOINT_DIR_OUT) {
-        delete asyncContext->buffer;
+        delete [] asyncContext->buffer;
         asyncContext->buffer = nullptr;
     } else {
         (bufferData.size() > asyncContext->bufferLength) ? asyncContext->bufferLength = asyncContext->bufferLength
