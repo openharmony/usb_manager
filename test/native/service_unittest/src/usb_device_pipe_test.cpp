@@ -15,6 +15,7 @@
 #include "usb_device_pipe_test.h"
 #include <iostream>
 #include <vector>
+#include <sys/time.h>
 #include "delayed_sp_singleton.h"
 #include "hilog_wrapper.h"
 #include "if_system_ability_manager.h"
@@ -39,7 +40,7 @@ void UsbDevicePipeTest::SetUpTestCase(void)
         exit(0);
     }
 
-    std::cout << "请连接设备，连接完后按回车键继续" << std::endl;
+    std::cout << "please connect device, press enter to continue" << std::endl;
     int32_t c;
     while ((c = getchar()) != '\n' && c != EOF) {
         ;
