@@ -47,6 +47,7 @@ const int32_t HALF = 2;
 const int32_t BIT_SHIFT_4 = 4;
 const int32_t BIT_HIGH_4 = 0xF0;
 const int32_t BIT_LOW_4 = 0x0F;
+const int32_t SERVICE_STARTUP_MAX_TIME = 30;
 } // namespace
 
 auto pms = DelayedSpSingleton<UsbService>::GetInstance();
@@ -68,14 +69,27 @@ void UsbService::OnStart()
         USB_HILOGE(MODULE_USB_SERVICE, "OnStart is ready, nothing to do");
         return;
     }
+
     if (!(Init())) {
         USB_HILOGE(MODULE_USB_SERVICE, "OnStart call init fail");
         return;
     }
-    if (!(InitUsbd())) {
-        USB_HILOGE(MODULE_USB_SERVICE, "OnStart call initUsbd fail");
-        return;
+    
+    // wait for the usbd service to start and bind usb service and usbd service
+    int32_t retryTimes = 0;
+    while (retryTimes < SERVICE_STARTUP_MAX_TIME) {
+        if (InitUsbd() != 0) {
+            break;
+        }
+        sleep(1);
+        retryTimes++;
+        
+        if (retryTimes == SERVICE_STARTUP_MAX_TIME) {
+            USB_HILOGE(MODULE_USB_SERVICE, "OnStart call initUsbd fail");
+            return;
+        }
     }
+    
     usbPortManager_->Init();
     ready_ = true;
     USB_HILOGE(MODULE_USB_SERVICE, "OnStart and add system ability success");
@@ -404,12 +418,12 @@ static int32_t FillDevStrings(UsbDevice &dev)
 {
     uint8_t busNum;
     uint8_t devAddr;
+    uint8_t offsetValue = 8;
 
     busNum = dev.GetBusNum();
     devAddr = dev.GetDevAddr();
     uint16_t bcdDevice = dev.GetbcdDevice();
-    uint8_t *ptr = (uint8_t *)&bcdDevice;
-    const std::vector<uint8_t> bcdData(ptr, ptr + DESCRIPTOR_VALUE_START_OFFSET);
+    const std::vector<uint8_t> bcdData {(bcdDevice & 0xff), ((bcdDevice >> offsetValue) & 0xff)};
     dev.SetVersion(BcdToString(bcdData));
     dev.SetManufacturerName(GetDevStringValFromIdx(busNum, devAddr, dev.GetiManufacturer()));
     dev.SetProductName(GetDevStringValFromIdx(busNum, devAddr, dev.GetiProduct()));
