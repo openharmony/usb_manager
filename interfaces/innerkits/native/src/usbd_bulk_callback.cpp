@@ -29,6 +29,10 @@ int32_t UsbdBulkCallBack::OnRemoteRequest(uint32_t code, MessageParcel &data, Me
     HDF_LOGI("%{public}s:%{public}d OnRemoteRequest entry! code:%{public}d", __func__, __LINE__, code);
     switch (code) {
         case CMD_USBD_BULK_CALLBACK_WRITE: {
+            if (data.ReadInterfaceToken() != GetObjectDescriptor()) {
+                HDF_LOGE("%{public}s: checkout interface descriptor failed!", __func__);
+                return UEC_SERVICE_WRITE_PARCEL_ERROR;
+            }
             int32_t status;
             int32_t actLength;
             if (!data.ReadInt32(status)) {
@@ -45,6 +49,10 @@ int32_t UsbdBulkCallBack::OnRemoteRequest(uint32_t code, MessageParcel &data, Me
             break;
         }
         case CMD_USBD_BULK_CALLBACK_READ: {
+            if (data.ReadInterfaceToken() != GetObjectDescriptor()) {
+                HDF_LOGE("%{public}s: checkout interface descriptor failed!", __func__);
+                return UEC_SERVICE_WRITE_PARCEL_ERROR;
+            }
             int32_t status;
             int32_t actLength;
             if (!data.ReadInt32(status)) {
