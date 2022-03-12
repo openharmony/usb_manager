@@ -620,6 +620,10 @@ int32_t UsbService::UnRegBulkCallback(const UsbDev &devInfo, const UsbPipe &pipe
 
 int32_t UsbService::BulkRead(const UsbDev &devInfo, const UsbPipe &pipe, sptr<Ashmem> &ashmem)
 {
+    if (ashmem == nullptr) {
+        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d BulkRead error ashmem", __func__, __LINE__);
+        return UEC_SERVICE_INVALID_VALUE;
+    }
     int32_t ret = UsbdClient::GetInstance().BulkRead(devInfo, pipe, ashmem);
     if (UEC_OK != ret) {
         USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d BulkRead error ret:%{public}d", __func__, __LINE__, ret);
@@ -629,6 +633,10 @@ int32_t UsbService::BulkRead(const UsbDev &devInfo, const UsbPipe &pipe, sptr<As
 
 int32_t UsbService::BulkWrite(const UsbDev &devInfo, const UsbPipe &pipe, sptr<Ashmem> &ashmem)
 {
+    if (ashmem == nullptr) {
+        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d BulkWrite error ashmem", __func__, __LINE__);
+        return UEC_SERVICE_INVALID_VALUE;
+    }
     int32_t ret = UsbdClient::GetInstance().BulkWrite(devInfo, pipe, ashmem);
     if (UEC_OK != ret) {
         USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d BulkWrite error ret:%{public}d", __func__, __LINE__, ret);
