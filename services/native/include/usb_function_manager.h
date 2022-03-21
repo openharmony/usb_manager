@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,24 +27,24 @@ class UsbFunctionManager {
 public:
     static bool AreSettableFunctions(int32_t funcs);
 
-    static int32_t FromStringFunctions(std::string funcs);
+    static int32_t FromStringFunctions(std::string_view funcs);
     static std::string ToStringFunctions(int32_t func);
     static void updateFunctions(int32_t func);
     static int32_t getCurrentFunctions();
 
-    static const std::string FUNCTION_NAME_NONE;
-    static const std::string FUNCTION_NAME_HDC;
-    static const std::string FUNCTION_NAME_ACM;
-    static const std::string FUNCTION_NAME_ECM;
+    static constexpr std::string_view FUNCTION_NAME_NONE = "none";
+    static constexpr std::string_view FUNCTION_NAME_HDC = "hdc";
+    static constexpr std::string_view FUNCTION_NAME_ACM = "acm";
+    static constexpr std::string_view FUNCTION_NAME_ECM = "ecm";
 
-    static const int32_t FUNCTION_NONE;
-    static const int32_t FUNCTION_ACM;
-    static const int32_t FUNCTION_ECM;
-    static const int32_t FUNCTION_HDC;
+    static constexpr int32_t FUNCTION_NONE = 0;
+    static constexpr int32_t FUNCTION_ACM = 1;
+    static constexpr int32_t FUNCTION_ECM = 2;
+    static constexpr int32_t FUNCTION_HDC = 4;
 
 private:
-    static const int32_t FUNCTION_SETTABLE;
-    static const std::map<std::string, int32_t> FUNCTION_MAPPING_N2C;
+    static constexpr int32_t FUNCTION_SETTABLE = FUNCTION_HDC | FUNCTION_ACM | FUNCTION_ECM;
+    static const std::map<std::string_view, int32_t> FUNCTION_MAPPING_N2C;
     static int32_t currentFunctions;
 };
 } // namespace USB

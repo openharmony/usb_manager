@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,7 +33,7 @@
 
 using namespace OHOS;
 using namespace OHOS::USB;
-const int32_t MSEC_TIME = 1000;
+
 const int32_t INDEX_0 = 0;
 const int32_t INDEX_1 = 1;
 const int32_t INDEX_2 = 2;
@@ -185,29 +185,31 @@ static bool ParseEndpointsObjs(const napi_env env, const napi_value interfaceObj
     // Get the array.
     bool result = false;
     napi_status status = napi_is_array(env, interfaceObj, &result);
-    if (result && status == napi_ok) {
-        napi_value endpointsObjs;
-        bool isGetObjSuccess = NapiUtil::JsObjectGetProperty(env, interfaceObj, "endpoints", endpointsObjs);
-        if (!isGetObjSuccess) {
-            return false;
-        }
-
-        uint32_t endpointCount = 0;
-        status = napi_get_array_length(env, endpointsObjs, &endpointCount);
-
-        for (uint32_t k = 0; k < endpointCount; ++k) {
-            napi_value endpointObj;
-            napi_status status = napi_get_element(env, endpointsObjs, k, &endpointObj);
-            if (status != napi_ok) {
-                return false;
-            }
-            USBEndpoint ep;
-            ParseEndpointObj(env, endpointObj, ep);
-            eps.push_back(ep);
-        }
+    if (result == false || status != napi_ok) {
+        return false;
     }
 
-    return false;
+    napi_value endpointsObjs;
+    bool isGetObjSuccess = NapiUtil::JsObjectGetProperty(env, interfaceObj, "endpoints", endpointsObjs);
+    if (!isGetObjSuccess) {
+        return false;
+    }
+
+    uint32_t endpointCount = 0;
+    status = napi_get_array_length(env, endpointsObjs, &endpointCount);
+
+    for (uint32_t k = 0; k < endpointCount; ++k) {
+        napi_value endpointObj;
+        napi_status status = napi_get_element(env, endpointsObjs, k, &endpointObj);
+        if (status != napi_ok) {
+            return false;
+        }
+        USBEndpoint ep;
+        ParseEndpointObj(env, endpointObj, ep);
+        eps.push_back(ep);
+    }
+
+    return true;
 }
 
 struct PipeControlParam {
@@ -360,19 +362,10 @@ static void ParseDeviceObj(const napi_env env, const napi_value deviceObj, UsbDe
                     protocol, configs);
 }
 
-static long getTimeDiff(timeval startTime, timeval endTime)
-{
-    return (endTime.tv_sec - startTime.tv_sec) * MSEC_TIME + (endTime.tv_usec - startTime.tv_usec) / MSEC_TIME;
-}
-
 /* ============================================= Usb Core ============================================= */
 
 static napi_value CoreGetDevices(napi_env env, napi_callback_info info)
 {
-    USB_HILOGD(MODULE_JS_NAPI, "begin call %{public}s", __func__);
-    struct timeval start = {0};
-    gettimeofday(&start, nullptr);
-
     size_t argc = PARAM_COUNT_1;
     napi_value argv[PARAM_COUNT_1] = {0};
     napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
@@ -397,17 +390,12 @@ static napi_value CoreGetDevices(napi_env env, napi_callback_info info)
         napi_set_element(env, result, i, device);
         ++i;
     }
-    struct timeval end = {0};
-    gettimeofday(&end, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, takes : %{public}ld ms", __func__, getTimeDiff(start, end));
+
     return result;
 }
 
 static napi_value CoreConnectDevice(napi_env env, napi_callback_info info)
 {
-    USB_HILOGD(MODULE_JS_NAPI, "begin call %{public}s", __func__);
-    struct timeval start = {0};
-    gettimeofday(&start, nullptr);
     size_t argc = PARAM_COUNT_1;
     napi_value argv[PARAM_COUNT_1] = {0};
     napi_status status = napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
@@ -430,18 +418,12 @@ static napi_value CoreConnectDevice(napi_env env, napi_callback_info info)
     } else {
         napi_get_undefined(env, &pipObj);
     }
-    struct timeval end = {0};
-    gettimeofday(&end, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, takes : %{public}ld ms, ret : %{public}d", __func__,
-               getTimeDiff(start, end), ret);
+
     return pipObj;
 }
 
 static napi_value CoreHasRight(napi_env env, napi_callback_info info)
 {
-    USB_HILOGD(MODULE_JS_NAPI, "begin call %{public}s", __func__);
-    struct timeval start = {0};
-    gettimeofday(&start, nullptr);
     size_t argc = PARAM_COUNT_1;
     napi_value args[PARAM_COUNT_1] = {0};
     napi_status status = napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
@@ -458,30 +440,22 @@ static napi_value CoreHasRight(napi_env env, napi_callback_info info)
 
     napi_value napiValue = nullptr;
     napi_get_boolean(env, result == UEC_OK, &napiValue);
-    struct timeval end = {0};
-    gettimeofday(&end, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, takes : %{public}ld ms", __func__, getTimeDiff(start, end));
+
     return napiValue;
 }
 
 static auto g_requestRightExecute = [](napi_env env, void *data) {
-    struct timeval beginAsync = {0};
-    gettimeofday(&beginAsync, nullptr);
-    USBRightAsyncContext *asyncContext = (USBRightAsyncContext *)data;
+    USBRightAsyncContext *asyncContext = reinterpret_cast<USBRightAsyncContext *>(data);
     int32_t ret = g_usbClient.RequestRight(asyncContext->deviceName);
     if (ret == UEC_OK) {
         asyncContext->status = napi_ok;
     } else {
         asyncContext->status = napi_generic_failure;
     }
-    struct timeval endAsync = {0};
-    gettimeofday(&endAsync, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call CoreRequestRight async work finished, takes : %{public}ld ms",
-               getTimeDiff(beginAsync, endAsync));
 };
 
 static auto g_requestRightComplete = [](napi_env env, napi_status status, void *data) {
-    USBRightAsyncContext *asyncContext = (USBRightAsyncContext *)data;
+    USBRightAsyncContext *asyncContext = reinterpret_cast<USBRightAsyncContext *>(data);
     napi_value queryResult = nullptr;
     napi_get_boolean(env, asyncContext->status == napi_ok, &queryResult);
 
@@ -492,9 +466,6 @@ static auto g_requestRightComplete = [](napi_env env, napi_status status, void *
 
 static napi_value CoreRequestRight(napi_env env, napi_callback_info info)
 {
-    USB_HILOGD(MODULE_JS_NAPI, "begin call %{public}s", __func__);
-    struct timeval start = {0};
-    gettimeofday(&start, nullptr);
     size_t argc = PARAM_COUNT_1;
     napi_value args[PARAM_COUNT_1] = {0};
     napi_status status = napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
@@ -506,7 +477,9 @@ static napi_value CoreRequestRight(napi_env env, napi_callback_info info)
     std::string deviceName;
     NapiUtil::JsValueToString(env, args[INDEX_0], STR_DEFAULT_SIZE, deviceName);
 
-    auto asyncContext = new USBRightAsyncContext();
+    auto asyncContext = new(std::nothrow) USBRightAsyncContext();
+    NAPI_ASSERT(env, asyncContext != nullptr, "Create USBRightAsyncContext failed.");
+
     asyncContext->env = env;
     asyncContext->deviceName = deviceName;
 
@@ -516,20 +489,15 @@ static napi_value CoreRequestRight(napi_env env, napi_callback_info info)
     napi_value resource = nullptr;
     napi_create_string_utf8(env, "RequestRight", NAPI_AUTO_LENGTH, &resource);
 
-    napi_create_async_work(env, nullptr, resource, g_requestRightExecute, g_requestRightComplete, (void *)asyncContext,
-                           &asyncContext->work);
+    napi_create_async_work(env, nullptr, resource, g_requestRightExecute, g_requestRightComplete,
+        reinterpret_cast<void *>(asyncContext), &asyncContext->work);
     napi_queue_async_work(env, asyncContext->work);
-    struct timeval end = {0};
-    gettimeofday(&end, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, takes : %{public}ld ms", __func__, getTimeDiff(start, end));
+
     return result;
 }
 
 static napi_value CoreUsbFunctionsFromString(napi_env env, napi_callback_info info)
 {
-    USB_HILOGD(MODULE_JS_NAPI, "begin call %{public}s", __func__);
-    struct timeval start = {0};
-    gettimeofday(&start, nullptr);
     size_t argc = PARAM_COUNT_1;
     napi_value argv[PARAM_COUNT_1] = {0};
 
@@ -548,17 +516,12 @@ static napi_value CoreUsbFunctionsFromString(napi_env env, napi_callback_info in
 
     napi_value result;
     napi_create_int32(env, numFuncs, &result);
-    struct timeval end = {0};
-    gettimeofday(&end, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, takes : %{public}ld ms", __func__, getTimeDiff(start, end));
+
     return result;
 }
 
 static napi_value CoreUsbFunctionsToString(napi_env env, napi_callback_info info)
 {
-    USB_HILOGD(MODULE_JS_NAPI, "begin call %{public}s", __func__);
-    struct timeval start = {0};
-    gettimeofday(&start, nullptr);
     size_t argc = PARAM_COUNT_1;
     napi_value argv[PARAM_COUNT_1] = {0};
 
@@ -576,30 +539,21 @@ static napi_value CoreUsbFunctionsToString(napi_env env, napi_callback_info info
     napi_value result;
     napi_create_string_utf8(env, strFuncs.c_str(), NAPI_AUTO_LENGTH, &result);
 
-    struct timeval end = {0};
-    gettimeofday(&end, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, takes : %{public}ld ms", __func__, getTimeDiff(start, end));
     return result;
 }
 
 static auto g_setCurrentFunctionExecute = [](napi_env env, void *data) {
-    struct timeval beginAsync = {0};
-    gettimeofday(&beginAsync, nullptr);
-    USBFunctionAsyncContext *asyncContext = (USBFunctionAsyncContext *)data;
+    USBFunctionAsyncContext *asyncContext = reinterpret_cast<USBFunctionAsyncContext *>(data);
     int32_t ret = g_usbClient.SetCurrentFunctions(asyncContext->functions);
     if (ret == UEC_OK) {
         asyncContext->status = napi_ok;
     } else {
         asyncContext->status = napi_generic_failure;
     }
-    struct timeval endAsync = {0};
-    gettimeofday(&endAsync, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call CoreSetCurrentFunctions async work finished, takes : %{public}ld ms",
-               getTimeDiff(beginAsync, endAsync));
 };
 
 static auto g_setCurrentFunctionComplete = [](napi_env env, napi_status status, void *data) {
-    USBFunctionAsyncContext *asyncContext = (USBFunctionAsyncContext *)data;
+    USBFunctionAsyncContext *asyncContext = reinterpret_cast<USBFunctionAsyncContext *>(data);
     napi_value queryResult = nullptr;
     napi_get_boolean(env, asyncContext->status == napi_ok, &queryResult);
 
@@ -610,9 +564,6 @@ static auto g_setCurrentFunctionComplete = [](napi_env env, napi_status status, 
 
 static napi_value CoreSetCurrentFunctions(napi_env env, napi_callback_info info)
 {
-    USB_HILOGD(MODULE_JS_NAPI, "begin call %{public}s", __func__);
-    struct timeval start = {0};
-    gettimeofday(&start, nullptr);
     size_t argc = PARAM_COUNT_1;
     napi_value argv[PARAM_COUNT_1] = {0};
 
@@ -626,7 +577,9 @@ static napi_value CoreSetCurrentFunctions(napi_env env, napi_callback_info info)
     int32_t funcs = 0;
     napi_get_value_int32(env, argv[INDEX_0], &funcs);
 
-    auto asyncContext = new USBFunctionAsyncContext();
+    auto asyncContext = new(std::nothrow) USBFunctionAsyncContext();
+    NAPI_ASSERT(env, asyncContext != nullptr, "Create USBFunctionAsyncContext failed.");
+
     asyncContext->env = env;
     asyncContext->functions = funcs;
     napi_value result = nullptr;
@@ -636,20 +589,14 @@ static napi_value CoreSetCurrentFunctions(napi_env env, napi_callback_info info)
     napi_create_string_utf8(env, "SetCurrentFunctions", NAPI_AUTO_LENGTH, &resource);
 
     napi_create_async_work(env, nullptr, resource, g_setCurrentFunctionExecute, g_setCurrentFunctionComplete,
-                           (void *)asyncContext, &asyncContext->work);
+                           reinterpret_cast<void *>(asyncContext), &asyncContext->work);
     napi_queue_async_work(env, asyncContext->work);
-    struct timeval end = {0};
-    gettimeofday(&end, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, takes : %{public}ld ms", __func__, getTimeDiff(start, end));
+
     return result;
 }
 
 static napi_value CoreGetCurrentFunctions(napi_env env, napi_callback_info info)
 {
-    USB_HILOGD(MODULE_JS_NAPI, "begin call %{public}s", __func__);
-    struct timeval start = {0};
-    gettimeofday(&start, nullptr);
-
     size_t argc = PARAM_COUNT_1;
     napi_value argv[PARAM_COUNT_1] = {0};
     napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
@@ -664,18 +611,12 @@ static napi_value CoreGetCurrentFunctions(napi_env env, napi_callback_info info)
         return result;
     }
     napi_create_int32(env, cfuncs, &result);
-    struct timeval end = {0};
-    gettimeofday(&end, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, takes : %{public}ld ms", __func__, getTimeDiff(start, end));
+
     return result;
 }
 
 static napi_value CoreGetPorts(napi_env env, napi_callback_info info)
 {
-    USB_HILOGD(MODULE_JS_NAPI, "begin call %{public}s", __func__);
-    struct timeval start = {0};
-    gettimeofday(&start, nullptr);
-
     size_t argc = PARAM_COUNT_1;
     napi_value argv[PARAM_COUNT_1] = {0};
     napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
@@ -705,9 +646,7 @@ static napi_value CoreGetPorts(napi_env env, napi_callback_info info)
         napi_set_named_property(env, port, "status", usbPortStatus);
         napi_set_element(env, result, i, port);
     }
-    struct timeval end = {0};
-    gettimeofday(&end, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, takes : %{public}ld ms", __func__, getTimeDiff(start, end));
+
     return result;
 }
 
@@ -715,9 +654,6 @@ static napi_value CoreGetPorts(napi_env env, napi_callback_info info)
 
 static napi_value PortGetSupportedModes(napi_env env, napi_callback_info info)
 {
-    USB_HILOGD(MODULE_JS_NAPI, "begin call %{public}s", __func__);
-    struct timeval start = {0};
-    gettimeofday(&start, nullptr);
     size_t argc = PARAM_COUNT_1;
     napi_value args[PARAM_COUNT_1] = {0};
 
@@ -737,31 +673,22 @@ static napi_value PortGetSupportedModes(napi_env env, napi_callback_info info)
     }
     napi_value napiValue = nullptr;
     NAPI_CALL(env, napi_create_int32(env, result, &napiValue));
-    struct timeval end = {0};
-    gettimeofday(&end, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, result : %{public}d, takes : %{public}ld ms", __func__, result,
-               getTimeDiff(start, end));
+
     return napiValue;
 }
 
 static auto g_setPortRoleExecute = [](napi_env env, void *data) {
-    struct timeval beginAsync = {0};
-    gettimeofday(&beginAsync, nullptr);
-    USBPortRoleAsyncContext *asyncContext = (USBPortRoleAsyncContext *)data;
+    USBPortRoleAsyncContext *asyncContext = reinterpret_cast<USBPortRoleAsyncContext *>(data);
     int32_t ret = g_usbClient.SetPortRole(asyncContext->portId, asyncContext->powerRole, asyncContext->dataRole);
     if (ret == UEC_OK) {
         asyncContext->status = napi_ok;
     } else {
         asyncContext->status = napi_generic_failure;
     }
-    struct timeval endAsync = {0};
-    gettimeofday(&endAsync, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call PortSetPortRole async work finished, takes : %{public}ld ms",
-               getTimeDiff(beginAsync, endAsync));
 };
 
 static auto g_setPortRoleComplete = [](napi_env env, napi_status status, void *data) {
-    USBPortRoleAsyncContext *asyncContext = (USBPortRoleAsyncContext *)data;
+    USBPortRoleAsyncContext *asyncContext = reinterpret_cast<USBPortRoleAsyncContext *>(data);
     napi_value queryResult = nullptr;
 
     napi_get_boolean(env, asyncContext->status == napi_ok, &queryResult);
@@ -773,9 +700,6 @@ static auto g_setPortRoleComplete = [](napi_env env, napi_status status, void *d
 
 static napi_value PortSetPortRole(napi_env env, napi_callback_info info)
 {
-    USB_HILOGD(MODULE_JS_NAPI, "begin call %{public}s", __func__);
-    struct timeval start = {0};
-    gettimeofday(&start, nullptr);
     size_t argc = PARAM_COUNT_3;
     napi_value args[PARAM_COUNT_3] = {0};
 
@@ -797,7 +721,9 @@ static napi_value PortSetPortRole(napi_env env, napi_callback_info info)
     int32_t dataRole = 0;
     napi_get_value_int32(env, args[INDEX_2], &dataRole);
 
-    auto asyncContext = new USBPortRoleAsyncContext();
+    auto asyncContext = new(std::nothrow) USBPortRoleAsyncContext();
+    NAPI_ASSERT(env, asyncContext != nullptr, "Create USBPortRoleAsyncContext failed.");
+
     asyncContext->env = env;
     asyncContext->portId = id;
     asyncContext->dataRole = dataRole;
@@ -809,20 +735,15 @@ static napi_value PortSetPortRole(napi_env env, napi_callback_info info)
     napi_value resource = nullptr;
     napi_create_string_utf8(env, "PortSetPortRole", NAPI_AUTO_LENGTH, &resource);
 
-    napi_create_async_work(env, nullptr, resource, g_setPortRoleExecute, g_setPortRoleComplete, (void *)asyncContext,
-                           &asyncContext->work);
+    napi_create_async_work(env, nullptr, resource, g_setPortRoleExecute, g_setPortRoleComplete,
+        reinterpret_cast<void *>(asyncContext), &asyncContext->work);
     napi_queue_async_work(env, asyncContext->work);
-    struct timeval end = {0};
-    gettimeofday(&end, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, takes : %{public}ld ms", __func__, getTimeDiff(start, end));
+
     return result;
 }
 
 static napi_value PipeClaimInterface(napi_env env, napi_callback_info info)
 {
-    USB_HILOGD(MODULE_JS_NAPI, "begin call %{public}s", __func__);
-    struct timeval start = {0};
-    gettimeofday(&start, nullptr);
     size_t argc = PARAM_COUNT_3;
     napi_value argv[PARAM_COUNT_3] = {0};
 
@@ -854,18 +775,12 @@ static napi_value PipeClaimInterface(napi_env env, napi_callback_info info)
     USB_HILOGD(MODULE_JS_NAPI, "pipe call ClaimInterface ret: %{public}d", ret);
     napi_value result;
     napi_create_int32(env, ret, &result);
-    struct timeval end = {0};
-    gettimeofday(&end, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, ret: %{public}d takes : %{public}ld ms", __func__, ret,
-               getTimeDiff(start, end));
+
     return result;
 }
 
 static napi_value PipeReleaseInterface(napi_env env, napi_callback_info info)
 {
-    USB_HILOGD(MODULE_JS_NAPI, "begin call %{public}s", __func__);
-    struct timeval start = {0};
-    gettimeofday(&start, nullptr);
     size_t argc = PARAM_COUNT_2;
     napi_value argv[PARAM_COUNT_2] = {0};
 
@@ -887,18 +802,12 @@ static napi_value PipeReleaseInterface(napi_env env, napi_callback_info info)
     USB_HILOGD(MODULE_JS_NAPI, "pipe call PipeReleaseInterface ret: %{public}d", ret);
     napi_value result;
     napi_create_int32(env, ret, &result);
-    struct timeval end = {0};
-    gettimeofday(&end, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, ret: %{public}d takes : %{public}ld ms", __func__, ret,
-               getTimeDiff(start, end));
+
     return result;
 }
 
 static napi_value PipeSetInterface(napi_env env, napi_callback_info info)
 {
-    USB_HILOGD(MODULE_JS_NAPI, "begin call %{public}s", __func__);
-    struct timeval start = {0};
-    gettimeofday(&start, nullptr);
     size_t argc = PARAM_COUNT_2;
     napi_value argv[PARAM_COUNT_2] = {0};
     napi_status status = napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
@@ -921,18 +830,12 @@ static napi_value PipeSetInterface(napi_env env, napi_callback_info info)
     int32_t ret = g_usbClient.SetInterface(pipe, interface);
     napi_value result;
     napi_create_int32(env, ret, &result);
-    struct timeval end = {0};
-    gettimeofday(&end, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, ret: %{public}d takes : %{public}ld ms", __func__, ret,
-               getTimeDiff(start, end));
+
     return result;
 }
 
 static napi_value PipeSetConfiguration(napi_env env, napi_callback_info info)
 {
-    struct timeval start = {0};
-    gettimeofday(&start, nullptr);
-
     size_t argc = PARAM_COUNT_2;
     napi_value argv[PARAM_COUNT_2] = {0};
     napi_status status = napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
@@ -955,18 +858,12 @@ static napi_value PipeSetConfiguration(napi_env env, napi_callback_info info)
     int32_t ret = g_usbClient.SetConfiguration(pipe, config);
     napi_value result;
     napi_create_int32(env, ret, &result);
-    struct timeval end = {0};
-    gettimeofday(&end, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, ret: %{public}d, takes : %{public}ld ms", __func__, ret,
-               getTimeDiff(start, end));
+
     return result;
 }
 
 static napi_value PipeGetRawDescriptors(napi_env env, napi_callback_info info)
 {
-    USB_HILOGD(MODULE_JS_NAPI, "begin call %{public}s", __func__);
-    struct timeval start = {0};
-    gettimeofday(&start, nullptr);
     size_t argc = PARAM_COUNT_1;
     napi_value argv[PARAM_COUNT_1] = {0};
 
@@ -988,18 +885,12 @@ static napi_value PipeGetRawDescriptors(napi_env env, napi_callback_info info)
     } else {
         napi_get_undefined(env, &result);
     }
-    struct timeval end = {0};
-    gettimeofday(&end, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, ret: %{public}d takes : %{public}ld ms", __func__, ret,
-               getTimeDiff(start, end));
+
     return result;
 }
 
 static napi_value PipeGetFileDescriptor(napi_env env, napi_callback_info info)
 {
-    USB_HILOGD(MODULE_JS_NAPI, "begin call %{public}s", __func__);
-    struct timeval start = {0};
-    gettimeofday(&start, nullptr);
     size_t argc = PARAM_COUNT_1;
     napi_value argv[PARAM_COUNT_1] = {0};
 
@@ -1016,43 +907,41 @@ static napi_value PipeGetFileDescriptor(napi_env env, napi_callback_info info)
     int32_t fd = -1;
     napi_value result;
     int32_t ret = g_usbClient.GetFileDescriptor(pipe, fd);
+    NAPI_ASSERT(env, ret == UEC_OK, "Get File Descriptor failed.");
     napi_create_int32(env, fd, &result);
-    struct timeval end = {0};
-    gettimeofday(&end, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, ret : %{public}d, takes : %{public}ld ms",
-               __func__, ret, getTimeDiff(start, end));
+
     return result;
 }
 
 static auto g_controlTransferExecute = [](napi_env env, void *data) {
-    struct timeval beginAsync = {0};
-    gettimeofday(&beginAsync, nullptr);
     USBControlTransferAsyncContext *asyncContext = (USBControlTransferAsyncContext *)data;
     std::vector<uint8_t> bufferData(asyncContext->buffer, asyncContext->buffer + asyncContext->bufferLength);
     const UsbCtrlTransfer tctrl = {asyncContext->reqType, asyncContext->request, asyncContext->value,
                                    asyncContext->index, asyncContext->timeOut};
+
     int32_t ret = asyncContext->pipe.ControlTransfer(tctrl, bufferData);
     if ((asyncContext->reqType & USB_ENDPOINT_DIR_MASK) == USB_ENDPOINT_DIR_OUT) {
         delete [] asyncContext->buffer;
         asyncContext->buffer = nullptr;
     } else {
-        (bufferData.size() > asyncContext->bufferLength) ? asyncContext->bufferLength = asyncContext->bufferLength
-                                                    : asyncContext->bufferLength = bufferData.size();
-        memcpy_s(asyncContext->buffer, asyncContext->bufferLength, bufferData.data(), asyncContext->bufferLength);
+        if (bufferData.size() < asyncContext->bufferLength) {
+            asyncContext->bufferLength = bufferData.size();
+        }
+
+        ret = memcpy_s(asyncContext->buffer, asyncContext->bufferLength, bufferData.data(),
+            asyncContext->bufferLength);
+        NAPI_ASSERT_RETURN_VOID(env, ret == EOK, "ControlTransferExecute memcpy_s failed.");
     }
+
     if (ret == UEC_OK) {
         asyncContext->status = napi_ok;
     } else {
         asyncContext->status = napi_generic_failure;
     }
-    struct timeval endAsync = {0};
-    gettimeofday(&endAsync, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call PipeControlTransfer async work finished, takes : %{public}ld ms",
-               getTimeDiff(beginAsync, endAsync));
 };
 
 static auto g_controlTransferComplete = [](napi_env env, napi_status status, void *data) {
-    USBControlTransferAsyncContext *asyncContext = (USBControlTransferAsyncContext *)data;
+    USBControlTransferAsyncContext *asyncContext = reinterpret_cast<USBControlTransferAsyncContext *>(data);
     napi_value queryResult = nullptr;
 
     if (asyncContext->status == napi_ok) {
@@ -1066,24 +955,27 @@ static auto g_controlTransferComplete = [](napi_env env, napi_status status, voi
     delete asyncContext;
 };
 
-static napi_value PipeControlTransfer(napi_env env, napi_callback_info info)
+static std::tuple<bool, USBDevicePipe, PipeControlParam, int32_t> GetControlTransferParam(napi_env env,
+    napi_callback_info info)
 {
-    USB_HILOGD(MODULE_JS_NAPI, "begin call %{public}s", __func__);
-    struct timeval start = {0};
-    gettimeofday(&start, nullptr);
-
     size_t argc = PARAM_COUNT_3;
     napi_value argv[PARAM_COUNT_3] = {0};
     napi_status status = napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
-    NAPI_ASSERT(env, (status == napi_ok) && (argc >= PARAM_COUNT_2), "ControlTransfer failed to get cb info");
+    if (status != napi_ok || argc < PARAM_COUNT_2) {
+        USB_HILOGE(MODULE_JS_NAPI, "ControlTransfer failed to get cb info\n");
+        return {false, {}, {}, {} };
+    }
 
     // pipe param
-    napi_value pipeObj = argv[INDEX_0];
     napi_valuetype type;
-    napi_typeof(env, pipeObj, &type);
-    NAPI_ASSERT(env, type == napi_object, "index 0 wrong argument type, object expected.");
+    napi_typeof(env, argv[INDEX_0], &type);
+    if (type != napi_object) {
+        USB_HILOGE(MODULE_JS_NAPI, "index 0 wrong argument type, object expected.\n");
+        return {false, {}, {}, {} };
+    }
+
     USBDevicePipe pipe;
-    ParseUsbDevicePipe(env, pipeObj, pipe);
+    ParseUsbDevicePipe(env, argv[INDEX_0], pipe);
 
     // control params
     PipeControlParam controlParam = {0};
@@ -1095,7 +987,17 @@ static napi_value PipeControlTransfer(napi_env env, napi_callback_info info)
         napi_get_value_int32(env, argv[INDEX_2], &timeOut);
     }
 
-    auto asyncContext = new USBControlTransferAsyncContext();
+    return { true, pipe, controlParam, timeOut };
+}
+
+static napi_value PipeControlTransfer(napi_env env, napi_callback_info info)
+{
+    auto [res, pipe, controlParam, timeOut] = GetControlTransferParam(env, info);
+    NAPI_ASSERT(env, res == true, "GetControlTransferParam failed.");
+
+    auto asyncContext = new(std::nothrow) USBControlTransferAsyncContext();
+    NAPI_ASSERT(env, asyncContext != nullptr, "New USBControlTransferAsyncContext failed.");
+
     asyncContext->env = env;
     asyncContext->pipe = pipe;
     asyncContext->request = controlParam.request;
@@ -1105,8 +1007,20 @@ static napi_value PipeControlTransfer(napi_env env, napi_callback_info info)
     asyncContext->index = controlParam.index;
 
     if ((asyncContext->reqType & USB_ENDPOINT_DIR_MASK) == USB_ENDPOINT_DIR_OUT) {
-        uint8_t *nativeArraybuffer = new uint8_t[controlParam.dataLength];
-        memcpy_s(nativeArraybuffer, controlParam.dataLength, controlParam.data, controlParam.dataLength);
+        uint8_t *nativeArraybuffer = new(std::nothrow) uint8_t[controlParam.dataLength];
+        if (nativeArraybuffer == nullptr) {
+            USB_HILOGE(MODULE_JS_NAPI, "%{public}s:%{public}d, new failed", __func__, __LINE__);
+            delete asyncContext;
+            return nullptr;
+        }
+
+        errno_t ret = memcpy_s(nativeArraybuffer, controlParam.dataLength, controlParam.data, controlParam.dataLength);
+        if (ret != EOK) {
+            USB_HILOGE(MODULE_JS_NAPI, "%{public}s:%{public}d, memcpy_s failed\n", __func__, __LINE__);
+            delete asyncContext;
+            delete []nativeArraybuffer;
+            return nullptr;
+        }
         asyncContext->buffer = nativeArraybuffer;
     } else {
         asyncContext->buffer = controlParam.data;
@@ -1121,19 +1035,14 @@ static napi_value PipeControlTransfer(napi_env env, napi_callback_info info)
     napi_create_string_utf8(env, "PipeControlTransfer", NAPI_AUTO_LENGTH, &resource);
 
     napi_create_async_work(env, nullptr, resource, g_controlTransferExecute, g_controlTransferComplete,
-                           (void *)asyncContext, &asyncContext->work);
+                           reinterpret_cast<void *>(asyncContext), &asyncContext->work);
     napi_queue_async_work(env, asyncContext->work);
-    struct timeval end = {0};
-    gettimeofday(&end, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, takes : %{public}ld ms", __func__, getTimeDiff(start, end));
+
     return result;
 }
 
 static auto g_bulkTransferExecute = [](napi_env env, void *data) {
-    struct timeval beginAsync = {0};
-    gettimeofday(&beginAsync, nullptr);
-
-    USBBulkTransferAsyncContext *asyncContext = (USBBulkTransferAsyncContext *)data;
+    USBBulkTransferAsyncContext *asyncContext = reinterpret_cast<USBBulkTransferAsyncContext *>(data);
     std::vector<uint8_t> bufferData(asyncContext->buffer, asyncContext->buffer + asyncContext->bufferLength);
     int32_t ret = asyncContext->pipe.BulkTransfer(asyncContext->endpoint, bufferData, asyncContext->timeOut);
 
@@ -1141,9 +1050,12 @@ static auto g_bulkTransferExecute = [](napi_env env, void *data) {
         delete [] asyncContext->buffer;
         asyncContext->buffer = nullptr;
     } else {
-        (bufferData.size() > asyncContext->bufferLength) ? asyncContext->bufferLength = asyncContext->bufferLength
-                                                    : asyncContext->bufferLength = bufferData.size();
-        memcpy_s(asyncContext->buffer, asyncContext->bufferLength, bufferData.data(), asyncContext->bufferLength);
+        if (bufferData.size() < asyncContext->bufferLength) {
+            asyncContext->bufferLength = bufferData.size();
+        }
+
+        ret = memcpy_s(asyncContext->buffer, asyncContext->bufferLength, bufferData.data(), asyncContext->bufferLength);
+        NAPI_ASSERT_RETURN_VOID(env, ret == EOK, "BulkTransferExecute memcpy_s failed.");
     }
 
     USB_HILOGD(MODULE_JS_NAPI, "call pipe result %{public}d", ret);
@@ -1152,14 +1064,10 @@ static auto g_bulkTransferExecute = [](napi_env env, void *data) {
     } else {
         asyncContext->status = napi_generic_failure;
     }
-    struct timeval endAsync = {0};
-    gettimeofday(&endAsync, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call PipeBulkTransfer async work finished, takes : %{public}ld ms",
-               getTimeDiff(beginAsync, endAsync));
 };
 
 static auto g_bulkTransferComplete = [](napi_env env, napi_status status, void *data) {
-    USBBulkTransferAsyncContext *asyncContext = (USBBulkTransferAsyncContext *)data;
+    USBBulkTransferAsyncContext *asyncContext = reinterpret_cast<USBBulkTransferAsyncContext *>(data);
     napi_value queryResult = nullptr;
     if (asyncContext->status == napi_ok) {
         napi_create_int32(env, asyncContext->bufferLength, &queryResult);
@@ -1197,8 +1105,8 @@ static bool GetBulkTransferParams(napi_env env, napi_callback_info info, USBBulk
     }
 
     uint8_t *buffer = nullptr;
-    size_t offset;
-    size_t bufferSize;
+    size_t offset = 0;
+    size_t bufferSize = 0;
     bool hasBuffer = NapiUtil::JsUint8ArrayParse(env, argv[INDEX_2], &buffer, bufferSize, offset);
     if (!hasBuffer) {
         USB_HILOGE(MODULE_JS_NAPI, "BulkTransfer wrong argument, buffer is null");
@@ -1209,8 +1117,16 @@ static bool GetBulkTransferParams(napi_env env, napi_callback_info info, USBBulk
     asyncContext.endpoint = ep;
 
     if (ep.GetDirection() == USB_ENDPOINT_DIR_OUT) {
-        uint8_t *nativeArraybuffer = new uint8_t[bufferSize];
-        memcpy_s(nativeArraybuffer, bufferSize, buffer, bufferSize);
+        uint8_t *nativeArraybuffer = new(std::nothrow) uint8_t[bufferSize];
+        NAPI_ASSERT(env, nativeArraybuffer != nullptr, "nativeArraybuffer create failed.");
+
+        errno_t ret = memcpy_s(nativeArraybuffer, bufferSize, buffer, bufferSize);
+        if (ret != EOK) {
+            USB_HILOGE(MODULE_JS_NAPI, "%{public}s:%{public}d, memcpy_s failed\n", __func__, __LINE__);
+            delete []nativeArraybuffer;
+            return false;
+        }
+
         asyncContext.buffer = nativeArraybuffer;
     } else {
         asyncContext.buffer = buffer;
@@ -1222,11 +1138,9 @@ static bool GetBulkTransferParams(napi_env env, napi_callback_info info, USBBulk
 
 static napi_value PipeBulkTransfer(napi_env env, napi_callback_info info)
 {
-    USB_HILOGD(MODULE_JS_NAPI, "begin call %{public}s", __func__);
-    struct timeval start = {0};
-    gettimeofday(&start, nullptr);
+    auto asyncContext = new(std::nothrow) USBBulkTransferAsyncContext();
+    NAPI_ASSERT(env, asyncContext != nullptr, "Create USBBulkTransferAsyncContext failed.");
 
-    auto asyncContext = new USBBulkTransferAsyncContext();
     napi_value result = nullptr;
     napi_create_promise(env, &asyncContext->deferred, &result);
     if (!GetBulkTransferParams(env, info, *asyncContext)) {
@@ -1243,26 +1157,18 @@ static napi_value PipeBulkTransfer(napi_env env, napi_callback_info info)
     napi_create_string_utf8(env, "PipeBulkTransfer", NAPI_AUTO_LENGTH, &resource);
 
     napi_status status = napi_create_async_work(env, nullptr, resource, g_bulkTransferExecute, g_bulkTransferComplete,
-                                                (void *)asyncContext, &asyncContext->work);
-    struct timeval end = {0};
-    gettimeofday(&end, nullptr);
+                                                reinterpret_cast<void *>(asyncContext), &asyncContext->work);
     if (status != napi_ok) {
-        USB_HILOGE(MODULE_JS_NAPI, "end call %{public}s, create async work failed, takes : %{public}ld ms", __func__,
-                   getTimeDiff(start, end));
+        USB_HILOGE(MODULE_JS_NAPI, "%{public}s, create async work failed", __func__);
         return result;
     }
     napi_queue_async_work(env, asyncContext->work);
-    gettimeofday(&end, nullptr);
 
-    USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, takes : %{public}ld ms", __func__, getTimeDiff(start, end));
     return result;
 }
 
 static napi_value PipeClose(napi_env env, napi_callback_info info)
 {
-    USB_HILOGD(MODULE_JS_NAPI, "begin call %{public}s", __func__);
-    struct timeval start = {0};
-    gettimeofday(&start, nullptr);
     size_t argc = PARAM_COUNT_1;
     napi_value argv[PARAM_COUNT_1] = {0};
 
@@ -1279,16 +1185,13 @@ static napi_value PipeClose(napi_env env, napi_callback_info info)
     int32_t ret = pipe.Close();
     napi_value result;
     napi_create_int32(env, ret, &result);
-    struct timeval end = {0};
-    gettimeofday(&end, nullptr);
-    USB_HILOGD(MODULE_JS_NAPI, "end call %{public}s, result %{public}d, takes : %{public}ld ms", __func__, ret,
-               getTimeDiff(start, end));
+
     return result;
 }
 
 static napi_value GetVersion(napi_env env, napi_callback_info info)
 {
-    std::string version = g_usbClient.GetVersion();
+    auto version = g_usbClient.GetVersion();
     USB_HILOGD(MODULE_JS_NAPI, "call %{public}s, version is %{public}s", __func__, version.c_str());
     napi_value result;
     napi_create_string_utf8(env, version.c_str(), NAPI_AUTO_LENGTH, &result);

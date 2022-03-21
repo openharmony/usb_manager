@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -40,8 +40,8 @@ class UsbService : public SystemAbility, public UsbServerStub {
     DECLARE_DELAYED_SP_SINGLETON(UsbService);
 
 public:
-    virtual void OnStart() override;
-    virtual void OnStop() override;
+    void OnStart() override;
+    void OnStop() override;
 
     bool IsServiceReady() const
     {
@@ -59,7 +59,7 @@ public:
     int32_t GetDevices(std::vector<UsbDevice> &deviceList) override;
     int32_t GetCurrentFunctions(int32_t &funcs) override;
     int32_t SetCurrentFunctions(int32_t funcs) override;
-    int32_t UsbFunctionsFromString(std::string funcs) override;
+    int32_t UsbFunctionsFromString(std::string_view funcs) override;
     std::string UsbFunctionsToString(int32_t funcs) override;
     int32_t GetPorts(std::vector<UsbPort> &ports) override;
     int32_t GetSupportedModes(int32_t portId, int32_t &result) override;

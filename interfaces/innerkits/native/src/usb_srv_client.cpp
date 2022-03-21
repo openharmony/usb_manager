@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,7 +27,6 @@
 
 namespace OHOS {
 namespace USB {
-#define USB_MAX_REQUEST_DATA_SIZE 1024
 const uint8_t CLAIM_FORCE_1 = 1;
 UsbSrvClient::UsbSrvClient()
 {
@@ -144,6 +143,7 @@ int32_t UsbSrvClient::GetCurrentFunctions(int32_t &funcs)
     USB_HILOGI(MODULE_USB_INNERKIT, " Calling GetCurrentFunctions Success!");
     return ret;
 }
+
 int32_t UsbSrvClient::SetCurrentFunctions(int32_t funcs)
 {
     RETURN_IF_WITH_RET(Connect() != UEC_OK, false);
@@ -156,7 +156,7 @@ int32_t UsbSrvClient::SetCurrentFunctions(int32_t funcs)
     return ret;
 }
 
-int32_t UsbSrvClient::UsbFunctionsFromString(std::string funcs)
+int32_t UsbSrvClient::UsbFunctionsFromString(std::string_view funcs)
 {
     RETURN_IF_WITH_RET(Connect() != UEC_OK, UEC_INTERFACE_NO_INIT);
     int32_t result = proxy_->UsbFunctionsFromString(funcs);
@@ -215,6 +215,7 @@ int32_t UsbSrvClient::ClaimInterface(USBDevicePipe &pipe, const UsbInterface &in
     }
     return ret;
 }
+
 int32_t UsbSrvClient::ReleaseInterface(USBDevicePipe &pipe, const UsbInterface &interface)
 {
     RETURN_IF_WITH_RET(proxy_ == nullptr, UEC_INTERFACE_NO_INIT);
@@ -224,6 +225,7 @@ int32_t UsbSrvClient::ReleaseInterface(USBDevicePipe &pipe, const UsbInterface &
     }
     return ret;
 }
+
 int32_t UsbSrvClient::BulkTransfer(USBDevicePipe &pipe, const USBEndpoint &endpoint, std::vector<uint8_t> &bufferData,
     int32_t timeOut)
 {
@@ -241,6 +243,7 @@ int32_t UsbSrvClient::BulkTransfer(USBDevicePipe &pipe, const USBEndpoint &endpo
     }
     return ret;
 }
+
 int32_t UsbSrvClient::ControlTransfer(USBDevicePipe &pipe, const UsbCtrlTransfer &ctrl,
     std::vector<uint8_t> &bufferData)
 {
@@ -253,18 +256,21 @@ int32_t UsbSrvClient::ControlTransfer(USBDevicePipe &pipe, const UsbCtrlTransfer
 
     return ret;
 }
+
 int32_t UsbSrvClient::SetConfiguration(USBDevicePipe &pipe, const USBConfig &config)
 {
     RETURN_IF_WITH_RET(proxy_ == nullptr, UEC_INTERFACE_NO_INIT);
     int32_t ret = proxy_->SetActiveConfig(pipe.GetBusNum(), pipe.GetDevAddr(), config.GetId());
     return ret;
 }
+
 int32_t UsbSrvClient::SetInterface(USBDevicePipe &pipe, const UsbInterface &interface)
 {
     RETURN_IF_WITH_RET(proxy_ == nullptr, UEC_INTERFACE_NO_INIT);
     return proxy_->SetInterface(pipe.GetBusNum(), pipe.GetDevAddr(), interface.GetId(),
                                 interface.GetAlternateSetting());
 }
+
 int32_t UsbSrvClient::GetRawDescriptors(USBDevicePipe &pipe, std::vector<uint8_t> &bufferData)
 {
     RETURN_IF_WITH_RET(Connect() != UEC_OK, UEC_INTERFACE_NO_INIT);
@@ -274,6 +280,7 @@ int32_t UsbSrvClient::GetRawDescriptors(USBDevicePipe &pipe, std::vector<uint8_t
     }
     return ret;
 }
+
 int32_t UsbSrvClient::GetFileDescriptor(USBDevicePipe &pipe, int32_t &fd)
 {
     RETURN_IF_WITH_RET(Connect() != UEC_OK, UEC_INTERFACE_NO_INIT);
@@ -343,6 +350,7 @@ int32_t UsbSrvClient::RequestQueue(UsbRequest &request)
     const UsbPipe tpipe = {ep.GetInterfaceId(), ep.GetAddress()};
     return proxy_->RequestQueue(tdev, tpipe, request.GetClientData(), request.GetReqData());
 }
+
 int32_t UsbSrvClient::RegBulkCallback(USBDevicePipe &pip, const USBEndpoint &endpoint, const sptr<IRemoteObject> &cb)
 {
     RETURN_IF_WITH_RET(proxy_ == nullptr, UEC_INTERFACE_NO_INIT);
@@ -354,6 +362,7 @@ int32_t UsbSrvClient::RegBulkCallback(USBDevicePipe &pip, const USBEndpoint &end
     }
     return ret;
 }
+
 int32_t UsbSrvClient::UnRegBulkCallback(USBDevicePipe &pip, const USBEndpoint &endpoint)
 {
     RETURN_IF_WITH_RET(proxy_ == nullptr, UEC_INTERFACE_NO_INIT);
@@ -365,6 +374,7 @@ int32_t UsbSrvClient::UnRegBulkCallback(USBDevicePipe &pip, const USBEndpoint &e
     }
     return ret;
 }
+
 int32_t UsbSrvClient::BulkRead(USBDevicePipe &pip, const USBEndpoint &endpoint, sptr<Ashmem> &ashmem)
 {
     RETURN_IF_WITH_RET(proxy_ == nullptr, UEC_INTERFACE_NO_INIT);
@@ -376,6 +386,7 @@ int32_t UsbSrvClient::BulkRead(USBDevicePipe &pip, const USBEndpoint &endpoint, 
     }
     return ret;
 }
+
 int32_t UsbSrvClient::BulkWrite(USBDevicePipe &pip, const USBEndpoint &endpoint, sptr<Ashmem> &ashmem)
 {
     RETURN_IF_WITH_RET(proxy_ == nullptr, UEC_INTERFACE_NO_INIT);
@@ -387,6 +398,7 @@ int32_t UsbSrvClient::BulkWrite(USBDevicePipe &pip, const USBEndpoint &endpoint,
     }
     return ret;
 }
+
 int32_t UsbSrvClient::BulkCancel(USBDevicePipe &pip, const USBEndpoint &endpoint)
 {
     RETURN_IF_WITH_RET(proxy_ == nullptr, UEC_INTERFACE_NO_INIT);

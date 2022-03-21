@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -116,13 +116,14 @@ int32_t main(int32_t argc, char *argv[])
     }
 
     if ((!strcmp(argv[1], "-f"))) {
-        int32_t mode = atoi(argv[2]);
+        int32_t mode = stoi(argv[2]);
         FunctionSwitch(g_usbClient, mode);
     } else if (!strcmp(argv[1], "-p")) {
-        int32_t mode = atoi(argv[2]);
+        int32_t mode = stoi(argv[2]);
         PortSwitch(g_usbClient, mode);
     } else {
         printf("param incorrect: please input -h for help\n");
     }
     return 0;
 }
+

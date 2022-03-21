@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,6 +20,7 @@
 #include <mutex>
 #include <refbase.h>
 #include "nocopyable.h"
+#include "hilog_wrapper.h"
 
 namespace OHOS {
 namespace USB {
@@ -47,10 +48,15 @@ template <typename T> std::mutex DelayedSpSingleton<T>::mutex_;
 
 template <typename T> sptr<T> DelayedSpSingleton<T>::GetInstance()
 {
-    if (!instance_) {
-        std::lock_guard<std::mutex> lock(mutex_);
+    if (instance_ != nullptr) {
+        return instance_;
+    }
+
+    std::lock_guard<std::mutex> lock(mutex_);
+    if (instance_ == nullptr) {
+        instance_ = new(std::nothrow) T();
         if (instance_ == nullptr) {
-            instance_ = new T();
+            USB_HILOGI(MODULE_USB_SERVICE, " %{public}s:%{public}d get instance failed\n", __func__, __LINE__);
         }
     }
 

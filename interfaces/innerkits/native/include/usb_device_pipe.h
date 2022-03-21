@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,17 +13,18 @@
  * limitations under the License.
  */
 
-#ifndef USB_PIPE_H
-#define USB_PIPE_H
+#ifndef USB_DEVICE_PIPE_H
+#define USB_DEVICE_PIPE_H
 
-#include "iusb_srv.h"
+#include "usb_param.h"
+#include "usb_config.h"
 
 namespace OHOS {
 namespace USB {
 class USBDevicePipe {
 public:
     USBDevicePipe();
-    ~USBDevicePipe() {};
+    ~USBDevicePipe() {}
     USBDevicePipe(uint8_t busNum, uint8_t devAddr);
     int32_t ClaimInterface(const UsbInterface &interface, bool force);
     int32_t ReleaseInterface(const UsbInterface &interface);
@@ -41,9 +42,8 @@ public:
 private:
     uint8_t busNum;
     uint8_t devAddr;
-    void *usbClient;
 };
 } // namespace USB
 } // namespace OHOS
 
-#endif // USB_PIPE_H
+#endif // USB_DEVICE_PIPE_H

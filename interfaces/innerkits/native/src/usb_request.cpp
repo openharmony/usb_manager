@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,14 +19,13 @@
 
 namespace OHOS {
 namespace USB {
-UsbRequest::UsbRequest() : usbClient((uint8_t *)(&UsbSrvClient::GetInstance())) {}
 int32_t UsbRequest::Initialize(const USBDevicePipe &pipe, const USBEndpoint &endpoint)
 {
     this->pipe = pipe;
     this->endpoint = endpoint;
-    int32_t ret = ((UsbSrvClient *)usbClient)->RequestInitialize(*this);
+    int32_t ret = UsbSrvClient::GetInstance().RequestInitialize(*this);
     if (ERR_OK != ret) {
-        USB_HILOGE(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed width ret = %{public}d.", __func__,
+        USB_HILOGE(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed with ret = %{public}d.", __func__,
                    __LINE__, ret);
     }
     return ret;
@@ -34,9 +33,9 @@ int32_t UsbRequest::Initialize(const USBDevicePipe &pipe, const USBEndpoint &end
 
 int32_t UsbRequest::Queue()
 {
-    int32_t ret = ((UsbSrvClient *)usbClient)->RequestQueue(*this);
+    int32_t ret = UsbSrvClient::GetInstance().RequestQueue(*this);
     if (ERR_OK != ret) {
-        USB_HILOGE(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed width ret = %{public}d.", __func__,
+        USB_HILOGE(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed with ret = %{public}d.", __func__,
                    __LINE__, ret);
     }
     return ret;
@@ -44,9 +43,9 @@ int32_t UsbRequest::Queue()
 
 int32_t UsbRequest::Free()
 {
-    int32_t ret = ((UsbSrvClient *)usbClient)->RequestFree(*this);
+    int32_t ret = UsbSrvClient::GetInstance().RequestFree(*this);
     if (ERR_OK != ret) {
-        USB_HILOGE(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed width ret = %{public}d.", __func__,
+        USB_HILOGE(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed with ret = %{public}d.", __func__,
                    __LINE__, ret);
     }
     return ret;
@@ -54,9 +53,9 @@ int32_t UsbRequest::Free()
 
 int32_t UsbRequest::Abort()
 {
-    int32_t ret = ((UsbSrvClient *)usbClient)->RequestAbort(*this);
+    int32_t ret = UsbSrvClient::GetInstance().RequestAbort(*this);
     if (ERR_OK != ret) {
-        USB_HILOGE(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed width ret = %{public}d.", __func__,
+        USB_HILOGE(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed with ret = %{public}d.", __func__,
                    __LINE__, ret);
     }
     return ret;
