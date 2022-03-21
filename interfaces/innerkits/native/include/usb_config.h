@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -66,6 +66,7 @@ public:
 
     int32_t GetMaxPower() const
     {
+        // 2 represent maxPower units
         return maxPower * 2;
     }
 
@@ -88,22 +89,27 @@ public:
     {
         this->interfaces = interfaces;
     }
+
     std::vector<UsbInterface> &GetInterfaces()
     {
         return interfaces;
     }
+
     void SetId(int32_t id)
     {
         this->id = id;
     }
+
     void SetAttribute(int32_t attributes)
     {
         this->attributes = attributes;
     }
+
     void SetMaxPower(int32_t maxPower)
     {
         this->maxPower = maxPower;
     }
+
     std::string ToString() const
     {
         std::ostringstream ss;
@@ -120,14 +126,17 @@ public:
         }
         return str;
     }
-    void SetName(std::string Name)
+
+    void SetName(const std::string &name)
     {
-        this->name = Name;
+        this->name = name;
     }
+
     void SetiConfiguration(uint8_t idx)
     {
         this->iConfiguration = idx;
     }
+
     uint8_t GetiConfiguration()
     {
         return this->iConfiguration;
@@ -139,7 +148,7 @@ private:
     std::vector<UsbInterface> interfaces;
     int32_t maxPower = INVALID_USB_INT_VALUE;
     std::string name;
-    uint8_t iConfiguration;
+    uint8_t iConfiguration = UINT8_MAX;
 };
 } // namespace USB
 } // namespace OHOS

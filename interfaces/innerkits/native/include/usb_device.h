@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -130,19 +130,19 @@ public:
     {
         busNum = Num;
     }
-    void SetName(std::string Name)
+    void SetName(const std::string &Name)
     {
         mName = Name;
     }
-    void SetManufacturerName(std::string Name)
+    void SetManufacturerName(const std::string &Name)
     {
         mManufacturerName = Name;
     }
-    void SetProductName(std::string Name)
+    void SetProductName(const std::string &Name)
     {
         mProductName = Name;
     }
-    void SetVersion(std::string Name)
+    void SetVersion(const std::string &Name)
     {
         mVersion = Name;
     }
@@ -267,14 +267,14 @@ private:
     std::string mSerial;
     uint8_t devAddr;
     uint8_t busNum;
-    uint8_t descConfigCount;
+    uint8_t descConfigCount = UINT8_MAX;
 
-    uint8_t bMaxPacketSize0;
-    uint16_t bcdUSB;
-    uint16_t bcdDevice;
-    uint8_t iManufacturer;
-    uint8_t iProduct;
-    uint8_t iSerialNumber;
+    uint8_t bMaxPacketSize0 = UINT8_MAX;
+    uint16_t bcdUSB = UINT16_MAX;
+    uint16_t bcdDevice = UINT16_MAX;
+    uint8_t iManufacturer = UINT8_MAX;
+    uint8_t iProduct = UINT8_MAX;
+    uint8_t iSerialNumber = UINT8_MAX;
 
     int mVendorId;
     int mProductId;

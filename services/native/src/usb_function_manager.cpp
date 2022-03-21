@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,33 +18,21 @@
 
 namespace OHOS {
 namespace USB {
-const std::string UsbFunctionManager::FUNCTION_NAME_NONE = "none";
-const std::string UsbFunctionManager::FUNCTION_NAME_HDC = "hdc";
-const std::string UsbFunctionManager::FUNCTION_NAME_ACM = "acm";
-const std::string UsbFunctionManager::FUNCTION_NAME_ECM = "ecm";
-
-const int32_t UsbFunctionManager::FUNCTION_NONE = 0;
-const int32_t UsbFunctionManager::FUNCTION_ACM = 1;
-const int32_t UsbFunctionManager::FUNCTION_ECM = 2;
-const int32_t UsbFunctionManager::FUNCTION_HDC = 4;
-
-int32_t UsbFunctionManager::currentFunctions = 0;
-
-const int32_t UsbFunctionManager::FUNCTION_SETTABLE = FUNCTION_HDC | FUNCTION_ACM | FUNCTION_ECM;
-
-const std::map<std::string, int32_t> UsbFunctionManager::FUNCTION_MAPPING_N2C = {
+const std::map<std::string_view, int32_t> UsbFunctionManager::FUNCTION_MAPPING_N2C = {
     {FUNCTION_NAME_NONE, FUNCTION_NONE},
     {FUNCTION_NAME_ACM, FUNCTION_ACM},
     {FUNCTION_NAME_ECM, FUNCTION_ECM},
     {FUNCTION_NAME_HDC, FUNCTION_HDC},
 };
 
+int32_t UsbFunctionManager::currentFunctions = 0;
+
 bool UsbFunctionManager::AreSettableFunctions(int32_t funcs)
 {
     return funcs == FUNCTION_NONE || ((~FUNCTION_SETTABLE & funcs) == 0);
 }
 
-int32_t UsbFunctionManager::FromStringFunctions(std::string strFun)
+int32_t UsbFunctionManager::FromStringFunctions(std::string_view strFun)
 {
     if (strFun.compare(FUNCTION_NAME_NONE) == 0) {
         return FUNCTION_NONE;
@@ -55,11 +43,11 @@ int32_t UsbFunctionManager::FromStringFunctions(std::string strFun)
         return UEC_SERVICE_INVALID_VALUE;
     }
 
-    std::vector<std::string> vModeStr;
+    std::vector<std::string_view> vModeStr;
     size_t pos = 0;
     while (pos < len) {
-        int32_t find_pos = strFun.find(",", pos);
-        if (find_pos < 0) {
+        size_t find_pos = strFun.find(",", pos);
+        if (find_pos == strFun.npos) {
             vModeStr.push_back(strFun.substr(pos, len - pos));
             break;
         }
@@ -85,27 +73,27 @@ std::string UsbFunctionManager::ToStringFunctions(int32_t intFun)
 {
     std::string stream;
     if (intFun <= FUNCTION_NONE || intFun > FUNCTION_SETTABLE) {
-        stream = FUNCTION_NAME_NONE;
+        stream = std::string { FUNCTION_NAME_NONE };
         return stream;
     }
 
     bool flag = false;
     if ((intFun & FUNCTION_HDC) != 0) {
-        stream = FUNCTION_NAME_HDC;
+        stream = std::string { FUNCTION_NAME_HDC };
         flag = true;
     }
     if ((intFun & FUNCTION_ACM) != 0) {
         if (flag) {
             stream = stream + ",";
         }
-        stream = stream + FUNCTION_NAME_ACM;
+        stream = stream + std::string { FUNCTION_NAME_ACM };
         flag = true;
     }
     if ((intFun & FUNCTION_ECM) != 0) {
         if (flag) {
             stream = stream + ",";
         }
-        stream = stream + FUNCTION_NAME_ECM;
+        stream = stream + std::string { FUNCTION_NAME_ECM };
         flag = true;
     }
     USB_HILOGI(MODULE_USB_SERVICE, "UsbFunctionManager::ToStringFunctions success");

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -41,15 +41,14 @@ int32_t UsbServerProxy::SetBufferMessage(MessageParcel &data, const std::vector<
     }
 
     if (!data.WriteUint32(length)) {
-        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d failed length:%{public}d", __func__, __LINE__, length);
+        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d failed length:%{public}u", __func__, __LINE__, length);
         return UEC_SERVICE_WRITE_PARCEL_ERROR;
     }
     if ((ptr) && (length > 0) && !data.WriteBuffer((const void *)ptr, length)) {
-        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d failed length:%{public}d", __func__, __LINE__, length);
+        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d failed length:%{public}u", __func__, __LINE__, length);
         return UEC_SERVICE_WRITE_PARCEL_ERROR;
     } else {
-        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d success length:%{public}d ptr:%{public}p", __func__, __LINE__,
-                   length, ptr);
+        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d success length:%{public}u", __func__, __LINE__, length);
     }
     return UEC_OK;
 }
@@ -63,13 +62,13 @@ int32_t UsbServerProxy::GetBufferMessage(MessageParcel &data, std::vector<uint8_
         return UEC_SERVICE_READ_PARCEL_ERROR;
     }
     if (dataSize == 0) {
-        USB_HILOGI(MODULE_USBD, "%{public}s:%{public}d size:%{public}d", __func__, __LINE__, dataSize);
+        USB_HILOGI(MODULE_USBD, "%{public}s:%{public}d size:%{public}u", __func__, __LINE__, dataSize);
         return UEC_OK;
     }
 
     const uint8_t *readData = data.ReadUnpadBuffer(dataSize);
     if (readData == nullptr) {
-        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d failed size:%{public}d", __func__, __LINE__, dataSize);
+        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d failed size:%{public}u", __func__, __LINE__, dataSize);
         return UEC_SERVICE_READ_PARCEL_ERROR;
     }
     std::vector<uint8_t> tdata(readData, readData + dataSize);
@@ -107,7 +106,6 @@ int32_t UsbServerProxy::GetDeviceListMessageParcel(MessageParcel &data, std::vec
 {
     int32_t count;
     data.ReadInt32(count);
-    USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s device size : %{public}d", __func__, count);
 
     for (int32_t i = 0; i < count; ++i) {
         UsbDevice devInfo;
@@ -389,7 +387,7 @@ int32_t UsbServerProxy::SetCurrentFunctions(int32_t funcs)
     return ret;
 }
 
-int32_t UsbServerProxy::UsbFunctionsFromString(std::string funcs)
+int32_t UsbServerProxy::UsbFunctionsFromString(std::string_view funcs)
 {
     sptr<IRemoteObject> remote = Remote();
     RETURN_IF_WITH_RET(remote == nullptr, UEC_INTERFACE_INVALID_VALUE);
@@ -401,7 +399,7 @@ int32_t UsbServerProxy::UsbFunctionsFromString(std::string funcs)
         USB_HILOGE(MODULE_USB_SERVICE, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
         return UEC_INTERFACE_WRITE_PARCEL_ERROR;
     }
-    WRITE_PARCEL_WITH_RET(data, String, funcs, UEC_INTERFACE_WRITE_PARCEL_ERROR);
+    WRITE_PARCEL_WITH_RET(data, String, std::string { funcs }, UEC_INTERFACE_WRITE_PARCEL_ERROR);
     int32_t ret =
         remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_USB_FUNCTIONS_FROM_STRING), data, reply, option);
     if (ret != UEC_OK) {
