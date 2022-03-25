@@ -39,16 +39,23 @@ const uint32_t MEM_DATA = 1024 * 1024;
 
 int32_t InitAshmemOne(sptr<Ashmem> &asmptr, int32_t asmSize, uint8_t rflg)
 {
-    int32_t ret = 0;
     asmptr = Ashmem::CreateAshmem("ttashmem000", asmSize);
+    if (asmptr == nullptr) {
+        USB_HILOGE(MODULE_USB_SERVICE, "InitAshmemOne CreateAshmem failed\n");
+        return UEC_SERVICE_NO_MEMORY;
+    }
+
     asmptr->MapReadAndWriteAshmem();
 
     if (rflg == 0) {
         uint8_t tdata[ASHMEM_MAX_SIZE];
         int32_t offset = 0;
         int32_t tlen = 0;
-        if (memset_s(tdata, sizeof(tdata), 'Y', ASHMEM_MAX_SIZE) != EOK) {
-            return -1;
+
+        int32_t retSafe = memset_s(tdata, sizeof(tdata), 'Y', ASHMEM_MAX_SIZE);
+        if (retSafe != EOK) {
+            USB_HILOGE(MODULE_USB_SERVICE, "InitAshmemOne memset_s failed\n");
+            return UEC_SERVICE_NO_MEMORY;
         }
         while (offset < asmSize) {
             tlen = (asmSize - offset) < ASHMEM_MAX_SIZE ? (asmSize - offset) : ASHMEM_MAX_SIZE;
@@ -57,7 +64,7 @@ int32_t InitAshmemOne(sptr<Ashmem> &asmptr, int32_t asmSize, uint8_t rflg)
         }
     }
 
-    return ret;
+    return 0;
 }
 
 void UsbBulkcallbackTest::SetUpTestCase(void)

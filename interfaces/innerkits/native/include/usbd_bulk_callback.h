@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,14 +19,14 @@
 #include "ipc_object_stub.h"
 
 namespace OHOS::USB {
-enum {
-    CMD_USBD_BULK_CALLBACK_READ,
-    CMD_USBD_BULK_CALLBACK_WRITE,
-};
-
 class UsbdBulkCallBack : public OHOS::IPCObjectStub {
 public:
-    explicit UsbdBulkCallBack() : OHOS::IPCObjectStub(u"UsbdBulkCallback.V1_0") {};
+    enum {
+        CMD_USBD_BULK_CALLBACK_READ,
+        CMD_USBD_BULK_CALLBACK_WRITE,
+    };
+
+    explicit UsbdBulkCallBack() : OHOS::IPCObjectStub(u"UsbdBulkCallback.V1_0") {}
     virtual ~UsbdBulkCallBack() = default;
     int32_t OnRemoteRequest(uint32_t code, OHOS::MessageParcel &data, OHOS::MessageParcel &reply,
         OHOS::MessageOption &option) override;

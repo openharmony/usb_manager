@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Huawei Device Co., Ltd.
+ * Copyright (C) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -36,7 +36,10 @@ void NapiUtil::JsValueToString(const napi_env &env, const napi_value &value, con
         USB_HILOGE(MODULE_JS_NAPI, "%{public}s nullptr js object to string malloc failed", __func__);
         return;
     }
-    (void)memset_s(buf.get(), bufLen, 0, bufLen);
+
+    errno_t ret = memset_s(buf.get(), bufLen, 0, bufLen);
+    NAPI_ASSERT_RETURN_VOID(env, ret == EOK, "JsValueToString memset_s failed.");
+
     size_t result = 0;
     napi_get_value_string_utf8(env, value, buf.get(), bufLen, &result);
     target = buf.get();
@@ -58,10 +61,14 @@ void NapiUtil::JsObjectToString(const napi_env &env, const napi_value &object, s
         napi_typeof(env, field, &valueType);
         NAPI_ASSERT_RETURN_VOID(env, valueType == napi_string, "Wrong argument type. String expected.");
         std::unique_ptr<char[]> buf = std::make_unique<char[]>(bufLen);
-        if (buf.get() == nullptr) {
+        if (buf == nullptr) {
             USB_HILOGE(MODULE_JS_NAPI, "%{public}s nullptr js object to string malloc failed", __func__);
+            return;
         }
-        (void)memset_s(buf.get(), bufLen, 0, bufLen);
+
+        errno_t ret = memset_s(buf.get(), bufLen, 0, bufLen);
+        NAPI_ASSERT_RETURN_VOID(env, ret == EOK, "JsObjectToString memset_s failed.");
+
         size_t result = 0;
         napi_get_value_string_utf8(env, field, buf.get(), bufLen, &result);
         fieldRef = buf.get();
@@ -112,8 +119,8 @@ bool NapiUtil::JsUint8ArrayParse(const napi_env &env, const napi_value &object, 
     napi_typedarray_type type;
     napi_value buffer;
 
-    napi_status infoStatus =
-        napi_get_typedarray_info(env, object, &type, &bufferSize, (void **)uint8Buffer, &buffer, &offset);
+    napi_status infoStatus = napi_get_typedarray_info(env, object, &type, &bufferSize,
+        reinterpret_cast<void **>(uint8Buffer), &buffer, &offset);
     if (infoStatus != napi_ok) {
         USB_HILOGW(MODULE_JS_NAPI, "%{public}s get typedarray info failed, status: %{public}d", __func__, infoStatus);
         return false;
@@ -124,21 +131,27 @@ bool NapiUtil::JsUint8ArrayParse(const napi_env &env, const napi_value &object, 
         return false;
     }
 
+    if (bufferSize == 0) {
+        USB_HILOGW(MODULE_JS_NAPI, "%{public}s:%{public}d bufferSize error", __func__, __LINE__);
+        return false;
+    }
+
     return true;
 }
 
 void NapiUtil::Uint8ArrayToJsValue(const napi_env &env, std::vector<uint8_t> &uint8Buffer, size_t bufferSize,
     napi_value &result)
 {
-    if (bufferSize < 0) {
-        napi_get_undefined(env, &result);
-        return;
-    }
-
     uint8_t *nativeArraybuffer = nullptr;
     napi_value nativeValue = nullptr;
     napi_create_arraybuffer(env, bufferSize, (void **)&nativeArraybuffer, &nativeValue);
-    memcpy_s(nativeArraybuffer, bufferSize, (const char *)uint8Buffer.data(), bufferSize);
+
+    errno_t ret = memcpy_s(nativeArraybuffer, bufferSize, uint8Buffer.data(), bufferSize);
+    if (ret != EOK) {
+        USB_HILOGE(MODULE_JS_NAPI, "%{public}s:%{public}d memcpy_s failed\n", __func__, __LINE__);
+        return;
+    }
+
     napi_create_typedarray(env, napi_uint8_array, bufferSize, nativeValue, 0, &result);
 }
 

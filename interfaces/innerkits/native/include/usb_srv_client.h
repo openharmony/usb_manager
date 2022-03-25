@@ -1,6 +1,6 @@
 /*
 
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -37,6 +37,7 @@ const std::string SEVVERSION = MAXVERSION + "." + SUBVERSION + "." + DLPVERSION;
 
 class UsbSrvClient final : public DelayedRefSingleton<UsbSrvClient> {
     DECLARE_DELAYED_REF_SINGLETON(UsbSrvClient)
+
 public:
     DISALLOW_COPY_AND_MOVE(UsbSrvClient);
 
@@ -50,7 +51,7 @@ public:
     int32_t SetPortRole(int32_t portId, int32_t powerRole, int32_t dataRole);
     int32_t GetCurrentFunctions(int32_t &funcs);
     int32_t SetCurrentFunctions(int32_t funcs);
-    int32_t UsbFunctionsFromString(std::string funcs);
+    int32_t UsbFunctionsFromString(std::string_view funcs);
     std::string UsbFunctionsToString(int32_t funcs);
     int32_t ClaimInterface(USBDevicePipe &pip, const UsbInterface &interface, bool force);
     int32_t ReleaseInterface(USBDevicePipe &pip, const UsbInterface &interface);
@@ -91,9 +92,9 @@ private:
     };
 
     int32_t Connect();
+    void ResetProxy(const wptr<IRemoteObject> &remote);
     sptr<IUsbSrv> proxy_ = nullptr;
     sptr<IRemoteObject::DeathRecipient> deathRecipient_ = nullptr;
-    void ResetProxy(const wptr<IRemoteObject> &remote);
     std::mutex mutex_;
 };
 } // namespace USB

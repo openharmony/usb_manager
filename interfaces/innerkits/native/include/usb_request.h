@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,7 +24,7 @@ namespace OHOS {
 namespace USB {
 class UsbRequest {
 public:
-    UsbRequest();
+    UsbRequest() {}
     ~UsbRequest() {}
     int32_t Initialize(const USBDevicePipe &pipe, const USBEndpoint &endpoint);
     int32_t Queue();
@@ -68,9 +68,6 @@ public:
     USBEndpoint endpoint;
     std::vector<uint8_t> clientData;
     std::vector<uint8_t> reqData;
-
-private:
-    uint8_t *usbClient;
 };
 } // namespace USB
 } // namespace OHOS
