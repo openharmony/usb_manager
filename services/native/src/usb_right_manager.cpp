@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,7 +20,7 @@ namespace OHOS {
 namespace USB {
 void UsbRightManager::Init() {}
 
-int32_t UsbRightManager::HasRight(std::string deviceName, std::string bundleName)
+int32_t UsbRightManager::HasRight(const std::string &deviceName, const std::string &bundleName)
 {
     auto itMap = rightMap.find(deviceName);
     if (itMap == rightMap.end()) {
@@ -38,7 +38,7 @@ int32_t UsbRightManager::HasRight(std::string deviceName, std::string bundleName
     return UEC_OK;
 }
 
-int32_t UsbRightManager::RequestRight(std::string deviceName, std::string bundleName)
+int32_t UsbRightManager::RequestRight(const std::string &deviceName, const std::string &bundleName)
 {
     if (HasRight(deviceName, bundleName) == 0) {
         USB_HILOGE(MODULE_USB_SERVICE, "device has Right ");
@@ -55,7 +55,7 @@ int32_t UsbRightManager::RequestRight(std::string deviceName, std::string bundle
     return UEC_SERVICE_INVALID_VALUE;
 }
 
-bool UsbRightManager::AddDeviceRight(std::string deviceName, std::string bundleName)
+bool UsbRightManager::AddDeviceRight(const std::string &deviceName, const std::string &bundleName)
 {
     auto itMap = rightMap.find(deviceName);
     if (itMap != rightMap.end()) {
@@ -75,7 +75,7 @@ bool UsbRightManager::AddDeviceRight(std::string deviceName, std::string bundleN
     return true;
 }
 
-bool UsbRightManager::RemoveDeviceRight(std::string deviceName)
+bool UsbRightManager::RemoveDeviceRight(const std::string &deviceName)
 {
     auto it = rightMap.find(deviceName);
     if (it != rightMap.end()) {

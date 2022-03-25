@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -44,8 +44,8 @@ int32_t UsbDescriptorParser::ParseDeviceDescriptor(const uint8_t *buffer, uint32
         return UEC_SERVICE_INVALID_VALUE;
     }
 
-    USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:  parse begin buffer=%{public}p, length=%{public}d, cursor=%{public}d",
-               __func__, buffer, length, cursor);
+    USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:  parse begin length=%{public}u, cursor=%{public}u",
+               __func__, length, cursor);
     uint32_t deviceDescriptorSize = sizeof(UsbdDeviceDescriptor);
     if (length < deviceDescriptorSize) {
         USB_HILOGE(MODULE_USB_SERVICE, "%{public}s: buffer size error", __func__);
@@ -81,8 +81,8 @@ int32_t UsbDescriptorParser::ParseConfigDescriptor(const uint8_t *buffer, uint32
         return UEC_SERVICE_INVALID_VALUE;
     }
 
-    USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:  parse begin buffer=%{public}p, length=%{public}d, cursor=%{public}d",
-               __func__, buffer, length, cursor);
+    USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:  parse begin length=%{public}u, cursor=%{public}u",
+               __func__, length, cursor);
     uint32_t configDescriptorSize = sizeof(UsbdConfigDescriptor);
     if (length < configDescriptorSize) {
         USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:  buffer size error", __func__);
@@ -170,11 +170,12 @@ int32_t UsbDescriptorParser::ParseInterfaceDescriptor(const uint8_t *buffer, uin
     interface.SetEndpoints(eps);
     return UEC_OK;
 }
+
 int32_t UsbDescriptorParser::ParseEndpointDescriptor(const uint8_t *buffer, uint32_t length, uint32_t &cursor,
     USBEndpoint &ep)
 {
-    USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:  parse begin buffer=%{public}p, length=%{public}d, cursor=%{public}d",
-               __func__, buffer, length, cursor);
+    USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:  parse begin, length=%{public}u, cursor=%{public}u",
+               __func__, length, cursor);
     if (buffer == nullptr || length == 0) {
         return UEC_SERVICE_INVALID_VALUE;
     }

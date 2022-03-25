@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,66 +23,67 @@
 
 namespace OHOS {
 namespace USB {
-USBDevicePipe::USBDevicePipe() : usbClient(&UsbSrvClient::GetInstance()) {}
+USBDevicePipe::USBDevicePipe() {}
 USBDevicePipe::USBDevicePipe(uint8_t busNum, uint8_t devAddr)
-    : busNum(busNum), devAddr(devAddr), usbClient(&UsbSrvClient::GetInstance())
+    : busNum(busNum), devAddr(devAddr)
 {
 }
 
 int32_t USBDevicePipe::Close()
 {
-    RETURN_IF_WITH_RET(usbClient == nullptr, ERR_NO_INIT);
     int32_t ret = ERR_OK;
-    bool bSuccess = ((UsbSrvClient *)usbClient)->Close(*this);
+    bool bSuccess = UsbSrvClient::GetInstance().Close(*this);
     if (!bSuccess) {
         ret = ERR_INVALID_VALUE;
     }
     return ret;
 }
+
 int32_t USBDevicePipe::ClaimInterface(const UsbInterface &interface, bool force)
 {
-    RETURN_IF_WITH_RET(usbClient == nullptr, ERR_NO_INIT);
-    return ((UsbSrvClient *)usbClient)->ClaimInterface(*this, interface, force);
+    return UsbSrvClient::GetInstance().ClaimInterface(*this, interface, force);
 }
+
 int32_t USBDevicePipe::ReleaseInterface(const UsbInterface &interface)
 {
-    RETURN_IF_WITH_RET(usbClient == nullptr, ERR_NO_INIT);
-    return ((UsbSrvClient *)usbClient)->ReleaseInterface(*this, interface);
+    return UsbSrvClient::GetInstance().ReleaseInterface(*this, interface);
 }
 
 int32_t USBDevicePipe::BulkTransfer(const USBEndpoint &endpoint, std::vector<uint8_t> &bufferData, int32_t timeOut)
 {
-    RETURN_IF_WITH_RET(usbClient == nullptr, ERR_NO_INIT);
-    return ((UsbSrvClient *)usbClient)->BulkTransfer(*this, endpoint, bufferData, timeOut);
+    return UsbSrvClient::GetInstance().BulkTransfer(*this, endpoint, bufferData, timeOut);
 }
 
 int32_t USBDevicePipe::ControlTransfer(const UsbCtrlTransfer &ctrl, std::vector<uint8_t> &bufferData)
 {
-    RETURN_IF_WITH_RET(usbClient == nullptr, ERR_NO_INIT);
-    return ((UsbSrvClient *)usbClient)->ControlTransfer(*this, ctrl, bufferData);
+    return UsbSrvClient::GetInstance().ControlTransfer(*this, ctrl, bufferData);
 }
+
 int32_t USBDevicePipe::SetConfiguration(const USBConfig &config)
 {
-    RETURN_IF_WITH_RET(usbClient == nullptr, ERR_NO_INIT);
-    return ((UsbSrvClient *)usbClient)->SetConfiguration(*this, config);
+    return UsbSrvClient::GetInstance().SetConfiguration(*this, config);
 }
+
 int32_t USBDevicePipe::SetInterface(const UsbInterface &interface)
 {
-    RETURN_IF_WITH_RET(usbClient == nullptr, ERR_NO_INIT);
-    return ((UsbSrvClient *)usbClient)->SetInterface(*this, interface);
+    return UsbSrvClient::GetInstance().SetInterface(*this, interface);
 }
+
 void USBDevicePipe::SetBusNum(uint8_t busNum)
 {
     this->busNum = busNum;
 }
+
 void USBDevicePipe::SetDevAddr(uint8_t devAddr)
 {
     this->devAddr = devAddr;
 }
+
 uint8_t USBDevicePipe::GetBusNum() const
 {
     return busNum;
 }
+
 uint8_t USBDevicePipe::GetDevAddr() const
 {
     return devAddr;

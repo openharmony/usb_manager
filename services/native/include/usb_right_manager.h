@@ -32,10 +32,10 @@ public:
     RightMap rightMap;
 
     void Init();
-    int32_t HasRight(std::string deviceName, std::string bundleName);
-    int32_t RequestRight(std::string deviceName, std::string bundleName);
-    bool AddDeviceRight(std::string deviceName, std::string bundleName);
-    bool RemoveDeviceRight(std::string deviceName);
+    int32_t HasRight(const std::string &deviceName, const std::string &bundleName);
+    int32_t RequestRight(const std::string &deviceName, const std::string &bundleName);
+    bool AddDeviceRight(const std::string &deviceName, const std::string &bundleName);
+    bool RemoveDeviceRight(const std::string &deviceName);
 };
 } // namespace USB
 } // namespace OHOS

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -41,74 +41,93 @@ public:
         this->mAlternateSetting = mAlternateSetting;
         this->mEndpoints = mEndpoints;
     }
+
     UsbInterface() {}
+
     const std::string &GetName() const
     {
         return mName;
     }
+
     int32_t GetId() const
     {
         return mId;
     }
+
     int32_t GetClass() const
     {
         return mClass;
     }
+
     int32_t GetSubClass() const
     {
         return mSubClass;
     }
+
     int32_t GetAlternateSetting() const
     {
         return mAlternateSetting;
     }
+
     int32_t GetProtocol() const
     {
         return mProtocol;
     }
+
     int32_t GetEndpointCount() const
     {
         return mEndpoints.size();
     }
+
     void GetEndpoint(uint32_t index, USBEndpoint &ep) const
     {
         if (index < mEndpoints.size()) {
             ep = mEndpoints[index];
         }
     }
+
     std::vector<USBEndpoint> &GetEndpoints()
     {
         return mEndpoints;
     }
+
     void SetEndpoints(const std::vector<USBEndpoint> &eps)
     {
         mEndpoints = eps;
     }
+
     void SetId(int Val)
     {
         mId = Val;
     }
+
     void SetProtocol(int Val)
     {
         mProtocol = Val;
     }
+
     void SetClass(int Val)
     {
         mClass = Val;
     }
+
     void SetSubClass(int Val)
     {
         mSubClass = Val;
     }
+
     void SetAlternateSetting(int Val)
     {
         mAlternateSetting = Val;
     }
-    void SetName(std::string Name)
+
+    void SetName(const std::string &Name)
     {
         mName = Name;
     }
+
     ~UsbInterface() {}
+
     std::string ToString() const
     {
         std::ostringstream ss;
@@ -127,10 +146,12 @@ public:
         }
         return str;
     }
+
     void SetiInterface(uint8_t idx)
     {
         this->iInterface = idx;
     }
+
     uint8_t GetiInterface()
     {
         return this->iInterface;
@@ -144,7 +165,7 @@ private:
     int mAlternateSetting;
     std::string mName;
     std::vector<USBEndpoint> mEndpoints;
-    uint8_t iInterface;
+    uint8_t iInterface = UINT8_MAX;
 };
 } // namespace USB
 } // namespace OHOS

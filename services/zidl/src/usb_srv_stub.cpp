@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -45,11 +45,11 @@ int32_t UsbServerStub::SetBufferMessage(MessageParcel &data, const std::vector<u
     }
 
     if (!data.WriteUint32(length)) {
-        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d failed length:%{public}d", __func__, __LINE__, length);
+        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d failed length:%{public}u", __func__, __LINE__, length);
         return UEC_SERVICE_WRITE_PARCEL_ERROR;
     }
     if ((ptr) && (length > 0) && !data.WriteBuffer((const void *)ptr, length)) {
-        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d failed length:%{public}d", __func__, __LINE__, length);
+        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d failed length:%{public}u", __func__, __LINE__, length);
         return UEC_SERVICE_WRITE_PARCEL_ERROR;
     }
     return UEC_OK;
@@ -64,13 +64,13 @@ int32_t UsbServerStub::GetBufferMessage(MessageParcel &data, std::vector<uint8_t
         return UEC_SERVICE_READ_PARCEL_ERROR;
     }
     if (dataSize == 0) {
-        USB_HILOGW(MODULE_USBD, "%{public}s:%{public}d size:%{public}d", __func__, __LINE__, dataSize);
+        USB_HILOGW(MODULE_USBD, "%{public}s:%{public}d size:%{public}u", __func__, __LINE__, dataSize);
         return UEC_OK;
     }
 
     const uint8_t *readData = data.ReadUnpadBuffer(dataSize);
     if (readData == nullptr) {
-        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d failed size:%{public}d", __func__, __LINE__, dataSize);
+        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d failed size:%{public}u", __func__, __LINE__, dataSize);
         return UEC_SERVICE_READ_PARCEL_ERROR;
     }
     std::vector<uint8_t> tdata(readData, readData + dataSize);
@@ -188,7 +188,7 @@ bool UsbServerStub::StubHost(uint32_t code, int32_t &result, MessageParcel &data
 
 int32_t UsbServerStub::OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
-    USB_HILOGD(MODULE_USB_SERVICE, "UsbServerStub::OnRemoteRequest, cmd = %{public}d, flags = %{public}d", code,
+    USB_HILOGD(MODULE_USB_SERVICE, "UsbServerStub::OnRemoteRequest, cmd = %{public}u, flags = %{public}d", code,
                option.GetFlags());
     std::u16string descriptor = UsbServerStub::GetDescriptor();
     std::u16string remoteDescriptor = data.ReadInterfaceToken();
@@ -437,7 +437,7 @@ int32_t UsbServerStub::DoControlTransfer(MessageParcel &data, MessageParcel &rep
         USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d get error ret:%{public}d", __func__, __LINE__, ret);
         return ret;
     }
-    // 写数据
+
     bool bWrite = ((requestType & USB_ENDPOINT_DIR_MASK) == USB_ENDPOINT_DIR_OUT);
     const UsbDev tmpDev = {busNum, devAddr};
     const UsbCtrlTransfer tctrl = {requestType, request, value, index, timeOut};
@@ -446,7 +446,7 @@ int32_t UsbServerStub::DoControlTransfer(MessageParcel &data, MessageParcel &rep
         USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d ControlTransfer error ret:%{public}d", __func__, __LINE__, ret);
         return ret;
     }
-    // 读数据
+
     if (!bWrite) {
         ret = SetBufferMessage(reply, bufferData);
         if (UEC_OK != ret) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -100,8 +100,8 @@ int32_t UsbServiceSubscriber::DeviceEvent(const UsbInfo &info)
     }
     struct timeval end;
     gettimeofday(&end, NULL);
-    long tackTime = (end.tv_sec - start.tv_sec) * MSEC_TIME + (end.tv_usec - start.tv_usec) / MSEC_TIME;
-    USB_HILOGD(MODULE_USB_SERVICE, "end call subscriber usb device tached event, takes : %{public}ld ms", tackTime);
+    int64_t tackTime = (end.tv_sec - start.tv_sec) * MSEC_TIME + (end.tv_usec - start.tv_usec) / MSEC_TIME;
+    USB_HILOGD(MODULE_USB_SERVICE, "end call subscriber usb device tached event, takes : %{public}lld ms", tackTime);
 
     if ((ACT_UPDEVICE == status) || (ACT_DOWNDEVICE == status)) {
         return ret;

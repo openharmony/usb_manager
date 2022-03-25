@@ -46,12 +46,12 @@ export default {
     return arr.length == 0;
   },
 
-  // ArrayBuffer转为字符串，参数为ArrayBuffer对象
+  // Convert ArrayBuffer to String ，buff is ArrayBuffer
   ab2str(buf) {
     return String.fromCharCode.apply(null, new Uint8Array(buf));
   },
 
-  // 字符串转为ArrayBuffer对象，参数为字符串
+  // Convert String to ArrayBuffer
   str2ab(str) {
     var arr = [];
     for (var i = 0, j = str.length; i < j; ++i) {
@@ -61,7 +61,6 @@ export default {
     return tmpUint8Array;
   },
 
-  // 简单阻塞的粗暴实现
   sleep(delay) {
     for (var t = Date.now(); Date.now() - t <= delay;);
   }

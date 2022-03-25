@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -37,17 +37,17 @@
 namespace OHOS {
 namespace USB {
 namespace {
-const std::string USB_SERVICE_NAME = "UsbService";
+constexpr const char *USB_SERVICE_NAME = "UsbService";
 constexpr int32_t COMMEVENT_REGISTER_RETRY_TIMES = 10;
 constexpr int32_t COMMEVENT_REGISTER_WAIT_DELAY_US = 20000;
-const uint32_t CURSOR_INIT = 18;
-const int32_t DESCRIPTOR_TYPE_STRING = 3;
-const int32_t DESCRIPTOR_VALUE_START_OFFSET = 2;
-const int32_t HALF = 2;
-const int32_t BIT_SHIFT_4 = 4;
-const int32_t BIT_HIGH_4 = 0xF0;
-const int32_t BIT_LOW_4 = 0x0F;
-const int32_t SERVICE_STARTUP_MAX_TIME = 30;
+constexpr uint32_t CURSOR_INIT = 18;
+constexpr int32_t DESCRIPTOR_TYPE_STRING = 3;
+constexpr int32_t DESCRIPTOR_VALUE_START_OFFSET = 2;
+constexpr int32_t HALF = 2;
+constexpr int32_t BIT_SHIFT_4 = 4;
+constexpr int32_t BIT_HIGH_4 = 0xF0;
+constexpr int32_t BIT_LOW_4 = 0x0F;
+constexpr int32_t SERVICE_STARTUP_MAX_TIME = 30;
 } // namespace
 
 auto pms = DelayedSpSingleton<UsbService>::GetInstance();
@@ -111,6 +111,7 @@ bool UsbService::Init()
             USB_HILOGE(MODULE_USB_SERVICE, "Init failed due to create handler error");
             return false;
         }
+
         if (!Publish(pms)) {
             USB_HILOGE(MODULE_USB_SERVICE, "OnStart register to system ability manager failed.");
             return false;
@@ -131,7 +132,12 @@ bool UsbService::Init()
 
 bool UsbService::InitUsbd()
 {
-    usbdSubscriber_ = new UsbServiceSubscriber();
+    usbdSubscriber_ = new(std::nothrow) UsbServiceSubscriber();
+    if (usbdSubscriber_ == nullptr) {
+        USB_HILOGE(MODULE_USB_SERVICE, " %{public}s:%{public}d Init failed\n", __func__, __LINE__);
+        return false;
+    }
+
     ErrCode ret = UsbdClient::GetInstance().BindUsbdSubscriber(usbdSubscriber_);
     USB_HILOGE(MODULE_USB_SERVICE, " entry InitUsbd ret: %{public}d", ret);
     return SUCCEEDED(ret);
@@ -165,6 +171,7 @@ bool UsbService::IsCommonEventServiceAbilityExist()
     }
     return true;
 }
+
 int32_t UsbService::OpenDevice(uint8_t busNum, uint8_t devAddr)
 {
     std::string name = std::to_string(busNum) + "-" + std::to_string(devAddr);
@@ -182,6 +189,7 @@ int32_t UsbService::OpenDevice(uint8_t busNum, uint8_t devAddr)
     }
     return ret;
 }
+
 int32_t UsbService::HasRight(std::string deviceName)
 {
     USB_HILOGI(MODULE_USB_SERVICE, "calling usbRightManager HasRight");
@@ -236,7 +244,7 @@ int32_t UsbService::SetCurrentFunctions(int32_t funcs)
     return UsbdClient::GetInstance().SetCurrentFunctions(funcs);
 }
 
-int32_t UsbService::UsbFunctionsFromString(std::string funcs)
+int32_t UsbService::UsbFunctionsFromString(std::string_view funcs)
 {
     USB_HILOGI(MODULE_USB_SERVICE, "calling UsbFunctionsFromString");
     return UsbFunctionManager::FromStringFunctions(funcs);
@@ -271,11 +279,13 @@ int32_t UsbService::ClaimInterface(uint8_t busNum, uint8_t devAddr, uint8_t inte
     const UsbDev dev = {busNum, devAddr};
     return UsbdClient::GetInstance().ClaimInterface(dev, interface, force);
 }
+
 int32_t UsbService::ReleaseInterface(uint8_t busNum, uint8_t devAddr, uint8_t interface)
 {
     const UsbDev dev = {busNum, devAddr};
     return UsbdClient::GetInstance().ReleaseInterface(dev, interface);
 }
+
 int32_t UsbService::BulkTransferRead(const UsbDev &devInfo, const UsbPipe &pipe, std::vector<uint8_t> &bufferData,
     int32_t timeOut)
 {
@@ -286,6 +296,7 @@ int32_t UsbService::BulkTransferRead(const UsbDev &devInfo, const UsbPipe &pipe,
     }
     return ret;
 }
+
 int32_t UsbService::BulkTransferWrite(const UsbDev &dev, const UsbPipe &pipe, const std::vector<uint8_t> &bufferData,
     int32_t timeOut)
 {
@@ -296,6 +307,7 @@ int32_t UsbService::BulkTransferWrite(const UsbDev &dev, const UsbPipe &pipe, co
     }
     return ret;
 }
+
 int32_t UsbService::ControlTransfer(const UsbDev &dev, const UsbCtrlTransfer &ctrl, std::vector<uint8_t> &bufferData)
 {
     int32_t ret = UsbdClient::GetInstance().ControlTransfer(dev, ctrl, bufferData);
@@ -304,21 +316,25 @@ int32_t UsbService::ControlTransfer(const UsbDev &dev, const UsbCtrlTransfer &ct
     }
     return ret;
 }
+
 int32_t UsbService::SetActiveConfig(uint8_t busNum, uint8_t devAddr, uint8_t configIndex)
 {
     const UsbDev dev = {busNum, devAddr};
     return UsbdClient::GetInstance().SetConfig(dev, configIndex);
 }
+
 int32_t UsbService::GetActiveConfig(uint8_t busNum, uint8_t devAddr, uint8_t &configIndex)
 {
     const UsbDev dev = {busNum, devAddr};
     return UsbdClient::GetInstance().GetConfig(dev, configIndex);
 }
+
 int32_t UsbService::SetInterface(uint8_t busNum, uint8_t devAddr, uint8_t interfaceid, uint8_t altIndex)
 {
     const UsbDev dev = {busNum, devAddr};
     return UsbdClient::GetInstance().SetInterface(dev, interfaceid, altIndex);
 }
+
 int32_t UsbService::GetRawDescriptor(uint8_t busNum, uint8_t devAddr, std::vector<uint8_t> &bufferData)
 {
     const UsbDev dev = {busNum, devAddr};
@@ -328,6 +344,7 @@ int32_t UsbService::GetRawDescriptor(uint8_t busNum, uint8_t devAddr, std::vecto
     }
     return ret;
 }
+
 int32_t UsbService::GetFileDescriptor(uint8_t busNum, uint8_t devAddr, int32_t &fd)
 {
     const UsbDev dev = {busNum, devAddr};
@@ -347,6 +364,7 @@ int32_t UsbService::RequestQueue(const UsbDev &dev, const UsbPipe &pipe, const s
     }
     return ret;
 }
+
 int32_t UsbService::RequestWait(const UsbDev &dev, int32_t timeOut, std::vector<uint8_t> &clientData,
     std::vector<uint8_t> &bufferData)
 {
@@ -374,34 +392,40 @@ static std::string GetDevStringValFromIdx(uint8_t busNum, uint8_t devAddr, uint8
 {
     const UsbDev dev = {busNum, devAddr};
     std::vector<uint8_t> strV;
-    std::string string = " ";
+    std::string strDesc = " ";
 
     if (idx == 0) {
-        return string;
+        return strDesc;
     }
 
     int32_t ret = UsbdClient::GetInstance().GetStringDescriptor(dev, idx, strV);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d get string[%{public}d] failed ret:%{public}d", __func__,
+        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d get string[%{public}hhu] failed ret:%{public}d", __func__,
                    __LINE__, idx, ret);
-        return string;
+        return strDesc;
     }
     uint32_t length = strV.size();
     if ((length < DESCRIPTOR_VALUE_START_OFFSET) || (strV[1] != DESCRIPTOR_TYPE_STRING)) {
-        USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:%{public}d type or length error, len:%{public}d", __func__, __LINE__,
+        USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:%{public}d type or length error, len:%{public}u", __func__, __LINE__,
                    length);
-        return string;
+        return strDesc;
     }
-    uint16_t *tbuf = new uint16_t[length + 1]();
+
+    uint16_t *tbuf = new(std::nothrow) uint16_t[length + 1]();
+    if (tbuf == nullptr) {
+        USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:%{public}d new failed\n", __func__, __LINE__);
+        return strDesc;
+    }
+
     for (uint32_t i = 0; i < length - DESCRIPTOR_VALUE_START_OFFSET; ++i) {
         tbuf[i] = strV[i + DESCRIPTOR_VALUE_START_OFFSET];
     }
     std::wstring wstr((wchar_t *)(tbuf), (length - DESCRIPTOR_VALUE_START_OFFSET) / HALF);
-    string = std::string(wstr.begin(), wstr.end());
+    strDesc = std::string(wstr.begin(), wstr.end());
     USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:%{public}d getString idx:%{public}d String:%{public}s length:%{public}d",
-               __func__, __LINE__, idx, string.c_str(), length);
+               __func__, __LINE__, idx, strDesc.c_str(), length);
     delete[] tbuf;
-    return string;
+    return strDesc;
 }
 
 static std::string BcdToString(const std::vector<uint8_t> &bcd)
@@ -443,8 +467,8 @@ static int32_t FillDevStrings(UsbDevice &dev)
         std::vector<UsbInterface> interfaces = it->GetInterfaces();
         for (auto itIF = interfaces.begin(); itIF != interfaces.end(); ++itIF) {
             itIF->SetName(GetDevStringValFromIdx(busNum, devAddr, itIF->GetiInterface()));
-            USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:%{public}d interface:%{public}d %{public}s", __func__, __LINE__,
-                       itIF->GetiInterface(), itIF->GetName().c_str());
+            USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:%{public}d interface:%{public}hhu %{public}s", __func__,
+                __LINE__, itIF->GetiInterface(), itIF->GetName().c_str());
         }
         it->SetInterfaces(interfaces);
     }
@@ -546,8 +570,18 @@ int32_t UsbService::GetDeviceInfo(uint8_t busNum, uint8_t devAddr, UsbDevice &de
 
 bool UsbService::AddDevice(uint8_t busNum, uint8_t devAddr)
 {
-    UsbDevice *devInfo = new UsbDevice();
-    memset_s(devInfo, sizeof(UsbDevice), 0, sizeof(UsbDevice));
+    UsbDevice *devInfo = new(std::nothrow) UsbDevice();
+    if (devInfo == nullptr) {
+        USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:%{public}d new failed", __func__, __LINE__);
+        return false;
+    }
+
+    errno_t retSafe = memset_s(devInfo, sizeof(UsbDevice), 0, sizeof(UsbDevice));
+    if (retSafe != EOK) {
+        USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:%{public}d memset_s failed", __func__, __LINE__);
+        return false;
+    }
+
     int32_t ret = GetDeviceInfo(busNum, devAddr, *devInfo);
     USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:%{public}d GetDeviceInfo ret=%{public}d", __func__, __LINE__, ret);
     if (ret == UEC_OK) {
