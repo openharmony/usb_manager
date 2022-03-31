@@ -25,7 +25,7 @@ namespace OHOS {
 namespace USB {
 USBDevicePipe::USBDevicePipe() {}
 USBDevicePipe::USBDevicePipe(uint8_t busNum, uint8_t devAddr)
-    : busNum(busNum), devAddr(devAddr)
+    : busNum_(busNum), devAddr_(devAddr)
 {
 }
 
@@ -71,22 +71,22 @@ int32_t USBDevicePipe::SetInterface(const UsbInterface &interface)
 
 void USBDevicePipe::SetBusNum(uint8_t busNum)
 {
-    this->busNum = busNum;
+    this->busNum_ = busNum;
 }
 
 void USBDevicePipe::SetDevAddr(uint8_t devAddr)
 {
-    this->devAddr = devAddr;
+    this->devAddr_ = devAddr;
 }
 
 uint8_t USBDevicePipe::GetBusNum() const
 {
-    return busNum;
+    return busNum_;
 }
 
 uint8_t USBDevicePipe::GetDevAddr() const
 {
-    return devAddr;
+    return devAddr_;
 }
 } // namespace USB
 } // namespace OHOS

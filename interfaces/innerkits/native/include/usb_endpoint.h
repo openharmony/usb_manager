@@ -27,103 +27,109 @@ class USBEndpoint {
 public:
     USBEndpoint(uint32_t address, uint32_t attributes, uint32_t interval, uint32_t maxPacketSize)
     {
-        this->address = address;
-        this->attributes = attributes;
-        this->interval = interval;
-        this->maxPacketSize = maxPacketSize;
+        this->address_ = address;
+        this->attributes_ = attributes;
+        this->interval_ = interval;
+        this->maxPacketSize_ = maxPacketSize;
     }
     USBEndpoint() {}
     ~USBEndpoint() {}
 
     uint8_t GetNumber() const
     {
-        return address & USB_ENDPOINT_NUMBER_MASK;
+        return address_ & USB_ENDPOINT_NUMBER_MASK;
     }
     const int32_t &GetAddress() const
     {
-        return address;
+        return address_;
     }
 
     int32_t GetDirection() const
     {
-        return address & USB_ENDPOINT_DIR_MASK;
+        return address_ & USB_ENDPOINT_DIR_MASK;
     }
 
     const int32_t &GetAttributes() const
     {
-        return attributes;
+        return attributes_;
     }
 
     int32_t GetEndpointNumber() const
     {
-        return address & USB_ENDPOINT_NUMBER_MASK;
+        return address_ & USB_ENDPOINT_NUMBER_MASK;
     }
 
     const int32_t &GetInterval() const
     {
-        return interval;
+        return interval_;
     }
 
     const int32_t &GetMaxPacketSize() const
     {
-        return maxPacketSize;
+        return maxPacketSize_;
     }
 
     int32_t GetType() const
     {
-        return (attributes & USB_ENDPOINT_XFERTYPE_MASK);
+        return (attributes_ & USB_ENDPOINT_XFERTYPE_MASK);
     }
 
     std::string ToString() const
     {
         std::string ret = "USBEndpoint:[Address:";
-        ret.append(std::to_string(address))
+        ret.append(std::to_string(address_))
             .append(", Direction:")
             .append(std::to_string(GetDirection()))
             .append(", Attributes:")
-            .append(std::to_string(attributes))
+            .append(std::to_string(attributes_))
             .append(", EndpointNumber:")
             .append(std::to_string(GetEndpointNumber()))
             .append(", Interval:")
-            .append(std::to_string(interval))
+            .append(std::to_string(interval_))
             .append(", MaxPacketSize:")
-            .append(std::to_string(maxPacketSize))
+            .append(std::to_string(maxPacketSize_))
             .append(", Type:")
             .append(std::to_string(GetType()))
             .append("]");
         return ret;
     }
+
     void SetAddr(int32_t val)
     {
-        address = val;
+        address_ = val;
     }
+
     void SetAttr(int32_t val)
     {
-        attributes = val;
+        attributes_ = val;
     }
+
     void SetInterval(int32_t val)
     {
-        interval = val;
+        interval_ = val;
     }
+
     void SetMaxPacketSize(int32_t val)
     {
-        maxPacketSize = val;
+        maxPacketSize_ = val;
     }
+
     void SetInterfaceId(uint8_t interfaceId)
     {
-        this->interfaceId = interfaceId;
+        this->interfaceId_ = interfaceId;
     }
+
     int8_t GetInterfaceId() const
     {
-        return interfaceId;
+        return interfaceId_;
     }
 
 private:
-    int32_t address = INVALID_USB_INT_VALUE;
-    int32_t attributes = INVALID_USB_INT_VALUE;
-    int32_t interval = INVALID_USB_INT_VALUE;
-    int32_t maxPacketSize = INVALID_USB_INT_VALUE;
-    uint8_t interfaceId = UINT8_MAX;
+    int32_t address_ = INVALID_USB_INT_VALUE;
+    int32_t attributes_ = INVALID_USB_INT_VALUE;
+    int32_t interval_ = INVALID_USB_INT_VALUE;
+    int32_t maxPacketSize_ = INVALID_USB_INT_VALUE;
+    uint8_t interfaceId_ = UINT8_MAX;
 };
 } // namespace USB
 } // namespace OHOS

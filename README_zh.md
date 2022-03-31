@@ -10,7 +10,7 @@
 USB服务框架如下图所示：
 
 **图 1**  USB服务框架架图<a name="fig15658513184019"></a>
-![](usb服务子系统.png "USB服务框架架图")
+![](figures/usb-manager-architecture_zh.png "USB服务框架架图")
 
 架构及功能介绍：
 1. USB API：提供USB的基础API，主要包含查询USB设备的列表、设备插拔通知、USB HOST/DEVICE 功能切换、批量数据传输、控制命令传输、USB设备打开的权限控制及USB device模式下的function功能切换等。
@@ -52,7 +52,7 @@ base/usb/usb_manager
 | int32_t PipeRequestWait(USBDevicePipe &pip, int64_t timeout, UsbRequest &req); | 等待RequestQueue异步请求的操作结果 |
 | int32_t RequestAbort(UsbRequest &request); | 取消待处理的数据请求 |
 | int32_t RequestFree(UsbRequest &request); | 释放数据请求 |
-| int32_t HasRight(std::string deviceName); | 判断设备是否有权限 |
+| bool HasRight(std::string deviceName); | 判断设备是否有权限 |
 | int32_t RequestRight(std::string deviceName); | 给指定设备申请权限 |
 
 #### Device 功能接口

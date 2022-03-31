@@ -90,21 +90,17 @@ struct USBControlTransferAsyncContext : USBAsyncContext {
     int32_t index;
     uint8_t *buffer;
     uint32_t bufferLength;
+    uint32_t dataSize;
     int32_t timeOut = 0;
 };
 
 struct USBBulkTransferAsyncContext : USBAsyncContext {
     uint8_t *buffer;
     uint32_t bufferLength;
+    uint32_t dataSize;
     int32_t timeOut = 0;
     USBDevicePipe pipe;
     USBEndpoint endpoint;
-};
-
-struct USBQueueAsyncContext : USBAsyncContext {
-    UsbRequest req;
-    uint8_t *buffer;
-    uint32_t bufferLength;
 };
 } // namespace USB
 } // namespace OHOS

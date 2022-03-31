@@ -20,34 +20,34 @@ namespace OHOS {
 namespace USB {
 void UsbRightManager::Init() {}
 
-int32_t UsbRightManager::HasRight(const std::string &deviceName, const std::string &bundleName)
+bool UsbRightManager::HasRight(const std::string &deviceName, const std::string &bundleName)
 {
     auto itMap = rightMap.find(deviceName);
     if (itMap == rightMap.end()) {
         USB_HILOGE(MODULE_USB_SERVICE, "hasRight deviceName false");
-        return UEC_SERVICE_INVALID_VALUE;
+        return false;
     } else {
         BundleNameList bundleNameList = itMap->second;
         auto itVevtor = std::find(bundleNameList.begin(), bundleNameList.end(), bundleName);
         if (itVevtor == bundleNameList.end()) {
             USB_HILOGE(MODULE_USB_SERVICE, "hasRight bundleName false");
-            return UEC_SERVICE_INVALID_VALUE;
+            return false;
         }
     }
     USB_HILOGI(MODULE_USB_SERVICE, "Request Right Success");
-    return UEC_OK;
+    return true;
 }
 
 int32_t UsbRightManager::RequestRight(const std::string &deviceName, const std::string &bundleName)
 {
-    if (HasRight(deviceName, bundleName) == 0) {
+    if (HasRight(deviceName, bundleName)) {
         USB_HILOGE(MODULE_USB_SERVICE, "device has Right ");
         return UEC_OK;
     }
     if (!AddDeviceRight(deviceName, bundleName)) {
         return UEC_SERVICE_INVALID_VALUE;
     }
-    if (HasRight(deviceName, bundleName) == 0) {
+    if (HasRight(deviceName, bundleName)) {
         USB_HILOGI(MODULE_USB_SERVICE, "requestRight Success");
         return UEC_OK;
     }

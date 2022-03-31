@@ -38,6 +38,11 @@ UsbServiceSubscriber::UsbServiceSubscriber() {}
 int32_t UsbServiceSubscriber::PortChangedEvent(int32_t portId, int32_t powerRole, int32_t dataRole, int32_t mode)
 {
     auto pms = DelayedSpSingleton<UsbService>::GetInstance();
+    if (pms == nullptr) {
+        USB_HILOGE(MODULE_USB_SERVICE, "failed to GetInstance");
+        return UEC_SERVICE_GET_USB_SERVICE_FAILED;
+    }
+
     Want want;
     want.SetAction(CommonEventSupport::COMMON_EVENT_USB_PORT_CHANGED);
     pms->UpdateUsbPort(portId, powerRole, dataRole, mode);
@@ -111,8 +116,11 @@ int32_t UsbServiceSubscriber::DeviceEvent(const UsbInfo &info)
     USB_HILOGW(MODULE_USBD, "%{public}s:%{public}d status:%{public}d bus:%{public}d dev:%{public}d", __func__, __LINE__,
                status, busNum, devAddr);
     auto pms = DelayedSpSingleton<UsbService>::GetInstance();
-    USB_HILOGW(MODULE_USBD, "%{public}s:%{public}d status:%{public}d pms:%{public}s", __func__, __LINE__, status,
-               pms == nullptr ? "NULL" : "OK");
+    if (pms == nullptr) {
+        USB_HILOGE(MODULE_USB_SERVICE, "failed to GetInstance");
+        return UEC_SERVICE_GET_USB_SERVICE_FAILED;
+    }
+
     if (status == ACT_DEVUP) {
         USB_HILOGE(MODULE_USB_SERVICE, "usb attached");
         pms->AddDevice(busNum, devAddr);
