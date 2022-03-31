@@ -21,8 +21,8 @@ namespace OHOS {
 namespace USB {
 int32_t UsbRequest::Initialize(const USBDevicePipe &pipe, const USBEndpoint &endpoint)
 {
-    this->pipe = pipe;
-    this->endpoint = endpoint;
+    this->pipe_ = pipe;
+    this->endpoint_ = endpoint;
     int32_t ret = UsbSrvClient::GetInstance().RequestInitialize(*this);
     if (ERR_OK != ret) {
         USB_HILOGE(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed with ret = %{public}d.", __func__,

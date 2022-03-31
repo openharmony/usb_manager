@@ -41,8 +41,6 @@ ohos_shared_library("usbsrv_client") {
   deps = []
 
   external_deps = [
-    "device_driver_framework:libhdf_ipc_adapter",
-    "device_driver_framework:libhdf_utils",
     "eventhandler:libeventhandler",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",

@@ -105,12 +105,8 @@ bool UsbService::Init()
             return false;
         }
     }
-    if (!handler_) {
+    if (handler_ == nullptr) {
         handler_ = std::make_shared<UsbServerEventHandler>(eventRunner_, pms);
-        if (handler_ == nullptr) {
-            USB_HILOGE(MODULE_USB_SERVICE, "Init failed due to create handler error");
-            return false;
-        }
 
         if (!Publish(pms)) {
             USB_HILOGE(MODULE_USB_SERVICE, "OnStart register to system ability manager failed.");
@@ -175,22 +171,22 @@ bool UsbService::IsCommonEventServiceAbilityExist()
 int32_t UsbService::OpenDevice(uint8_t busNum, uint8_t devAddr)
 {
     std::string name = std::to_string(busNum) + "-" + std::to_string(devAddr);
-    int32_t ret = UsbService::HasRight(name);
-    if (UEC_OK == ret) {
-        const UsbDev dev = {busNum, devAddr};
-        ret = UsbdClient::GetInstance().OpenDevice(dev);
-        if (UEC_OK != ret) {
-            USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d OpenDevice failed ret:%{public}d", __func__, __LINE__,
-                       ret);
-        }
-    } else {
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d No permission ret:%{public}d", __func__, __LINE__, ret);
-        ret = UEC_SERVICE_PERMISSION_DENIED;
+    if (!UsbService::HasRight(name)) {
+        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d No permission", __func__, __LINE__);
+        return UEC_SERVICE_PERMISSION_DENIED;
     }
+
+    const UsbDev dev = {busNum, devAddr};
+    int32_t ret = UsbdClient::GetInstance().OpenDevice(dev);
+    if (ret != UEC_OK) {
+        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d OpenDevice failed ret:%{public}d", __func__, __LINE__,
+            ret);
+    }
+
     return ret;
 }
 
-int32_t UsbService::HasRight(std::string deviceName)
+bool UsbService::HasRight(std::string deviceName)
 {
     USB_HILOGI(MODULE_USB_SERVICE, "calling usbRightManager HasRight");
     std::string bundleName;
@@ -199,7 +195,7 @@ int32_t UsbService::HasRight(std::string deviceName)
         return usbRightManager_->HasRight(deviceName, bundleName);
     }
     USB_HILOGE(MODULE_USB_SERVICE, "HasRight GetBundleName false");
-    return UEC_SERVICE_INNER_ERR;
+    return false;
 }
 
 int32_t UsbService::RequestRight(std::string deviceName)
@@ -477,9 +473,9 @@ static int32_t FillDevStrings(UsbDevice &dev)
     return UEC_OK;
 }
 
-int32_t UsbService::GetDeviceInfoDescriptor(const UsbDev &uDev, std::vector<uint8_t> &decriptor, UsbDevice &dev)
+int32_t UsbService::GetDeviceInfoDescriptor(const UsbDev &uDev, std::vector<uint8_t> &descriptor, UsbDevice &dev)
 {
-    int32_t ret = UsbdClient::GetInstance().GetRawDescriptor(uDev, decriptor);
+    int32_t ret = UsbdClient::GetInstance().GetRawDescriptor(uDev, descriptor);
     if (ret != UEC_OK) {
         UsbdClient::GetInstance().CloseDevice(uDev);
         USB_HILOGE(MODULE_USB_SERVICE,
@@ -488,8 +484,8 @@ int32_t UsbService::GetDeviceInfoDescriptor(const UsbDev &uDev, std::vector<uint
                    __func__, __LINE__, ret, uDev.busNum, uDev.devAddr);
         return ret;
     }
-    uint8_t *buffer = decriptor.data();
-    uint32_t length = decriptor.size();
+    uint8_t *buffer = descriptor.data();
+    uint32_t length = descriptor.size();
     if ((!buffer) || (length == 0)) {
         USB_HILOGE(MODULE_USB_SERVICE,
                    "%{public}s:%{public}d GetRawDescriptor failed len=%{public}d busNum:%{public}d "
@@ -510,11 +506,11 @@ int32_t UsbService::GetDeviceInfoDescriptor(const UsbDev &uDev, std::vector<uint
     return ret;
 }
 
-int32_t UsbService::GetConfigDescriptor(UsbDevice &dev, std::vector<uint8_t> &decriptor)
+int32_t UsbService::GetConfigDescriptor(UsbDevice &dev, std::vector<uint8_t> &descriptor)
 {
     std::vector<USBConfig> configs;
-    uint8_t *buffer = decriptor.data();
-    uint32_t length = decriptor.size();
+    uint8_t *buffer = descriptor.data();
+    uint32_t length = descriptor.size();
     uint32_t cursor = CURSOR_INIT;
     int32_t ret = UEC_OK;
     for (uint8_t i = 0; i < dev.GetDescConfigCount(); ++i) {
@@ -542,7 +538,7 @@ int32_t UsbService::GetDeviceInfo(uint8_t busNum, uint8_t devAddr, UsbDevice &de
     USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:%{public}d busNum:%{public}d devAddr:%{public}d", __func__, __LINE__,
                busNum, devAddr);
     const UsbDev uDev = {busNum, devAddr};
-    std::vector<uint8_t> decriptor;
+    std::vector<uint8_t> descriptor;
 
     int32_t ret = UsbdClient::GetInstance().OpenDevice(uDev);
     if (ret != UEC_OK) {
@@ -550,12 +546,12 @@ int32_t UsbService::GetDeviceInfo(uint8_t busNum, uint8_t devAddr, UsbDevice &de
         return ret;
     }
 
-    ret = GetDeviceInfoDescriptor(uDev, decriptor, dev);
+    ret = GetDeviceInfoDescriptor(uDev, descriptor, dev);
     if (ret != UEC_OK) {
         USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d GetDeviceInfoDescriptor ret=%{public}d", __func__,
                    __LINE__, ret);
     }
-    ret = GetConfigDescriptor(dev, decriptor);
+    ret = GetConfigDescriptor(dev, descriptor);
     if (ret != UEC_OK) {
         USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d GetConfigDescriptor ret=%{public}d", __func__, __LINE__,
                    ret);
@@ -591,6 +587,7 @@ bool UsbService::AddDevice(uint8_t busNum, uint8_t devAddr)
     delete devInfo;
     return false;
 }
+
 bool UsbService::DelDevice(uint8_t busNum, uint8_t devAddr)
 {
     USB_HILOGI(MODULE_USBD, "%{public}s:%{public}d entry", __func__, __LINE__);

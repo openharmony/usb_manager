@@ -19,11 +19,14 @@ using namespace std;
 using namespace OHOS;
 using namespace OHOS::USB;
 
-static const int32_t DEFAULT_PORT_ID = 1;
-static const int32_t DEFAULT_ROLE_HOST = 1;
-static const int32_t DEFAULT_ROLE_DEVICE = 2;
+static constexpr int32_t DEFAULT_PORT_ID = 1;
+static constexpr int32_t DEFAULT_ROLE_HOST = 1;
+static constexpr int32_t DEFAULT_ROLE_DEVICE = 2;
+static constexpr int32_t MIN_ARG_NUM = 3;
+static constexpr uint32_t CMD_INDEX = 1;
+static constexpr uint32_t PARAM_INDEX = 2;
 
-static const int32_t HOST_MODE = 2;
+static constexpr int32_t HOST_MODE = 2;
 
 static UsbSrvClient &g_usbClient = UsbSrvClient::GetInstance();
 
@@ -33,7 +36,7 @@ static void PrintHelp()
     printf("-p 0: Query Port\n");
     printf("-p 1: Switch to host\n");
     printf("-p 2: Switch to device:\n");
-    printf("-f 0: Query fucntion\n");
+    printf("-f 0: Query function\n");
     printf("-f 1: Switch to function:acm\n");
     printf("-f 2: Switch to function:ecm\n");
     printf("-f 3: Switch to function:acm&ecm\n");
@@ -108,18 +111,29 @@ static void PortSwitch(UsbSrvClient &g_usbClient, int32_t mode)
     }
 }
 
+static inline bool isNumber(string_view strv)
+{
+    return (strv.find_first_not_of("0123456789") == strv.npos);
+}
+
 int32_t main(int32_t argc, char *argv[])
 {
-    if ((argc < 1) || (strcmp(argv[1], "-h") == 0)) {
+    if (argc < MIN_ARG_NUM) {
         PrintHelp();
         return 0;
     }
 
-    if ((!strcmp(argv[1], "-f"))) {
-        int32_t mode = stoi(argv[2]);
+    if (!isNumber(argv[PARAM_INDEX])) {
+        PrintHelp();
+        return 0;
+    }
+
+    int32_t mode;
+    if ((!strcmp(argv[CMD_INDEX], "-f"))) {
+        mode = stoi(argv[PARAM_INDEX]);
         FunctionSwitch(g_usbClient, mode);
-    } else if (!strcmp(argv[1], "-p")) {
-        int32_t mode = stoi(argv[2]);
+    } else if (!strcmp(argv[CMD_INDEX], "-p")) {
+        mode = stoi(argv[PARAM_INDEX]);
         PortSwitch(g_usbClient, mode);
     } else {
         printf("param incorrect: please input -h for help\n");

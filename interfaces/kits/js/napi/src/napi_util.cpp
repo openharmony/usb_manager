@@ -32,10 +32,6 @@ void NapiUtil::JsValueToString(const napi_env &env, const napi_value &value, con
     }
 
     std::unique_ptr<char[]> buf = std::make_unique<char[]>(bufLen);
-    if (buf.get() == nullptr) {
-        USB_HILOGE(MODULE_JS_NAPI, "%{public}s nullptr js object to string malloc failed", __func__);
-        return;
-    }
 
     errno_t ret = memset_s(buf.get(), bufLen, 0, bufLen);
     NAPI_ASSERT_RETURN_VOID(env, ret == EOK, "JsValueToString memset_s failed.");
@@ -48,8 +44,10 @@ void NapiUtil::JsValueToString(const napi_env &env, const napi_value &value, con
 void NapiUtil::JsObjectToString(const napi_env &env, const napi_value &object, std::string fieldStr,
     const int32_t bufLen, std::string &fieldRef)
 {
-    if (bufLen <= 0)
+    if (bufLen <= 0) {
+        USB_HILOGE(MODULE_JS_NAPI, "invalid bufLen=%{public}d", bufLen);
         return;
+    }
 
     bool hasProperty = false;
     napi_has_named_property(env, object, fieldStr.c_str(), &hasProperty);
@@ -61,10 +59,6 @@ void NapiUtil::JsObjectToString(const napi_env &env, const napi_value &object, s
         napi_typeof(env, field, &valueType);
         NAPI_ASSERT_RETURN_VOID(env, valueType == napi_string, "Wrong argument type. String expected.");
         std::unique_ptr<char[]> buf = std::make_unique<char[]>(bufLen);
-        if (buf == nullptr) {
-            USB_HILOGE(MODULE_JS_NAPI, "%{public}s nullptr js object to string malloc failed", __func__);
-            return;
-        }
 
         errno_t ret = memset_s(buf.get(), bufLen, 0, bufLen);
         NAPI_ASSERT_RETURN_VOID(env, ret == EOK, "JsObjectToString memset_s failed.");

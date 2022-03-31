@@ -10,7 +10,7 @@
 The following figure shows the USB service architecture.
 
 **Figure 1**  USB service architecture<a name="fig15658513184019"></a>
-![](usb.png "USB_service_architecture")
+![](figures/usb-manager-architecture.png "USB_service_architecture")
 
 The architecture logically consists of three layers:
 1. USB API: provides USB APIs that implement various basic functions, for example, query of the USB device list, USB device plug notification, USB host and device mode switching, bulk transfer, control transfer, right management, and function switching in device mode.
@@ -52,7 +52,7 @@ base/usb/usb_manager
 | int32_t PipeRequestWait(USBDevicePipe &pip, int64_t timeout, UsbRequest &req); | Waits for the operation result of the isochronous transfer request in <b>RequestQueue</b>.|
 | int32_t RequestAbort(UsbRequest &request); | Cancels the data transfer requests to be processed.|
 | int32_t RequestFree(UsbRequest &request); | Requests for releasing data.|
-| int32_t HasRight(std::string deviceName); | Checks whether the application has permission to access the USB device.|
+| bool HasRight(std::string deviceName); | Checks whether the application has permission to access the USB device.|
 | int32_t RequestRight(std::string deviceName); | Requests for permission to access the USB device.|
 
 #### Device APIs

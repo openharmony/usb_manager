@@ -32,7 +32,7 @@ public:
     RightMap rightMap;
 
     void Init();
-    int32_t HasRight(const std::string &deviceName, const std::string &bundleName);
+    bool HasRight(const std::string &deviceName, const std::string &bundleName);
     int32_t RequestRight(const std::string &deviceName, const std::string &bundleName);
     bool AddDeviceRight(const std::string &deviceName, const std::string &bundleName);
     bool RemoveDeviceRight(const std::string &deviceName);
