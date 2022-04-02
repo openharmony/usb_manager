@@ -101,7 +101,8 @@ int32_t UsbServiceSubscriber::DeviceEvent(const UsbInfo &info)
     struct timeval end;
     gettimeofday(&end, NULL);
     int64_t tackTime = (end.tv_sec - start.tv_sec) * MSEC_TIME + (end.tv_usec - start.tv_usec) / MSEC_TIME;
-    USB_HILOGD(MODULE_USB_SERVICE, "end call subscriber usb device tached event, takes : %{public}lld ms", tackTime);
+    USB_HILOGD(MODULE_USB_SERVICE, "end call subscriber usb device tached event, takes : %{public}lld ms",
+               (long long)tackTime);
 
     if ((ACT_UPDEVICE == status) || (ACT_DOWNDEVICE == status)) {
         return ret;

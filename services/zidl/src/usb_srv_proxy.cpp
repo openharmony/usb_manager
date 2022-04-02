@@ -603,7 +603,7 @@ int32_t UsbServerProxy::BulkTransferRead(const UsbDev &dev, const UsbPipe &pipe,
                    ret);
         return ret;
     }
-    USB_HILOGI(MODULE_USBD, "%{public}s Set buffer message. length = %{public}d", __func__, bufferData.size());
+    USB_HILOGI(MODULE_USBD, "%{public}s Set buffer message. length = %{public}zu", __func__, bufferData.size());
     return ret;
 }
 int32_t UsbServerProxy::BulkTransferWrite(const UsbDev &dev, const UsbPipe &pipe,
@@ -674,7 +674,7 @@ int32_t UsbServerProxy::ControlTransfer(const UsbDev &dev, const UsbCtrlTransfer
                        __LINE__, ret);
             return ret;
         }
-        USB_HILOGI(MODULE_USBD, "%{public}s Get buffer message. length = %{public}d", __func__, bufferData.size());
+        USB_HILOGI(MODULE_USBD, "%{public}s Get buffer message. length = %{public}zu", __func__, bufferData.size());
     }
     return UEC_OK;
 }
