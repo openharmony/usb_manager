@@ -633,7 +633,7 @@ int32_t UsbServerStub::DoGetDevices(MessageParcel &data, MessageParcel &reply, M
         USB_HILOGE(MODULE_SERVICE, "%{public}s: failed ret = %{public}d", __func__, ret);
         return ret;
     }
-    USB_HILOGE(MODULE_SERVICE, "%{public}s: list size = %{public}d", __func__, deviceList.size());
+    USB_HILOGE(MODULE_SERVICE, "%{public}s: list size = %{public}zu", __func__, deviceList.size());
     ret = SetDeviceListMessageParcel(deviceList, reply);
     if (UEC_OK != ret) {
         USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s:%{public}d failed ret:%{public}d", __func__, __LINE__, ret);
