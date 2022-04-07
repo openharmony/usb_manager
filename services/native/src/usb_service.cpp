@@ -226,7 +226,7 @@ int32_t UsbService::GetDevices(std::vector<UsbDevice> &deviceList)
 {
     std::map<std::string, UsbDevice *> devices;
     usbHostManger_->GetDevices(devices);
-    USB_HILOGI(MODULE_USB_SERVICE, "%{public}s list size %{public}d", __func__, devices.size());
+    USB_HILOGI(MODULE_USB_SERVICE, "%{public}s list size %{public}zu", __func__, devices.size());
     for (auto it = devices.begin(); it != devices.end(); ++it) {
         deviceList.push_back(*it->second);
     }

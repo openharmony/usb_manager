@@ -129,7 +129,7 @@ int32_t UsbSrvClient::GetDevices(std::vector<UsbDevice> &deviceList)
     if (ret != UEC_OK) {
         USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s failed ret = %{public}d!", __func__, ret);
     }
-    USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s list size = %{public}d!", __func__, deviceList.size());
+    USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s list size = %{public}zu!", __func__, deviceList.size());
     return ret;
 }
 
