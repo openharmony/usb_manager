@@ -36,12 +36,12 @@ bool UsbHostManager::DelDevice(uint8_t busNum, uint8_t devNum)
     std::string name = std::to_string(busNum) + "-" + std::to_string(devNum);
     MAP_STR_DEVICE::iterator iter = devices_.find(name);
     if (iter == devices_.end()) {
-        USB_HILOGF(MODULE_SERVICE, "%{public}s:%{public}d name:%{public}s bus:%{public}hhu dev:%{public}hhu not exist",
-            __func__, __LINE__, name.c_str(), busNum, devNum);
+        USB_HILOGF(MODULE_SERVICE, "name:%{public}s bus:%{public}hhu dev:%{public}hhu not exist", name.c_str(),
+            busNum, devNum);
         return false;
     }
-    USB_HILOGF(MODULE_SERVICE, "%{public}s:%{public}d device:%{public}s bus:%{public}hhu dev:%{public}hhu erase ",
-        __func__, __LINE__, name.c_str(), busNum, devNum);
+    USB_HILOGI(MODULE_SERVICE, "device:%{public}s bus:%{public}hhu dev:%{public}hhu erase ", name.c_str(), busNum,
+        devNum);
     UsbDevice *devOld = iter->second;
     devices_.erase(iter);
     if (devOld)
@@ -52,7 +52,7 @@ bool UsbHostManager::DelDevice(uint8_t busNum, uint8_t devNum)
 bool UsbHostManager::AddDevice(UsbDevice *dev)
 {
     if (dev == nullptr) {
-        USB_HILOGF(MODULE_SERVICE, "%{public}s:%{public}d device is NULL", __func__, __LINE__);
+        USB_HILOGF(MODULE_SERVICE, "device is NULL");
         return false;
     }
     uint8_t busNum = dev->GetBusNum();
@@ -60,16 +60,15 @@ bool UsbHostManager::AddDevice(UsbDevice *dev)
     std::string name = std::to_string(busNum) + "-" + std::to_string(devNum);
     MAP_STR_DEVICE::iterator iter = devices_.find(name);
     if (iter != devices_.end()) {
-        USB_HILOGF(MODULE_SERVICE,
-                   "%{public}s:%{public}d device:%{public}s  bus:%{public}hhu dev:%{public}hhu already exist", __func__,
-                   __LINE__, name.c_str(), busNum, devNum);
+        USB_HILOGF(MODULE_SERVICE, "device:%{public}s bus:%{public}hhu dev:%{public}hhu already exist", name.c_str(),
+            busNum, devNum);
         UsbDevice *devOld = iter->second;
         devices_.erase(iter);
         if (devOld)
             delete devOld;
     }
-    USB_HILOGF(MODULE_SERVICE, "%{public}s:%{public}d device:%{public}s  bus:%{public}hhu dev:%{public}hhu insert",
-               __func__, __LINE__, name.c_str(), busNum, devNum);
+    USB_HILOGI(MODULE_SERVICE, "device:%{public}s bus:%{public}hhu dev:%{public}hhu insert", name.c_str(), busNum,
+        devNum);
     devices_.insert(std::pair<std::string, UsbDevice *>(name, dev));
     return true;
 }

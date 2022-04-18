@@ -24,45 +24,44 @@ int32_t UsbdBulkCallBack::OnRemoteRequest(uint32_t code, MessageParcel &data, Me
     switch (code) {
         case CMD_USBD_BULK_CALLBACK_WRITE: {
             if (data.ReadInterfaceToken() != GetObjectDescriptor()) {
-                USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s: checkout interface descriptor failed!", __func__);
+                USB_HILOGE(MODULE_USB_INNERKIT, "check interface token failed, code=%{public}u", code);
                 return UEC_SERVICE_WRITE_PARCEL_ERROR;
             }
 
             int32_t status;
             int32_t actLength;
             if (!data.ReadInt32(status)) {
-                USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s:%{public}d get status error", __func__, __LINE__);
+                USB_HILOGE(MODULE_USB_INNERKIT, "get status error");
                 return UEC_SERVICE_WRITE_PARCEL_ERROR;
             }
             if (!data.ReadInt32(actLength)) {
-                USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s:%{public}d get actLength error", __func__, __LINE__);
+                USB_HILOGE(MODULE_USB_INNERKIT, "get actLength error");
                 return UEC_SERVICE_WRITE_PARCEL_ERROR;
             }
 
-            USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s:%{public}d status:%{public}d actLength:%{public}d", __func__,
-                __LINE__, status, actLength);
+            USB_HILOGI(MODULE_USB_INNERKIT, "status:%{public}d actLength:%{public}d", status, actLength);
             OnBulkWriteCallback(status, actLength);
             break;
         }
         case CMD_USBD_BULK_CALLBACK_READ: {
             if (data.ReadInterfaceToken() != GetObjectDescriptor()) {
-                USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s: checkout interface descriptor failed!", __func__);
+                USB_HILOGE(MODULE_USB_INNERKIT, "check interface token failed, code=%{public}u", code);
                 return UEC_SERVICE_WRITE_PARCEL_ERROR;
             }
 
             int32_t status;
             int32_t actLength;
             if (!data.ReadInt32(status)) {
-                USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s:%{public}d get status error", __func__, __LINE__);
+                USB_HILOGE(MODULE_USB_INNERKIT, "get status error code=%{public}u", code);
                 return UEC_SERVICE_WRITE_PARCEL_ERROR;
             }
             if (!data.ReadInt32(actLength)) {
-                USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s:%{public}d get actLength error", __func__, __LINE__);
+                USB_HILOGE(MODULE_USB_INNERKIT, "get actLength error code=%{public}u", code);
                 return UEC_SERVICE_WRITE_PARCEL_ERROR;
             }
 
-            USB_HILOGI(MODULE_USB_INNERKIT, "%{public}s:%{public}d status:%{public}d actLength:%{public}d", __func__,
-                __LINE__, status, actLength);
+            USB_HILOGI(MODULE_USB_INNERKIT, "%{public}d status:%{public}d actLength:%{public}d", __LINE__, status,
+                actLength);
             OnBulkReadCallback(status, actLength);
             break;
         }
