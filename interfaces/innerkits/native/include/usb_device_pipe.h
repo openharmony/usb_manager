@@ -40,8 +40,8 @@ public:
     uint8_t GetDevAddr() const;
 
 private:
-    uint8_t busNum;
-    uint8_t devAddr;
+    uint8_t busNum_;
+    uint8_t devAddr_;
 };
 } // namespace USB
 } // namespace OHOS

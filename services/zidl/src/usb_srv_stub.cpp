@@ -263,7 +263,9 @@ int32_t UsbServerStub::DoHasRight(MessageParcel &data, MessageParcel &reply, Mes
 {
     std::string deviceName = "";
     READ_PARCEL_WITH_RET(data, String, deviceName, UEC_SERVICE_READ_PARCEL_ERROR);
-    return HasRight(deviceName);
+    WRITE_PARCEL_WITH_RET(reply, Bool, HasRight(deviceName), UEC_SERVICE_WRITE_PARCEL_ERROR);
+
+    return UEC_OK;
 }
 
 int32_t UsbServerStub::DoRequestRight(MessageParcel &data, MessageParcel &reply, MessageOption &option)
@@ -695,7 +697,7 @@ int32_t UsbServerStub::SetDeviceConfigsMessageParcel(std::vector<USBConfig> &con
         WRITE_PARCEL_WITH_RET(data, Uint8, config.GetiConfiguration(), UEC_SERVICE_WRITE_PARCEL_ERROR);
         WRITE_PARCEL_WITH_RET(data, String, config.GetName(), UEC_SERVICE_WRITE_PARCEL_ERROR);
 
-        WRITE_PARCEL_WITH_RET(data, Int32, config.GetInterfaceCount(), UEC_SERVICE_WRITE_PARCEL_ERROR);
+        WRITE_PARCEL_WITH_RET(data, Uint32, config.GetInterfaceCount(), UEC_SERVICE_WRITE_PARCEL_ERROR);
         USB_HILOGI(MODULE_USB_SERVICE, "%{public}s devInfo=%{public}s", __func__, config.ToString().c_str());
         int32_t ret = SetDeviceInterfacesMessageParcel(config.GetInterfaces(), data);
         if (ret) {

@@ -91,15 +91,11 @@ int32_t UsbSrvClient::OpenDevice(const UsbDevice &device, USBDevicePipe &pipe)
     return UEC_OK;
 }
 
-int32_t UsbSrvClient::HasRight(std::string deviceName)
+bool UsbSrvClient::HasRight(std::string deviceName)
 {
     USB_HILOGI(MODULE_USB_INNERKIT, " Calling HasRight Start!");
-    RETURN_IF_WITH_RET(Connect() != UEC_OK, UEC_INTERFACE_NO_INIT);
-    int32_t ret = proxy_->HasRight(deviceName);
-    if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_USB_INNERKIT, " Calling HasRight False!");
-    }
-    return ret;
+    RETURN_IF_WITH_RET(Connect() != UEC_OK, false);
+    return proxy_->HasRight(deviceName);
 }
 
 int32_t UsbSrvClient::RequestRight(std::string deviceName)

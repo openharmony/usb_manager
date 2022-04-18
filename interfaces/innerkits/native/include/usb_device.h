@@ -28,260 +28,290 @@ namespace OHOS {
 namespace USB {
 class UsbDevice {
 public:
-    UsbDevice(std::string mName,
-              std::string mManufacturerName,
-              std::string mProductName,
-              std::string mVersion,
-              uint8_t devAddr,
-              uint8_t busNum,
-              int mVendorId,
-              int mProductId,
-              int mClass,
-              int mSubclass,
-              int mProtocol,
-              std::vector<USBConfig> configs)
+    UsbDevice(std::string name, std::string manufacturerName, std::string productName, std::string version,
+        uint8_t devAddr, uint8_t busNum, int32_t vendorId, int32_t productId, int32_t klass, int32_t subClass,
+        int32_t protocol, std::vector<USBConfig> configs)
     {
-        this->mName = mName;
-        this->mManufacturerName = mManufacturerName;
-        this->mProductName = mProductName;
-        this->mVersion = mVersion;
-        this->devAddr = devAddr;
-        this->busNum = busNum;
-        this->mVendorId = mVendorId;
-        this->mProductId = mProductId;
-        this->mClass = mClass;
-        this->mSubclass = mSubclass;
-        this->mProtocol = mProtocol;
-        this->configs = configs;
+        this->name_ = name;
+        this->manufacturerName_ = manufacturerName;
+        this->productName_ = productName;
+        this->version_ = version;
+        this->devAddr_ = devAddr;
+        this->busNum_ = busNum;
+        this->vendorId_ = vendorId;
+        this->productId_ = productId;
+        this->klass_ = klass;
+        this->subClass_ = subClass;
+        this->protocol_ = protocol;
+        this->configs_ = configs;
     }
+
     UsbDevice() {}
     ~UsbDevice() {}
+
     const std::string &GetName() const
     {
-        return mName;
+        return name_;
     }
+
     const std::string &GetManufacturerName() const
     {
-        return mManufacturerName;
+        return manufacturerName_;
     }
+
     const std::string &GetProductName() const
     {
-        return mProductName;
+        return productName_;
     }
+
     const std::string &GetVersion() const
     {
-        return mVersion;
+        return version_;
     }
+
     int32_t GetVendorId() const
     {
-        return mVendorId;
+        return vendorId_;
     }
+
     int32_t GetProductId() const
     {
-        return mProductId;
+        return productId_;
     }
+
     int32_t GetClass() const
     {
-        return mClass;
+        return klass_;
     }
+
     int32_t GetSubclass() const
     {
-        return mSubclass;
+        return subClass_;
     }
+
     int32_t GetProtocol() const
     {
-        return mProtocol;
+        return protocol_;
     }
+
     int32_t GetConfigCount() const
     {
-        return configs.size();
+        return configs_.size();
     }
+
     int32_t GetConfig(uint32_t index, USBConfig &config) const
     {
-        if (index >= configs.size()) {
+        if (index >= configs_.size()) {
             return ERR_INVALID_VALUE;
         }
-        config = configs[index];
+        config = configs_[index];
         return ERR_OK;
     }
+
     void SetConfigs(const std::vector<USBConfig> &configs)
     {
-        this->configs = configs;
+        this->configs_ = configs;
     }
 
     uint8_t GetDevAddr() const
     {
-        return devAddr;
-    }
-    uint8_t GetBusNum() const
-    {
-        return busNum;
-    }
-    bool GetDescConfigCount()
-    {
-        return descConfigCount;
+        return devAddr_;
     }
 
-    void SetDevAddr(uint8_t Num)
+    uint8_t GetBusNum() const
     {
-        devAddr = Num;
+        return busNum_;
     }
-    void SetBusNum(uint8_t Num)
+
+    bool GetDescConfigCount()
     {
-        busNum = Num;
+        return descConfigCount_;
     }
-    void SetName(const std::string &Name)
+
+    void SetDevAddr(uint8_t addr)
     {
-        mName = Name;
+        devAddr_ = addr;
     }
-    void SetManufacturerName(const std::string &Name)
+
+    void SetBusNum(uint8_t num)
     {
-        mManufacturerName = Name;
+        busNum_ = num;
     }
-    void SetProductName(const std::string &Name)
+
+    void SetName(const std::string &name)
     {
-        mProductName = Name;
+        name_ = name;
     }
-    void SetVersion(const std::string &Name)
+
+    void SetManufacturerName(const std::string &manufacturerName)
     {
-        mVersion = Name;
+        manufacturerName_ = manufacturerName;
     }
-    void SetVendorId(int Id)
+
+    void SetProductName(const std::string &productName)
     {
-        mVendorId = Id;
+        productName_ = productName;
     }
-    void SetProductId(int Id)
+
+    void SetVersion(const std::string &version)
     {
-        mProductId = Id;
+        version_ = version;
     }
-    void SetClass(int Id)
+
+    void SetVendorId(int32_t vendorId)
     {
-        mClass = Id;
+        vendorId_ = vendorId;
     }
-    void SetSubclass(int Id)
+
+    void SetProductId(int32_t productId)
     {
-        mSubclass = Id;
+        productId_ = productId;
     }
-    void SetProtocol(int Id)
+
+    void SetClass(int32_t deviceClass)
     {
-        mProtocol = Id;
+        klass_ = deviceClass;
     }
+
+    void SetSubclass(int32_t subClass)
+    {
+        subClass_ = subClass;
+    }
+
+    void SetProtocol(int32_t protocol)
+    {
+        protocol_ = protocol;
+    }
+
     void SetDescConfigCount(uint8_t count)
     {
-        descConfigCount = count;
+        descConfigCount_ = count;
     }
 
     std::vector<USBConfig> &GetConfigs()
     {
-        return configs;
+        return configs_;
     }
 
     std::string ToString() const
     {
         std::ostringstream ss;
-        ss << "mName=" << mName << ","
-           << "mManufacturerName=" << mManufacturerName << ","
-           << "mProductName=" << mProductName << ","
-           << "mVersion=" << mVersion << ","
-           << "mSerial=" << mSerial << ","
-           << "busNum=" << (int32_t)busNum << ","
-           << "devAddr=" << (int32_t)devAddr << ","
-           << "mVendorId=" << mVendorId << ","
-           << "mProductId=" << mProductId << ","
-           << "mClass=" << mClass << ","
-           << "mSubclass=" << mSubclass << ","
-           << "mProtocol=" << mProtocol << "";
+        ss << "name_=" << name_ << ","
+           << "manufacturerName_=" << manufacturerName_ << ","
+           << "productName_=" << productName_ << ","
+           << "version_=" << version_ << ","
+           << "serial_=" << serial_ << ","
+           << "busNum_=" << (int32_t)busNum_ << ","
+           << "devAddr_=" << (int32_t)devAddr_ << ","
+           << "vendorId_=" << vendorId_ << ","
+           << "productId_=" << productId_ << ","
+           << "klass_=" << klass_ << ","
+           << "subClass_=" << subClass_ << ","
+           << "protocol_=" << protocol_ << "";
         std::string str = "UsbDevice[" + ss.str() + "];    ";
         ss.str("");
         std::string strConfigs;
-        for (size_t i = 0; i < configs.size(); ++i) {
-            const USBConfig &config = configs[i];
+        for (size_t i = 0; i < configs_.size(); ++i) {
+            const USBConfig &config = configs_[i];
             strConfigs += config.ToString();
         }
         str += strConfigs;
         return str;
     }
 
-    void SetiManufacturer(uint8_t idx)
+    void SetiManufacturer(uint8_t manufacturer)
     {
-        this->iManufacturer = idx;
+        this->iManufacturer_ = manufacturer;
     }
+
     uint8_t GetiManufacturer()
     {
-        return this->iManufacturer;
+        return this->iManufacturer_;
     }
-    void SetiProduct(uint8_t idx)
+
+    void SetiProduct(uint8_t product)
     {
-        this->iProduct = idx;
+        this->iProduct_ = product;
     }
+
     uint8_t GetiProduct()
     {
-        return this->iProduct;
+        return this->iProduct_;
     }
-    void SetiSerialNumber(uint8_t idx)
+
+    void SetiSerialNumber(uint8_t sn)
     {
-        this->iSerialNumber = idx;
+        this->iSerialNumber_ = sn;
     }
+
     uint8_t GetiSerialNumber()
     {
-        return this->iSerialNumber;
+        return this->iSerialNumber_;
     }
-    void SetmSerial(std::string Name)
+
+    void SetmSerial(std::string serial)
     {
-        this->mSerial = Name;
+        this->serial_ = serial;
     }
+
     const std::string GetmSerial() const
     {
-        return this->mSerial;
+        return this->serial_;
     }
-    void SetbMaxPacketSize0(uint8_t val)
+
+    void SetbMaxPacketSize0(uint8_t maxSize)
     {
-        this->bMaxPacketSize0 = val;
+        this->bMaxPacketSize0_ = maxSize;
     }
+
     uint8_t GetbMaxPacketSize0()
     {
-        return this->bMaxPacketSize0;
+        return this->bMaxPacketSize0_;
     }
-    void SetbcdUSB(uint16_t val)
+
+    void SetbcdUSB(uint16_t bcdUSB)
     {
-        this->bcdUSB = val;
+        this->bcdUSB_ = bcdUSB;
     }
+
     uint16_t GetbcdUSB()
     {
-        return this->bcdUSB;
+        return this->bcdUSB_;
     }
-    void SetbcdDevice(uint16_t val)
+
+    void SetbcdDevice(uint16_t bcdDevice)
     {
-        this->bcdDevice = val;
+        this->bcdDevice_ = bcdDevice;
     }
+
     uint16_t GetbcdDevice()
     {
-        return this->bcdDevice;
+        return this->bcdDevice_;
     }
 
 private:
-    std::string mName;
-    std::string mManufacturerName;
-    std::string mProductName;
-    std::string mVersion;
-    std::string mSerial;
-    uint8_t devAddr;
-    uint8_t busNum;
-    uint8_t descConfigCount = UINT8_MAX;
+    std::string name_;
+    std::string manufacturerName_;
+    std::string productName_;
+    std::string version_;
+    std::string serial_;
+    uint8_t devAddr_;
+    uint8_t busNum_;
+    uint8_t descConfigCount_ = UINT8_MAX;
 
-    uint8_t bMaxPacketSize0 = UINT8_MAX;
-    uint16_t bcdUSB = UINT16_MAX;
-    uint16_t bcdDevice = UINT16_MAX;
-    uint8_t iManufacturer = UINT8_MAX;
-    uint8_t iProduct = UINT8_MAX;
-    uint8_t iSerialNumber = UINT8_MAX;
+    uint8_t bMaxPacketSize0_ = UINT8_MAX;
+    uint16_t bcdUSB_ = UINT16_MAX;
+    uint16_t bcdDevice_ = UINT16_MAX;
+    uint8_t iManufacturer_ = UINT8_MAX;
+    uint8_t iProduct_ = UINT8_MAX;
+    uint8_t iSerialNumber_ = UINT8_MAX;
 
-    int mVendorId;
-    int mProductId;
-    int mClass;
-    int mSubclass;
-    int mProtocol;
-    std::vector<USBConfig> configs;
+    int32_t vendorId_;
+    int32_t productId_;
+    int32_t klass_;
+    int32_t subClass_;
+    int32_t protocol_;
+    std::vector<USBConfig> configs_;
 };
 } // namespace USB
 } // namespace OHOS

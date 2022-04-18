@@ -110,6 +110,7 @@ int32_t UsbDescriptorParser::ParseConfigDescriptor(const uint8_t *buffer, uint32
         if (interface.GetEndpointCount() > 0) {
             interfaces.push_back(interface);
         } else {
+            // retry
             --i;
         }
         cursor += interfaceCursor;

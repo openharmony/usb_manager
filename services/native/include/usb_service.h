@@ -53,7 +53,7 @@ public:
     }
 
     int32_t OpenDevice(uint8_t busNum, uint8_t devAddr) override;
-    int32_t HasRight(std::string deviceName) override;
+    bool HasRight(std::string deviceName) override;
     int32_t RequestRight(std::string deviceName) override;
     int32_t RemoveRight(std::string deviceName) override;
     int32_t GetDevices(std::vector<UsbDevice> &deviceList) override;
@@ -87,8 +87,8 @@ public:
     bool DelDevice(uint8_t busNum, uint8_t devAddr);
     void UpdateUsbPort(int32_t portId, int32_t powerRole, int32_t dataRole, int32_t mode);
     int32_t GetDeviceInfo(uint8_t busNum, uint8_t devAddr, UsbDevice &dev);
-    int32_t GetDeviceInfoDescriptor(const UsbDev &uDev, std::vector<uint8_t> &decriptor, UsbDevice &dev);
-    int32_t GetConfigDescriptor(UsbDevice &dev, std::vector<uint8_t> &decriptor);
+    int32_t GetDeviceInfoDescriptor(const UsbDev &uDev, std::vector<uint8_t> &descriptor, UsbDevice &dev);
+    int32_t GetConfigDescriptor(UsbDevice &dev, std::vector<uint8_t> &descriptor);
 
     int32_t RegBulkCallback(const UsbDev &devInfo, const UsbPipe &pipe, const sptr<IRemoteObject> &cb) override;
     int32_t UnRegBulkCallback(const UsbDev &devInfo, const UsbPipe &pipe) override;
