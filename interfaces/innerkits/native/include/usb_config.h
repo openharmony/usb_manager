@@ -31,97 +31,97 @@ public:
     USBConfig(uint32_t id, uint32_t attributes, std::string name, uint32_t maxPower,
         std::vector<UsbInterface> interfaces)
     {
-        this->id = id;
-        this->attributes = attributes;
-        this->maxPower = maxPower;
-        this->name = name;
-        this->interfaces = interfaces;
+        this->id_ = id;
+        this->attributes_ = attributes;
+        this->maxPower_ = maxPower;
+        this->name_ = name;
+        this->interfaces_ = interfaces;
     }
     USBConfig() {}
     ~USBConfig() {}
 
     const int32_t &GetId() const
     {
-        return id;
+        return id_;
     }
 
     const int32_t &GetAttributes() const
     {
-        return attributes;
+        return attributes_;
     }
 
     bool GetInterface(uint32_t index, UsbInterface &interface) const
     {
-        if (index >= interfaces.size()) {
+        if (index >= interfaces_.size()) {
             return false;
         }
-        interface = interfaces[index];
+        interface = interfaces_[index];
         return true;
     }
 
-    int32_t GetInterfaceCount() const
+    uint32_t GetInterfaceCount() const
     {
-        return interfaces.size();
+        return interfaces_.size();
     }
 
     int32_t GetMaxPower() const
     {
         // 2 represent maxPower units
-        return maxPower * 2;
+        return maxPower_ * 2;
     }
 
     const std::string &GetName() const
     {
-        return name;
+        return name_;
     }
 
     bool IsRemoteWakeup() const
     {
-        return (attributes & USB_CFG_REMOTE_WAKEUP) != 0;
+        return (attributes_ & USB_CFG_REMOTE_WAKEUP) != 0;
     }
 
     bool IsSelfPowered() const
     {
-        return (attributes & USB_CFG_SELF_POWERED) != 0;
+        return (attributes_ & USB_CFG_SELF_POWERED) != 0;
     }
 
     void SetInterfaces(const std::vector<UsbInterface> &interfaces)
     {
-        this->interfaces = interfaces;
+        this->interfaces_ = interfaces;
     }
 
     std::vector<UsbInterface> &GetInterfaces()
     {
-        return interfaces;
+        return interfaces_;
     }
 
     void SetId(int32_t id)
     {
-        this->id = id;
+        this->id_ = id;
     }
 
     void SetAttribute(int32_t attributes)
     {
-        this->attributes = attributes;
+        this->attributes_ = attributes;
     }
 
     void SetMaxPower(int32_t maxPower)
     {
-        this->maxPower = maxPower;
+        this->maxPower_ = maxPower;
     }
 
     std::string ToString() const
     {
         std::ostringstream ss;
-        ss << "name=" << name << ","
-           << "id=" << id << ","
-           << "iConfiguration=" << (int32_t)iConfiguration << ","
-           << "attributes=" << attributes << ","
-           << "maxPower=" << maxPower << ";  ";
+        ss << "name=" << name_ << ","
+           << "id=" << id_ << ","
+           << "iConfiguration=" << (int32_t)iConfiguration_ << ","
+           << "attributes=" << attributes_ << ","
+           << "maxPower=" << maxPower_ << ";  ";
         std::string str = "USBConfig[" + ss.str() + "]";
         ss.str("");
-        for (size_t i = 0; i < interfaces.size(); ++i) {
-            const UsbInterface &interface = interfaces[i];
+        for (size_t i = 0; i < interfaces_.size(); ++i) {
+            const UsbInterface &interface = interfaces_[i];
             str += interface.ToString();
         }
         return str;
@@ -129,26 +129,26 @@ public:
 
     void SetName(const std::string &name)
     {
-        this->name = name;
+        this->name_ = name;
     }
 
     void SetiConfiguration(uint8_t idx)
     {
-        this->iConfiguration = idx;
+        this->iConfiguration_ = idx;
     }
 
     uint8_t GetiConfiguration()
     {
-        return this->iConfiguration;
+        return this->iConfiguration_;
     }
 
 private:
-    int32_t id = INVALID_USB_INT_VALUE;
-    int32_t attributes = INVALID_USB_INT_VALUE;
-    std::vector<UsbInterface> interfaces;
-    int32_t maxPower = INVALID_USB_INT_VALUE;
-    std::string name;
-    uint8_t iConfiguration = UINT8_MAX;
+    int32_t id_ = INVALID_USB_INT_VALUE;
+    int32_t attributes_ = INVALID_USB_INT_VALUE;
+    std::vector<UsbInterface> interfaces_;
+    int32_t maxPower_ = INVALID_USB_INT_VALUE;
+    std::string name_;
+    uint8_t iConfiguration_ = UINT8_MAX;
 };
 } // namespace USB
 } // namespace OHOS

@@ -32,42 +32,42 @@ public:
     int32_t Abort();
     void SetPipe(const USBDevicePipe &pipe)
     {
-        this->pipe = pipe;
+        this->pipe_ = pipe;
     }
     void SetEndpoint(const USBEndpoint &endpoint)
     {
-        this->endpoint = endpoint;
+        this->endpoint_ = endpoint;
     }
     void SetClientData(std::vector<uint8_t> bufferData)
     {
-        clientData = bufferData;
+        clientData_ = bufferData;
     }
     void SetReqData(std::vector<uint8_t> bufferData)
     {
-        reqData = bufferData;
+        reqData_ = bufferData;
     }
     std::vector<uint8_t> &GetClientData()
     {
-        return clientData;
+        return clientData_;
     }
     std::vector<uint8_t> &GetReqData()
     {
-        return reqData;
+        return reqData_;
     }
     const USBDevicePipe &GetPipe() const
     {
-        return pipe;
+        return pipe_;
     }
     const USBEndpoint &GetEndpoint() const
     {
-        return endpoint;
+        return endpoint_;
     }
 
-public:
-    USBDevicePipe pipe;
-    USBEndpoint endpoint;
-    std::vector<uint8_t> clientData;
-    std::vector<uint8_t> reqData;
+private:
+    USBDevicePipe pipe_;
+    USBEndpoint endpoint_;
+    std::vector<uint8_t> clientData_;
+    std::vector<uint8_t> reqData_;
 };
 } // namespace USB
 } // namespace OHOS

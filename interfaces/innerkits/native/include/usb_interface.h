@@ -20,110 +20,114 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <optional>
 #include "usb_endpoint.h"
 
 namespace OHOS {
 namespace USB {
 class UsbInterface {
 public:
-    UsbInterface(int32_t mId,
-                 int32_t mProtocol,
-                 int32_t mClass,
-                 int32_t mSubClass,
-                 int32_t mAlternateSetting,
-                 std::string mName,
-                 std::vector<USBEndpoint> mEndpoints)
+    UsbInterface(int32_t id,
+                 int32_t protocol,
+                 int32_t interfaceClass,
+                 int32_t subClass,
+                 int32_t alternateSetting,
+                 std::string name,
+                 std::vector<USBEndpoint> endpoints)
     {
-        this->mId = mId;
-        this->mProtocol = mProtocol;
-        this->mClass = mClass;
-        this->mSubClass = mSubClass;
-        this->mAlternateSetting = mAlternateSetting;
-        this->mEndpoints = mEndpoints;
+        this->id_ = id;
+        this->protocol_ = protocol;
+        this->klass_ = interfaceClass;
+        this->subClass_ = subClass;
+        this->alternateSetting_ = alternateSetting;
+        this->endpoints_ = endpoints;
     }
 
     UsbInterface() {}
 
     const std::string &GetName() const
     {
-        return mName;
+        return name_;
     }
 
     int32_t GetId() const
     {
-        return mId;
+        return id_;
     }
 
     int32_t GetClass() const
     {
-        return mClass;
+        return klass_;
     }
 
     int32_t GetSubClass() const
     {
-        return mSubClass;
+        return subClass_;
     }
 
     int32_t GetAlternateSetting() const
     {
-        return mAlternateSetting;
+        return alternateSetting_;
     }
 
     int32_t GetProtocol() const
     {
-        return mProtocol;
+        return protocol_;
     }
 
     int32_t GetEndpointCount() const
     {
-        return mEndpoints.size();
+        return endpoints_.size();
     }
 
-    void GetEndpoint(uint32_t index, USBEndpoint &ep) const
+    std::optional<USBEndpoint> GetEndpoint(uint32_t index) const
     {
-        if (index < mEndpoints.size()) {
-            ep = mEndpoints[index];
+        if (index >= endpoints_.size()) {
+            USB_HILOGE(MODULE_USB_INNERKIT, "invalid index=%{public}u !", index);
+            return std::nullopt;
         }
+
+        return endpoints_[index];
     }
 
     std::vector<USBEndpoint> &GetEndpoints()
     {
-        return mEndpoints;
+        return endpoints_;
     }
 
     void SetEndpoints(const std::vector<USBEndpoint> &eps)
     {
-        mEndpoints = eps;
+        endpoints_ = eps;
     }
 
-    void SetId(int Val)
+    void SetId(int32_t id)
     {
-        mId = Val;
+        id_ = id;
     }
 
-    void SetProtocol(int Val)
+    void SetProtocol(int32_t protocol)
     {
-        mProtocol = Val;
+        protocol_ = protocol;
     }
 
-    void SetClass(int Val)
+    void SetClass(int32_t klass)
     {
-        mClass = Val;
+        klass_ = klass;
     }
 
-    void SetSubClass(int Val)
+    void SetSubClass(int32_t subClass)
     {
-        mSubClass = Val;
+        subClass_ = subClass;
     }
 
-    void SetAlternateSetting(int Val)
+    void SetAlternateSetting(int32_t alternateSetting)
     {
-        mAlternateSetting = Val;
+        alternateSetting_ = alternateSetting;
     }
 
-    void SetName(const std::string &Name)
+    void SetName(const std::string &name)
     {
-        mName = Name;
+        name_ = name;
     }
 
     ~UsbInterface() {}
@@ -131,17 +135,17 @@ public:
     std::string ToString() const
     {
         std::ostringstream ss;
-        ss << "id=" << mId << ","
-           << "mName=" << mName << ","
-           << "iInterface=" << (int32_t)iInterface << ","
-           << "mClass=" << mClass << ","
-           << "mSubClass=" << mSubClass << ","
-           << "mProtocol=" << mProtocol << ","
-           << "mAlternateSetting=" << mAlternateSetting << "";
+        ss << "id=" << id_ << ","
+           << "name_=" << name_ << ","
+           << "iInterface_=" << (int32_t)iInterface_ << ","
+           << "klass_=" << klass_ << ","
+           << "subClass_=" << subClass_ << ","
+           << "protocol_=" << protocol_ << ","
+           << "alternateSetting_=" << alternateSetting_ << "";
         std::string str = "UsbInterface[" + ss.str() + "];    ";
         ss.str("");
-        for (size_t i = 0; i < mEndpoints.size(); ++i) {
-            const USBEndpoint &endpoint = mEndpoints[i];
+        for (size_t i = 0; i < endpoints_.size(); ++i) {
+            const USBEndpoint &endpoint = endpoints_[i];
             str += endpoint.ToString();
         }
         return str;
@@ -149,23 +153,23 @@ public:
 
     void SetiInterface(uint8_t idx)
     {
-        this->iInterface = idx;
+        this->iInterface_ = idx;
     }
 
     uint8_t GetiInterface()
     {
-        return this->iInterface;
+        return this->iInterface_;
     }
 
 private:
-    int mId;
-    int mProtocol;
-    int mClass;
-    int mSubClass;
-    int mAlternateSetting;
-    std::string mName;
-    std::vector<USBEndpoint> mEndpoints;
-    uint8_t iInterface = UINT8_MAX;
+    int32_t id_ = INT32_MAX;
+    int32_t protocol_ = INT32_MAX;
+    int32_t klass_ = INT32_MAX;
+    int32_t subClass_ = INT32_MAX;
+    int32_t alternateSetting_ = INT32_MAX;
+    std::string name_;
+    std::vector<USBEndpoint> endpoints_;
+    uint8_t iInterface_ = UINT8_MAX;
 };
 } // namespace USB
 } // namespace OHOS

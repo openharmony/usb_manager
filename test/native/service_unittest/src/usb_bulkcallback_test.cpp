@@ -24,6 +24,7 @@
 #include "usb_srv_client.h"
 #include "ashmem.h"
 #include "securec.h"
+#include "usb_errors.h"
 #include "iservice_registry.h"
 #include "usb_callback_test.h"
 

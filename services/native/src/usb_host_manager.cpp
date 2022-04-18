@@ -48,6 +48,7 @@ bool UsbHostManager::DelDevice(uint8_t busNum, uint8_t devNum)
         delete devOld;
     return true;
 }
+
 bool UsbHostManager::AddDevice(UsbDevice *dev)
 {
     if (dev == nullptr) {

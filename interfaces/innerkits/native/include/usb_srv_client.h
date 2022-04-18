@@ -42,7 +42,7 @@ public:
     DISALLOW_COPY_AND_MOVE(UsbSrvClient);
 
     int32_t OpenDevice(const UsbDevice &device, USBDevicePipe &pip);
-    int32_t HasRight(std::string deviceName);
+    bool HasRight(std::string deviceName);
     int32_t RequestRight(std::string deviceName);
     int32_t RemoveRight(std::string deviceName);
     int32_t GetDevices(std::vector<UsbDevice> &deviceList);
@@ -74,6 +74,7 @@ public:
     {
         return SEVVERSION;
     }
+
     int32_t RegBulkCallback(USBDevicePipe &pip, const USBEndpoint &endpoint, const sptr<IRemoteObject> &cb);
     int32_t UnRegBulkCallback(USBDevicePipe &pip, const USBEndpoint &endpoint);
     int32_t BulkRead(USBDevicePipe &pip, const USBEndpoint &endpoint, sptr<Ashmem> &ashmem);
