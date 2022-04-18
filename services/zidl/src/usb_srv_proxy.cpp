@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 
-#include <map>
-#include <sstream>
 #include "ipc_types.h"
 #include "message_parcel.h"
 #include "securec.h"
@@ -41,14 +39,14 @@ int32_t UsbServerProxy::SetBufferMessage(MessageParcel &data, const std::vector<
     }
 
     if (!data.WriteUint32(length)) {
-        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d failed length:%{public}u", __func__, __LINE__, length);
+        USB_HILOGE(MODULE_USBD, "write length failed:%{public}u", length);
         return UEC_SERVICE_WRITE_PARCEL_ERROR;
     }
     if ((ptr) && (length > 0) && !data.WriteBuffer((const void *)ptr, length)) {
-        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d failed length:%{public}u", __func__, __LINE__, length);
+        USB_HILOGE(MODULE_USBD, "write buffer failed length:%{public}u", length);
         return UEC_SERVICE_WRITE_PARCEL_ERROR;
     } else {
-        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d success length:%{public}u", __func__, __LINE__, length);
+        USB_HILOGE(MODULE_USBD, "success length:%{public}u", length);
     }
     return UEC_OK;
 }
@@ -58,17 +56,17 @@ int32_t UsbServerProxy::GetBufferMessage(MessageParcel &data, std::vector<uint8_
     uint32_t dataSize = 0;
     bufferData.clear();
     if (!data.ReadUint32(dataSize)) {
-        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d failed", __func__, __LINE__);
+        USB_HILOGE(MODULE_USBD, "read dataSize failed");
         return UEC_SERVICE_READ_PARCEL_ERROR;
     }
     if (dataSize == 0) {
-        USB_HILOGI(MODULE_USBD, "%{public}s:%{public}d size:%{public}u", __func__, __LINE__, dataSize);
+        USB_HILOGI(MODULE_USBD, "invalid size:%{public}u", dataSize);
         return UEC_OK;
     }
 
     const uint8_t *readData = data.ReadUnpadBuffer(dataSize);
     if (readData == nullptr) {
-        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d failed size:%{public}u", __func__, __LINE__, dataSize);
+        USB_HILOGE(MODULE_USBD, "failed size:%{public}u", dataSize);
         return UEC_SERVICE_READ_PARCEL_ERROR;
     }
     std::vector<uint8_t> tdata(readData, readData + dataSize);
@@ -81,7 +79,7 @@ int32_t UsbServerProxy::GetDevices(std::vector<UsbDevice> &deviceList)
     int32_t ret;
     sptr<IRemoteObject> remote = Remote();
     if (remote == nullptr) {
-        USB_HILOGE(MODULE_USB_INNERKIT, "UsbServerProxy::%{public}s remote is failed", __func__);
+        USB_HILOGE(MODULE_USB_INNERKIT, "remote is failed");
         return ERR_INVALID_VALUE;
     }
     MessageParcel data;
@@ -89,13 +87,13 @@ int32_t UsbServerProxy::GetDevices(std::vector<UsbDevice> &deviceList)
     MessageOption option;
 
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return ERR_INVALID_VALUE;
     }
 
     ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_GET_DEVICES), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_USB_INNERKIT, "UsbServerProxy::%{public}s failed code: %{public}d", __func__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "failed code: %{public}d", ret);
         return ret;
     }
     ret = GetDeviceListMessageParcel(reply, deviceList);
@@ -159,12 +157,12 @@ int32_t UsbServerProxy::GetDeviceMessageParcel(MessageParcel &data, UsbDevice &d
     data.ReadString(tstr);
     devInfo.SetmSerial(tstr);
 
-    USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s:%{public}d devName:%{public}s Bus:%{public}d dev:%{public}d ", __func__,
-               __LINE__, devInfo.GetName().c_str(), devInfo.GetBusNum(), devInfo.GetDevAddr());
+    USB_HILOGE(MODULE_USB_INNERKIT, "devName:%{public}s Bus:%{public}d dev:%{public}d ", devInfo.GetName().c_str(),
+        devInfo.GetBusNum(), devInfo.GetDevAddr());
     std::vector<USBConfig> configs;
     GetDeviceConfigsMessageParcel(data, configs);
     devInfo.SetConfigs(configs);
-    USB_HILOGE(MODULE_USB_INNERKIT, "%{public}s ToString : %{public}s", __func__, devInfo.ToString().c_str());
+    USB_HILOGE(MODULE_USB_INNERKIT, "ToString : %{public}s", devInfo.ToString().c_str());
     return UEC_OK;
 }
 
@@ -194,7 +192,7 @@ int32_t UsbServerProxy::GetDeviceConfigsMessageParcel(MessageParcel &data, std::
         GetDeviceInterfacesMessageParcel(data, interfaces);
         config.SetInterfaces(interfaces);
         configs.push_back(config);
-        USB_HILOGI(MODULE_USB_SERVICE, "%{public}s devInfo=%{public}s", __func__, config.ToString().c_str());
+        USB_HILOGI(MODULE_USB_SERVICE, "devInfo=%{public}s", config.ToString().c_str());
     }
 
     return UEC_OK;
@@ -232,7 +230,7 @@ int32_t UsbServerProxy::GetDeviceInterfacesMessageParcel(MessageParcel &data, st
         }
         interface.SetEndpoints(eps);
         interfaces.push_back(interface);
-        USB_HILOGI(MODULE_USB_SERVICE, "%{public}s devInfo=%{public}s", __func__, interface.ToString().c_str());
+        USB_HILOGI(MODULE_USB_SERVICE, "devInfo=%{public}s", interface.ToString().c_str());
     }
     return UEC_OK;
 }
@@ -253,7 +251,7 @@ int32_t UsbServerProxy::GetDeviceEndpointsMessageParcel(MessageParcel &data, std
         data.ReadInt32(tmp);
         ep.SetMaxPacketSize(tmp);
         eps.push_back(ep);
-        USB_HILOGI(MODULE_USB_SERVICE, "%{public}s devInfo=%{public}s", __func__, ep.ToString().c_str());
+        USB_HILOGI(MODULE_USB_SERVICE, "devInfo=%{public}s", ep.ToString().c_str());
     }
     return UEC_OK;
 }
@@ -266,15 +264,14 @@ int32_t UsbServerProxy::OpenDevice(uint8_t busNum, uint8_t devAddr)
     sptr<IRemoteObject> remote = Remote();
     RETURN_IF_WITH_RET(remote == nullptr, UEC_SERVICE_INNER_ERR);
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return UEC_INTERFACE_WRITE_PARCEL_ERROR;
     }
 
     SetDeviceMessage(data, busNum, devAddr);
     int32_t ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_OPEN_DEVICE), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_USB_INNERKIT, "UsbServerProxy::%{public}s SendRequest is failed, error code: %{public}d",
-                   __func__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "SendRequest is failed, error code: %{public}d", ret);
         return ret;
     }
     return ret;
@@ -288,15 +285,14 @@ bool UsbServerProxy::HasRight(std::string deviceName)
     sptr<IRemoteObject> remote = Remote();
     RETURN_IF_WITH_RET(remote == nullptr, false);
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return false;
     }
 
     WRITE_PARCEL_WITH_RET(data, String, deviceName, false);
     int32_t ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_HAS_RIGHT), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_USB_INNERKIT, "UsbServerProxy::%{public}s SendRequest is failed, error code: %{public}d",
-                   __func__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "SendRequest is failed, error code: %{public}d", ret);
         return false;
     }
 
@@ -314,14 +310,13 @@ int32_t UsbServerProxy::RequestRight(std::string deviceName)
     sptr<IRemoteObject> remote = Remote();
     RETURN_IF_WITH_RET(remote == nullptr, UEC_INTERFACE_INVALID_VALUE);
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return UEC_INTERFACE_WRITE_PARCEL_ERROR;
     }
     WRITE_PARCEL_WITH_RET(data, String, deviceName, UEC_INTERFACE_WRITE_PARCEL_ERROR);
     int32_t ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_REQUEST_RIGHT), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_USB_INNERKIT, "UsbServerProxy::%{public}s SendRequest is failed, error code: %{public}d",
-                   __func__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "SendRequest is failed, error code: %{public}d", ret);
     }
     return ret;
 }
@@ -334,14 +329,13 @@ int32_t UsbServerProxy::RemoveRight(std::string deviceName)
     sptr<IRemoteObject> remote = Remote();
     RETURN_IF_WITH_RET(remote == nullptr, UEC_INTERFACE_INVALID_VALUE);
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return UEC_INTERFACE_WRITE_PARCEL_ERROR;
     }
     WRITE_PARCEL_WITH_RET(data, String, deviceName, UEC_INTERFACE_WRITE_PARCEL_ERROR);
     int32_t ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_REMOVE_RIGHT), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_USB_INNERKIT, "UsbServerProxy::%{public}s SendRequest is failed, error code: %d", __func__,
-                   ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "SendRequest is failed, error code: %{public}d", ret);
     }
     return ret;
 }
@@ -356,15 +350,14 @@ int32_t UsbServerProxy::GetCurrentFunctions(int32_t &funcs)
     MessageOption option;
 
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_USB_SERVICE, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_USB_SERVICE, "write descriptor failed!");
         return UEC_INTERFACE_WRITE_PARCEL_ERROR;
     }
 
     int32_t ret =
         remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_GET_CURRENT_FUNCTIONS), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_USB_SERVICE, "UsbServerProxy::%{public}s SendRequest is failed, error code: %d", __func__,
-                   ret);
+        USB_HILOGE(MODULE_USB_SERVICE, "SendRequest is failed, error code: %d", ret);
         return ret;
     }
     READ_PARCEL_WITH_RET(reply, Int32, funcs, UEC_INTERFACE_READ_PARCEL_ERROR);
@@ -381,15 +374,14 @@ int32_t UsbServerProxy::SetCurrentFunctions(int32_t funcs)
     MessageParcel reply;
 
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_USB_SERVICE, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_USB_SERVICE, "write descriptor failed!");
         return UEC_INTERFACE_WRITE_PARCEL_ERROR;
     }
     WRITE_PARCEL_WITH_RET(data, Int32, funcs, UEC_INTERFACE_WRITE_PARCEL_ERROR);
     int32_t ret =
         remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_SET_CURRENT_FUNCTIONS), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_USB_SERVICE, "UsbServerProxy::%{public}s SendRequest is failed, error code: %d", __func__,
-                   ret);
+        USB_HILOGE(MODULE_USB_SERVICE, "SendRequest is failed, error code: %d", ret);
     }
     return ret;
 }
@@ -403,15 +395,14 @@ int32_t UsbServerProxy::UsbFunctionsFromString(std::string_view funcs)
     MessageParcel reply;
 
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_USB_SERVICE, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_USB_SERVICE, "write descriptor failed!");
         return UEC_INTERFACE_WRITE_PARCEL_ERROR;
     }
     WRITE_PARCEL_WITH_RET(data, String, std::string { funcs }, UEC_INTERFACE_WRITE_PARCEL_ERROR);
     int32_t ret =
         remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_USB_FUNCTIONS_FROM_STRING), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_USB_SERVICE, "UsbServerProxy::%{public}s SendRequest is failed, error code: %d", __func__,
-                   ret);
+        USB_HILOGE(MODULE_USB_SERVICE, "SendRequest is failed, error code: %d", ret);
         return UEC_INTERFACE_INVALID_VALUE;
     }
     int32_t result = 0;
@@ -430,15 +421,14 @@ std::string UsbServerProxy::UsbFunctionsToString(int32_t funcs)
     RETURN_IF_WITH_RET(remote == nullptr, INVALID_STRING_VALUE);
 
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_USB_SERVICE, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_USB_SERVICE, "write descriptor failed!");
         return INVALID_STRING_VALUE;
     }
     WRITE_PARCEL_WITH_RET(data, Int32, funcs, INVALID_STRING_VALUE);
     int32_t ret =
         remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_USB_FUNCTIONS_TO_STRING), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_USB_SERVICE, "UsbServerProxy::%{public}s SendRequest is failed, error code: %d", __func__,
-                   ret);
+        USB_HILOGE(MODULE_USB_SERVICE, "SendRequest is failed, error code: %d", ret);
         return INVALID_STRING_VALUE;
     }
     std::string result;
@@ -455,13 +445,12 @@ int32_t UsbServerProxy::GetPorts(std::vector<UsbPort> &ports)
     MessageParcel reply;
     RETURN_IF_WITH_RET(remote == nullptr, UEC_INTERFACE_INVALID_VALUE);
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return UEC_INTERFACE_WRITE_PARCEL_ERROR;
     }
     int32_t ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_GET_PORTS), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_USB_INNERKIT, "UsbServerProxy::%{public}s SendRequest is failed, error code: %d", __func__,
-                   ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "SendRequest is failed, error code: %d", ret);
         return ret;
     }
     int32_t size;
@@ -502,14 +491,13 @@ int32_t UsbServerProxy::GetSupportedModes(int32_t portId, int32_t &supportedMode
     sptr<IRemoteObject> remote = Remote();
     RETURN_IF_WITH_RET(remote == nullptr, UEC_INTERFACE_INVALID_VALUE);
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return UEC_INTERFACE_WRITE_PARCEL_ERROR;
     }
     WRITE_PARCEL_WITH_RET(data, Int32, portId, UEC_INTERFACE_WRITE_PARCEL_ERROR);
     int32_t ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_GET_SUPPORTED_MODES), data, reply, option);
     if (ret) {
-        USB_HILOGE(MODULE_USB_INNERKIT, "UsbServerProxy::%{public}s SendRequest is failed, error code: %d", __func__,
-                   ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "SendRequest is failed, error code: %d", ret);
         return ret;
     }
     READ_PARCEL_WITH_RET(reply, Int32, supportedModes, UEC_INTERFACE_READ_PARCEL_ERROR);
@@ -524,7 +512,7 @@ int32_t UsbServerProxy::SetPortRole(int32_t portId, int32_t powerRole, int32_t d
     sptr<IRemoteObject> remote = Remote();
     RETURN_IF_WITH_RET(remote == nullptr, UEC_INTERFACE_INVALID_VALUE);
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return UEC_INTERFACE_WRITE_PARCEL_ERROR;
     }
     WRITE_PARCEL_WITH_RET(data, Int32, portId, UEC_INTERFACE_WRITE_PARCEL_ERROR);
@@ -532,8 +520,7 @@ int32_t UsbServerProxy::SetPortRole(int32_t portId, int32_t powerRole, int32_t d
     WRITE_PARCEL_WITH_RET(data, Int32, dataRole, UEC_INTERFACE_WRITE_PARCEL_ERROR);
     int32_t ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_SET_PORT_ROLE), data, reply, option);
     if (ret) {
-        USB_HILOGE(MODULE_USB_INNERKIT, "UsbServerProxy::%{public}s SendRequest is failed, error code: %d", __func__,
-                   ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "SendRequest is failed, error code: %d", ret);
         return ret;
     }
     return ret;
@@ -547,7 +534,7 @@ int32_t UsbServerProxy::ClaimInterface(uint8_t busNum, uint8_t devAddr, uint8_t 
     MessageParcel reply;
     MessageOption option;
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return ERR_ENOUGH_DATA;
     }
     SetDeviceMessage(data, busNum, devAddr);
@@ -555,8 +542,7 @@ int32_t UsbServerProxy::ClaimInterface(uint8_t busNum, uint8_t devAddr, uint8_t 
     WRITE_PARCEL_WITH_RET(data, Uint8, force, UEC_SERVICE_WRITE_PARCEL_ERROR);
     int32_t ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_CLAIM_INTERFACE), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_USB_INNERKIT, "UsbServerProxy::%{public}s SendRequest is failed, error code: %{public}d",
-                   __func__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "SendRequest is failed, error code: %{public}d", ret);
         return ret;
     }
     return ret;
@@ -570,15 +556,14 @@ int32_t UsbServerProxy::ReleaseInterface(uint8_t busNum, uint8_t devAddr, uint8_
     MessageParcel reply;
     MessageOption option;
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return ERR_ENOUGH_DATA;
     }
     SetDeviceMessage(data, busNum, devAddr);
     WRITE_PARCEL_WITH_RET(data, Uint8, interface, UEC_SERVICE_WRITE_PARCEL_ERROR);
     int32_t ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_RELEASE_INTERFACE), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_USB_INNERKIT, "UsbServerProxy::%{public}s SendRequest is failed, error code: %d", __func__,
-                   ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "SendRequest is failed, error code: %d", ret);
     }
     return ret;
 }
@@ -591,7 +576,7 @@ int32_t UsbServerProxy::BulkTransferRead(const UsbDev &dev, const UsbPipe &pipe,
     MessageParcel reply;
     MessageOption option;
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return ERR_ENOUGH_DATA;
     }
     SetDeviceMessage(data, dev.busNum, dev.devAddr);
@@ -600,17 +585,15 @@ int32_t UsbServerProxy::BulkTransferRead(const UsbDev &dev, const UsbPipe &pipe,
     WRITE_PARCEL_WITH_RET(data, Int32, timeOut, UEC_SERVICE_WRITE_PARCEL_ERROR);
     int32_t ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_BULK_TRANSFER_READ), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_USB_INNERKIT, "UsbServerProxy::%{public}s SendRequest is failed, error code: %d", __func__,
-                   ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "SendRequest is failed, error code: %d", ret);
         return ret;
     }
     ret = GetBufferMessage(reply, bufferData);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_USB_INNERKIT, "UsbServerProxy::%{public}s get buffer is failed, error code: %d", __func__,
-                   ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "get buffer is failed, error code: %d", ret);
         return ret;
     }
-    USB_HILOGI(MODULE_USBD, "%{public}s Set buffer message. length = %{public}zu", __func__, bufferData.size());
+    USB_HILOGI(MODULE_USBD, "Set buffer message. length = %{public}zu", bufferData.size());
     return ret;
 }
 int32_t UsbServerProxy::BulkTransferWrite(const UsbDev &dev, const UsbPipe &pipe,
@@ -622,7 +605,7 @@ int32_t UsbServerProxy::BulkTransferWrite(const UsbDev &dev, const UsbPipe &pipe
     MessageParcel reply;
     MessageOption option;
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return ERR_ENOUGH_DATA;
     }
     SetDeviceMessage(data, dev.busNum, dev.devAddr);
@@ -631,14 +614,12 @@ int32_t UsbServerProxy::BulkTransferWrite(const UsbDev &dev, const UsbPipe &pipe
     WRITE_PARCEL_WITH_RET(data, Int32, timeOut, UEC_SERVICE_WRITE_PARCEL_ERROR);
     int32_t ret = SetBufferMessage(data, bufferData);
     if (UEC_OK != ret) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s:%{public}d SetBufferMessage ret:%{public}d", __func__,
-                   __LINE__, ret);
+        USB_HILOGE(MODULE_INNERKIT, "SetBufferMessage ret:%{public}d", ret);
         return ret;
     }
     ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_BULK_TRANSFER_WRITE), data, reply, option);
     if (UEC_OK != ret) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s:%{public}d SendRequest ret:%{public}d", __func__,
-                   __LINE__, ret);
+        USB_HILOGE(MODULE_INNERKIT, "SendRequest ret:%{public}d", ret);
     }
     return ret;
 }
@@ -652,7 +633,7 @@ int32_t UsbServerProxy::ControlTransfer(const UsbDev &dev, const UsbCtrlTransfer
     MessageParcel reply;
     MessageOption option;
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return UEC_SERVICE_INNER_ERR;
     }
     SetDeviceMessage(data, dev.busNum, dev.devAddr);
@@ -663,25 +644,22 @@ int32_t UsbServerProxy::ControlTransfer(const UsbDev &dev, const UsbCtrlTransfer
     WRITE_PARCEL_WITH_RET(data, Int32, ctrl.timeout, UEC_SERVICE_WRITE_PARCEL_ERROR);
     int32_t ret = SetBufferMessage(data, bufferData);
     if (UEC_OK != ret) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s:%{public}d write failed! len:%{public}d", __func__,
-                   __LINE__, ret);
+        USB_HILOGE(MODULE_INNERKIT, "write failed! len:%{public}d", ret);
         return ret;
     }
     bool isWrite = ((ctrl.requestType & USB_ENDPOINT_DIR_MASK) == USB_ENDPOINT_DIR_OUT);
     ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_CONTROL_TRANSFER), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s:%{public}d USB_FUN_CONTROL_TRANSFER ret:%{public}d",
-                   __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_INNERKIT, "USB_FUN_CONTROL_TRANSFER ret:%{public}d", ret);
         return ret;
     }
     if (!isWrite) {
         ret = GetBufferMessage(reply, bufferData);
         if (UEC_OK != ret) {
-            USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d Get buffer message error. ret = %{public}d", __func__,
-                       __LINE__, ret);
+            USB_HILOGE(MODULE_USBD, "Get buffer message error. ret = %{public}d", ret);
             return ret;
         }
-        USB_HILOGI(MODULE_USBD, "%{public}s Get buffer message. length = %{public}zu", __func__, bufferData.size());
+        USB_HILOGI(MODULE_USBD, "Get buffer message. length = %{public}zu", bufferData.size());
     }
     return UEC_OK;
 }
@@ -693,15 +671,14 @@ int32_t UsbServerProxy::SetActiveConfig(uint8_t busNum, uint8_t devAddr, uint8_t
     MessageParcel reply;
     MessageOption option;
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return ERR_ENOUGH_DATA;
     }
     SetDeviceMessage(data, busNum, devAddr);
     WRITE_PARCEL_WITH_RET(data, Uint8, configIndex, UEC_SERVICE_WRITE_PARCEL_ERROR);
     int32_t ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_SET_ACTIVE_CONFIG), data, reply, option);
     if (UEC_OK != ret) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s:%{public}d USB_FUN_SET_ACTIVE_CONFIG ret:%{public}d",
-                   __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_INNERKIT, "USB_FUN_SET_ACTIVE_CONFIG ret:%{public}d", ret);
     }
     return ret;
 }
@@ -713,14 +690,13 @@ int32_t UsbServerProxy::GetActiveConfig(uint8_t busNum, uint8_t devAddr, uint8_t
     MessageParcel reply;
     MessageOption option;
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return ERR_ENOUGH_DATA;
     }
     SetDeviceMessage(data, busNum, devAddr);
     int32_t ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_GET_ACTIVE_CONFIG), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s:%{public}d USB_FUN_GET_ACTIVE_CONFIG ret:%{public}d",
-                   __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_INNERKIT, "USB_FUN_GET_ACTIVE_CONFIG ret:%{public}d", ret);
         return ret;
     }
     READ_PARCEL_WITH_RET(reply, Uint8, configIndex, UEC_SERVICE_WRITE_PARCEL_ERROR);
@@ -734,7 +710,7 @@ int32_t UsbServerProxy::SetInterface(uint8_t busNum, uint8_t devAddr, uint8_t in
     MessageParcel reply;
     MessageOption option;
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return ERR_ENOUGH_DATA;
     }
     SetDeviceMessage(data, busNum, devAddr);
@@ -742,8 +718,7 @@ int32_t UsbServerProxy::SetInterface(uint8_t busNum, uint8_t devAddr, uint8_t in
     WRITE_PARCEL_WITH_RET(data, Uint8, altIndex, UEC_SERVICE_WRITE_PARCEL_ERROR);
     int32_t ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_SET_INTERFACE), data, reply, option);
     if (UEC_OK != ret) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s:%{public}d USB_FUN_SET_INTERFACE ret:%{public}d",
-                   __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_INNERKIT, "USB_FUN_SET_INTERFACE ret:%{public}d", ret);
     }
     return ret;
 }
@@ -755,7 +730,7 @@ int32_t UsbServerProxy::GetRawDescriptor(uint8_t busNum, uint8_t devAddr, std::v
     MessageParcel reply;
     MessageOption option;
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return ERR_ENOUGH_DATA;
     }
     SetDeviceMessage(data, busNum, devAddr);
@@ -763,8 +738,7 @@ int32_t UsbServerProxy::GetRawDescriptor(uint8_t busNum, uint8_t devAddr, std::v
     if (ret == UEC_OK) {
         ret = GetBufferMessage(reply, bufferData);
         if (UEC_OK != ret) {
-            USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s:%{public}d get failed ret:%{public}d", __func__,
-                       __LINE__, ret);
+            USB_HILOGE(MODULE_INNERKIT, "get failed ret:%{public}d", ret);
         }
     }
     return ret;
@@ -778,7 +752,7 @@ int32_t UsbServerProxy::GetFileDescriptor(uint8_t busNum, uint8_t devAddr, int32
     MessageParcel reply;
     MessageOption option;
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return ERR_ENOUGH_DATA;
     }
     SetDeviceMessage(data, busNum, devAddr);
@@ -798,7 +772,7 @@ int32_t UsbServerProxy::RequestQueue(const UsbDev &dev, const UsbPipe &pipe, con
     MessageParcel reply;
     MessageOption option;
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s get descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "get descriptor failed!");
         return ERR_ENOUGH_DATA;
     }
     SetDeviceMessage(data, dev.busNum, dev.devAddr);
@@ -807,21 +781,19 @@ int32_t UsbServerProxy::RequestQueue(const UsbDev &dev, const UsbPipe &pipe, con
 
     int32_t ret = UsbServerProxy::SetBufferMessage(data, clientData);
     if (UEC_OK != ret) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s:%{public}d setBuffer failed ret:%{public}d", __func__,
-                   __LINE__, ret);
+        USB_HILOGE(MODULE_INNERKIT, "set clientData failed ret:%{public}d", ret);
         return ERR_INVALID_VALUE;
     }
 
     ret = UsbServerProxy::SetBufferMessage(data, bufferData);
     if (UEC_OK != ret) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s:%{public}d setBuffer failed ret:%{public}d", __func__,
-                   __LINE__, ret);
+        USB_HILOGE(MODULE_INNERKIT, "setBuffer failed ret:%{public}d", ret);
         return ERR_INVALID_VALUE;
     }
 
     ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_REQUEST_QUEUE), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s:%{public}d queue failed!", __func__, __LINE__);
+        USB_HILOGE(MODULE_INNERKIT, "SendRequest failed!");
         return ret;
     }
     return ret;
@@ -837,7 +809,7 @@ int32_t UsbServerProxy::RequestWait(const UsbDev &dev, int32_t timeOut, std::vec
     MessageOption option;
 
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s get descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "get descriptor failed!");
         return ERR_ENOUGH_DATA;
     }
 
@@ -845,22 +817,19 @@ int32_t UsbServerProxy::RequestWait(const UsbDev &dev, int32_t timeOut, std::vec
     WRITE_PARCEL_WITH_RET(data, Int32, timeOut, UEC_SERVICE_WRITE_PARCEL_ERROR);
     int32_t ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_REQUEST_WAIT), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s:%{public}d queue failed! ret:%{public}d", __func__,
-                   __LINE__, ret);
+        USB_HILOGE(MODULE_INNERKIT, "queue failed! ret:%{public}d", ret);
         return ret;
     }
 
     ret = UsbServerProxy::GetBufferMessage(reply, clientData);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s:%{public}d get clientData failed! ret:%{public}d",
-                   __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_INNERKIT, "get clientData failed! ret:%{public}d", ret);
         return ret;
     }
 
     ret = UsbServerProxy::GetBufferMessage(reply, bufferData);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s:%{public}d get buffer failed! ret:%{public}d", __func__,
-                   __LINE__, ret);
+        USB_HILOGE(MODULE_INNERKIT, "get buffer failed! ret:%{public}d", ret);
         return ret;
     }
 
@@ -876,7 +845,7 @@ int32_t UsbServerProxy::RequestCancel(uint8_t busNum, uint8_t devAddr, uint8_t i
     MessageParcel reply;
     MessageOption option;
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s get descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "get descriptor failed!");
         return ERR_ENOUGH_DATA;
     }
 
@@ -885,7 +854,7 @@ int32_t UsbServerProxy::RequestCancel(uint8_t busNum, uint8_t devAddr, uint8_t i
     WRITE_PARCEL_WITH_RET(data, Uint8, endpointId, UEC_SERVICE_WRITE_PARCEL_ERROR);
     ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_REQUEST_CANCEL), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s request cancel failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "request cancel failed!");
     }
 
     return ret;
@@ -899,14 +868,14 @@ int32_t UsbServerProxy::Close(uint8_t busNum, uint8_t devAddr)
     MessageParcel data;
     MessageParcel reply;
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s get descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "get descriptor failed!");
         return ERR_ENOUGH_DATA;
     }
 
     SetDeviceMessage(data, busNum, devAddr);
     int32_t ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_CLOSE_DEVICE), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s queue failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "queue failed!");
         return ret;
     }
 
@@ -919,7 +888,7 @@ int32_t UsbServerProxy::RegBulkCallback(const UsbDev &dev, const UsbPipe &pipe, 
     RETURN_IF_WITH_RET(remote == nullptr, UEC_SERVICE_INNER_ERR);
     MessageParcel data;
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return ERR_ENOUGH_DATA;
     }
     SetDeviceMessage(data, dev.busNum, dev.devAddr);
@@ -930,7 +899,7 @@ int32_t UsbServerProxy::RegBulkCallback(const UsbDev &dev, const UsbPipe &pipe, 
     MessageParcel reply;
     int32_t ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_REG_BULK_CALLBACK), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s SendRequest failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "SendRequest failed!");
         return ret;
     }
     return ret;
@@ -942,7 +911,7 @@ int32_t UsbServerProxy::UnRegBulkCallback(const UsbDev &dev, const UsbPipe &pipe
     RETURN_IF_WITH_RET(remote == nullptr, UEC_SERVICE_INNER_ERR);
     MessageParcel data;
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return ERR_ENOUGH_DATA;
     }
     SetDeviceMessage(data, dev.busNum, dev.devAddr);
@@ -952,7 +921,7 @@ int32_t UsbServerProxy::UnRegBulkCallback(const UsbDev &dev, const UsbPipe &pipe
     MessageParcel reply;
     int32_t ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_UNREG_BULK_CALLBACK), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s SendRequest failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "SendRequest failed!");
         return ret;
     }
     return ret;
@@ -964,7 +933,7 @@ int32_t UsbServerProxy::BulkRead(const UsbDev &dev, const UsbPipe &pipe, sptr<As
     RETURN_IF_WITH_RET(remote == nullptr, UEC_SERVICE_INNER_ERR);
     MessageParcel data;
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return ERR_ENOUGH_DATA;
     }
     SetDeviceMessage(data, dev.busNum, dev.devAddr);
@@ -975,7 +944,7 @@ int32_t UsbServerProxy::BulkRead(const UsbDev &dev, const UsbPipe &pipe, sptr<As
     MessageParcel reply;
     int32_t ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_BULK_AYSNC_READ), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s SendRequest failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "SendRequest failed!");
         return ret;
     }
     return ret;
@@ -987,7 +956,7 @@ int32_t UsbServerProxy::BulkWrite(const UsbDev &dev, const UsbPipe &pipe, sptr<A
     RETURN_IF_WITH_RET(remote == nullptr, UEC_SERVICE_INNER_ERR);
     MessageParcel data;
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return ERR_ENOUGH_DATA;
     }
     SetDeviceMessage(data, dev.busNum, dev.devAddr);
@@ -998,7 +967,7 @@ int32_t UsbServerProxy::BulkWrite(const UsbDev &dev, const UsbPipe &pipe, sptr<A
     MessageParcel reply;
     int32_t ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_BULK_AYSNC_WRITE), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s SendRequest failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "SendRequest failed!");
         return ret;
     }
     return ret;
@@ -1010,7 +979,7 @@ int32_t UsbServerProxy::BulkCancel(const UsbDev &dev, const UsbPipe &pipe)
     RETURN_IF_WITH_RET(remote == nullptr, UEC_SERVICE_INNER_ERR);
     MessageParcel data;
     if (!data.WriteInterfaceToken(UsbServerProxy::GetDescriptor())) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s write descriptor failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "write descriptor failed!");
         return ERR_ENOUGH_DATA;
     }
     SetDeviceMessage(data, dev.busNum, dev.devAddr);
@@ -1020,7 +989,7 @@ int32_t UsbServerProxy::BulkCancel(const UsbDev &dev, const UsbPipe &pipe)
     MessageParcel reply;
     int32_t ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_BULK_AYSNC_CANCEL), data, reply, option);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_INNERKIT, "UsbServerProxy::%{public}s SendRequest failed!", __func__);
+        USB_HILOGE(MODULE_INNERKIT, "SendRequest failed!");
         return ret;
     }
     return ret;
