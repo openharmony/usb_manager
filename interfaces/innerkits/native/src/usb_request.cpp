@@ -25,8 +25,7 @@ int32_t UsbRequest::Initialize(const USBDevicePipe &pipe, const USBEndpoint &end
     this->endpoint_ = endpoint;
     int32_t ret = UsbSrvClient::GetInstance().RequestInitialize(*this);
     if (ERR_OK != ret) {
-        USB_HILOGE(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed with ret = %{public}d.", __func__,
-                   __LINE__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "RequestInitialize failed with ret = %{public}d.", ret);
     }
     return ret;
 }
@@ -35,8 +34,7 @@ int32_t UsbRequest::Queue()
 {
     int32_t ret = UsbSrvClient::GetInstance().RequestQueue(*this);
     if (ERR_OK != ret) {
-        USB_HILOGE(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed with ret = %{public}d.", __func__,
-                   __LINE__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "RequestQueue failed with ret = %{public}d.", ret);
     }
     return ret;
 }
@@ -45,8 +43,7 @@ int32_t UsbRequest::Free()
 {
     int32_t ret = UsbSrvClient::GetInstance().RequestFree(*this);
     if (ERR_OK != ret) {
-        USB_HILOGE(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed with ret = %{public}d.", __func__,
-                   __LINE__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "RequestFree failed with ret = %{public}d.", ret);
     }
     return ret;
 }
@@ -55,8 +52,7 @@ int32_t UsbRequest::Abort()
 {
     int32_t ret = UsbSrvClient::GetInstance().RequestAbort(*this);
     if (ERR_OK != ret) {
-        USB_HILOGE(MODULE_USB_INNERKIT, "UsbRequest::%{public}s:%{public}d failed with ret = %{public}d.", __func__,
-                   __LINE__, ret);
+        USB_HILOGE(MODULE_USB_INNERKIT, "RequestAbort failed with ret = %{public}d.", ret);
     }
     return ret;
 }

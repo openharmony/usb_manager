@@ -190,14 +190,14 @@ static bool ParseEndpointsObjs(const napi_env env, const napi_value interfaceObj
     napi_value endpointsObjs;
     bool isGetObjSuccess = NapiUtil::JsObjectGetProperty(env, interfaceObj, "endpoints", endpointsObjs);
     if (!isGetObjSuccess) {
-        USB_HILOGE(MODULE_JS_NAPI, "%{public}s, get endpoints failed.", __func__);
+        USB_HILOGE(MODULE_JS_NAPI, "get endpoints failed.");
         return false;
     }
 
     bool result = false;
     napi_status status = napi_is_array(env, endpointsObjs, &result);
     if (!result || status != napi_ok) {
-        USB_HILOGE(MODULE_JS_NAPI, "%{public}s, invalid endpoints.", __func__);
+        USB_HILOGE(MODULE_JS_NAPI, "invalid endpoints.");
         return false;
     }
 
@@ -212,7 +212,7 @@ static bool ParseEndpointsObjs(const napi_env env, const napi_value interfaceObj
         napi_value endpointObj;
         status = napi_get_element(env, endpointsObjs, k, &endpointObj);
         if (status != napi_ok) {
-            USB_HILOGE(MODULE_JS_NAPI, "%{public}s, get endpoints element failed k=%u.", __func__, k);
+            USB_HILOGE(MODULE_JS_NAPI, "get endpoints element failed k=%u.", k);
             return false;
         }
         USBEndpoint ep;
@@ -289,21 +289,21 @@ static bool ParseInterfacesObjs(const napi_env env, const napi_value configObj, 
     napi_value interfacesObjs;
     bool isGetObjSuccess = NapiUtil::JsObjectGetProperty(env, configObj, "interfaces", interfacesObjs);
     if (!isGetObjSuccess) {
-        USB_HILOGE(MODULE_JS_NAPI, "%{public}s, get interfaces failed.", __func__);
+        USB_HILOGE(MODULE_JS_NAPI, "get interfaces failed.");
         return false;
     }
 
     bool result = false;
     napi_status status = napi_is_array(env, interfacesObjs, &result);
     if (!result || status != napi_ok) {
-        USB_HILOGE(MODULE_JS_NAPI, "%{public}s, invalid param.", __func__);
+        USB_HILOGE(MODULE_JS_NAPI, "invalid param.");
         return false;
     }
 
     uint32_t interfaceCount = 0;
     status = napi_get_array_length(env, interfacesObjs, &interfaceCount);
     if (status != napi_ok) {
-        USB_HILOGE(MODULE_JS_NAPI, "%{public}s, get len failed.", __func__);
+        USB_HILOGE(MODULE_JS_NAPI, "get len failed.");
         return false;
     }
 
@@ -311,7 +311,7 @@ static bool ParseInterfacesObjs(const napi_env env, const napi_value configObj, 
         napi_value interfaceObj;
         status = napi_get_element(env, interfacesObjs, i, &interfaceObj);
         if (status != napi_ok) {
-            USB_HILOGE(MODULE_JS_NAPI, "%{public}s, get element failed,i=%{public}u.", __func__, i);
+            USB_HILOGE(MODULE_JS_NAPI, "get element failed,i=%{public}u.", i);
             return false;
         }
         UsbInterface interface;
@@ -403,7 +403,7 @@ static napi_value CoreGetDevices(napi_env env, napi_callback_info info)
     napi_value result;
     if (ret != UEC_OK) {
         napi_get_undefined(env, &result);
-        USB_HILOGE(MODULE_JS_NAPI, "end call %{public}s, get device failed ret : %{public}d", __func__, ret);
+        USB_HILOGE(MODULE_JS_NAPI, "end call get device failed ret : %{public}d", ret);
         return result;
     }
 
@@ -634,7 +634,7 @@ static napi_value CoreGetCurrentFunctions(napi_env env, napi_callback_info info)
     napi_value result;
     if (ret != UEC_OK) {
         napi_get_undefined(env, &result);
-        USB_HILOGE(MODULE_JS_NAPI, "end call %{public}s, get ports failed ret : %{public}d", __func__, ret);
+        USB_HILOGE(MODULE_JS_NAPI, "end call get ports failed ret : %{public}d", ret);
         return result;
     }
     napi_create_int32(env, cfuncs, &result);
@@ -655,7 +655,7 @@ static napi_value CoreGetPorts(napi_env env, napi_callback_info info)
     napi_value result;
     if (ret != UEC_OK) {
         napi_get_undefined(env, &result);
-        USB_HILOGE(MODULE_JS_NAPI, "end call %{public}s, get ports failed ret : %{public}d", __func__, ret);
+        USB_HILOGE(MODULE_JS_NAPI, "end call get ports failed ret : %{public}d", ret);
         return result;
     }
 
@@ -696,7 +696,7 @@ static napi_value PortGetSupportedModes(napi_env env, napi_callback_info info)
     napi_get_value_int32(env, args[INDEX_0], &id);
     int32_t ret = g_usbClient.GetSupportedModes(id, result);
     if (ret) {
-        USB_HILOGD(MODULE_JS_NAPI, "%{public}s:false ret = %{public}d", __func__, ret);
+        USB_HILOGD(MODULE_JS_NAPI, "false ret = %{public}d", ret);
     }
     napi_value napiValue = nullptr;
     NAPI_CALL(env, napi_create_int32(env, result, &napiValue));
@@ -1041,14 +1041,14 @@ static napi_value PipeControlTransfer(napi_env env, napi_callback_info info)
     if ((asyncContext->reqType & USB_ENDPOINT_DIR_MASK) == USB_ENDPOINT_DIR_OUT) {
         uint8_t *nativeArraybuffer = new(std::nothrow) uint8_t[controlParam.dataLength];
         if (nativeArraybuffer == nullptr) {
-            USB_HILOGE(MODULE_JS_NAPI, "%{public}s:%{public}d, new failed", __func__, __LINE__);
+            USB_HILOGE(MODULE_JS_NAPI, "new failed");
             delete asyncContext;
             return nullptr;
         }
 
         errno_t ret = memcpy_s(nativeArraybuffer, controlParam.dataLength, controlParam.data, controlParam.dataLength);
         if (ret != EOK) {
-            USB_HILOGE(MODULE_JS_NAPI, "%{public}s:%{public}d, memcpy_s failed\n", __func__, __LINE__);
+            USB_HILOGE(MODULE_JS_NAPI, "memcpy_s failed\n");
             delete asyncContext;
             delete []nativeArraybuffer;
             return nullptr;
@@ -1160,7 +1160,7 @@ static bool GetBulkTransferParams(napi_env env, napi_callback_info info, USBBulk
 
         errno_t ret = memcpy_s(nativeArraybuffer, bufferSize, buffer, bufferSize);
         if (ret != EOK) {
-            USB_HILOGE(MODULE_JS_NAPI, "%{public}s:%{public}d, memcpy_s failed\n", __func__, __LINE__);
+            USB_HILOGE(MODULE_JS_NAPI, "memcpy_s failed\n");
             delete []nativeArraybuffer;
             return false;
         }
@@ -1182,7 +1182,7 @@ static napi_value PipeBulkTransfer(napi_env env, napi_callback_info info)
     napi_value result = nullptr;
     napi_create_promise(env, &asyncContext->deferred, &result);
     if (!GetBulkTransferParams(env, info, *asyncContext)) {
-        USB_HILOGE(MODULE_JS_NAPI, "end call %{public}s %{public}d : invalid arg", __func__, __LINE__);
+        USB_HILOGE(MODULE_JS_NAPI, "end call invalid arg");
         asyncContext->status = napi_invalid_arg;
         napi_value queryResult = nullptr;
         napi_create_int32(env, -1, &queryResult);
@@ -1197,7 +1197,7 @@ static napi_value PipeBulkTransfer(napi_env env, napi_callback_info info)
     napi_status status = napi_create_async_work(env, nullptr, resource, g_bulkTransferExecute, g_bulkTransferComplete,
                                                 reinterpret_cast<void *>(asyncContext), &asyncContext->work);
     if (status != napi_ok) {
-        USB_HILOGE(MODULE_JS_NAPI, "%{public}s, create async work failed", __func__);
+        USB_HILOGE(MODULE_JS_NAPI, "create async work failed");
         return result;
     }
     napi_queue_async_work(env, asyncContext->work);
@@ -1230,7 +1230,7 @@ static napi_value PipeClose(napi_env env, napi_callback_info info)
 static napi_value GetVersion(napi_env env, napi_callback_info info)
 {
     auto version = g_usbClient.GetVersion();
-    USB_HILOGD(MODULE_JS_NAPI, "call %{public}s, version is %{public}s", __func__, version.c_str());
+    USB_HILOGD(MODULE_JS_NAPI, "version is %{public}s", version.c_str());
     napi_value result;
     napi_create_string_utf8(env, version.c_str(), NAPI_AUTO_LENGTH, &result);
     return result;

@@ -64,7 +64,7 @@ UsbService::~UsbService() {}
 
 void UsbService::OnStart()
 {
-    USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d usb_service OnStart enter", __func__, __LINE__);
+    USB_HILOGI(MODULE_USB_SERVICE, "usb_service OnStart enter");
     if (ready_) {
         USB_HILOGE(MODULE_USB_SERVICE, "OnStart is ready, nothing to do");
         return;
@@ -97,7 +97,7 @@ void UsbService::OnStart()
 
 bool UsbService::Init()
 {
-    USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d usb_service Init enter", __func__, __LINE__);
+    USB_HILOGI(MODULE_USB_SERVICE, "usb_service Init enter");
     if (!eventRunner_) {
         eventRunner_ = AppExecFwk::EventRunner::Create(USB_SERVICE_NAME);
         if (eventRunner_ == nullptr) {
@@ -130,18 +130,18 @@ bool UsbService::InitUsbd()
 {
     usbdSubscriber_ = new(std::nothrow) UsbServiceSubscriber();
     if (usbdSubscriber_ == nullptr) {
-        USB_HILOGE(MODULE_USB_SERVICE, " %{public}s:%{public}d Init failed\n", __func__, __LINE__);
+        USB_HILOGE(MODULE_USB_SERVICE, "Init failed\n");
         return false;
     }
 
     ErrCode ret = UsbdClient::GetInstance().BindUsbdSubscriber(usbdSubscriber_);
-    USB_HILOGE(MODULE_USB_SERVICE, " entry InitUsbd ret: %{public}d", ret);
+    USB_HILOGI(MODULE_USB_SERVICE, "entry InitUsbd ret: %{public}d", ret);
     return SUCCEEDED(ret);
 }
 
 void UsbService::OnStop()
 {
-    USB_HILOGE(MODULE_USB_SERVICE, " entry stop service %{public}d", ready_);
+    USB_HILOGI(MODULE_USB_SERVICE, "entry stop service %{public}d", ready_);
     if (!ready_) {
         return;
     }
@@ -172,15 +172,14 @@ int32_t UsbService::OpenDevice(uint8_t busNum, uint8_t devAddr)
 {
     std::string name = std::to_string(busNum) + "-" + std::to_string(devAddr);
     if (!UsbService::HasRight(name)) {
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d No permission", __func__, __LINE__);
+        USB_HILOGE(MODULE_USB_SERVICE, "No permission");
         return UEC_SERVICE_PERMISSION_DENIED;
     }
 
     const UsbDev dev = {busNum, devAddr};
     int32_t ret = UsbdClient::GetInstance().OpenDevice(dev);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d OpenDevice failed ret:%{public}d", __func__, __LINE__,
-            ret);
+        USB_HILOGE(MODULE_USB_SERVICE, "OpenDevice failed ret:%{public}d", ret);
     }
 
     return ret;
@@ -222,7 +221,7 @@ int32_t UsbService::GetDevices(std::vector<UsbDevice> &deviceList)
 {
     std::map<std::string, UsbDevice *> devices;
     usbHostManger_->GetDevices(devices);
-    USB_HILOGI(MODULE_USB_SERVICE, "%{public}s list size %{public}zu", __func__, devices.size());
+    USB_HILOGI(MODULE_USB_SERVICE, "list size %{public}zu", devices.size());
     for (auto it = devices.begin(); it != devices.end(); ++it) {
         deviceList.push_back(*it->second);
     }
@@ -287,8 +286,7 @@ int32_t UsbService::BulkTransferRead(const UsbDev &devInfo, const UsbPipe &pipe,
 {
     int32_t ret = UsbdClient::GetInstance().BulkTransferRead(devInfo, pipe, timeOut, bufferData);
     if (UEC_OK != ret) {
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d BulkTransferRead error ret:%{public}d", __func__,
-                   __LINE__, ret);
+        USB_HILOGE(MODULE_USB_SERVICE, "BulkTransferRead error ret:%{public}d", ret);
     }
     return ret;
 }
@@ -298,8 +296,7 @@ int32_t UsbService::BulkTransferWrite(const UsbDev &dev, const UsbPipe &pipe, co
 {
     int32_t ret = UsbdClient::GetInstance().BulkTransferWrite(dev, pipe, timeOut, bufferData);
     if (UEC_OK != ret) {
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d BulkTransferWrite error ret:%{public}d", __func__,
-                   __LINE__, ret);
+        USB_HILOGE(MODULE_USB_SERVICE, "BulkTransferWrite error ret:%{public}d", ret);
     }
     return ret;
 }
@@ -308,7 +305,7 @@ int32_t UsbService::ControlTransfer(const UsbDev &dev, const UsbCtrlTransfer &ct
 {
     int32_t ret = UsbdClient::GetInstance().ControlTransfer(dev, ctrl, bufferData);
     if (UEC_OK != ret) {
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d error ret:%{public}d", __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_USB_SERVICE, "error ret:%{public}d", ret);
     }
     return ret;
 }
@@ -336,7 +333,7 @@ int32_t UsbService::GetRawDescriptor(uint8_t busNum, uint8_t devAddr, std::vecto
     const UsbDev dev = {busNum, devAddr};
     int32_t ret = UsbdClient::GetInstance().GetRawDescriptor(dev, bufferData);
     if (UEC_OK != ret) {
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d error ret:%{public}d", __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_USB_SERVICE, "error ret:%{public}d", ret);
     }
     return ret;
 }
@@ -346,7 +343,7 @@ int32_t UsbService::GetFileDescriptor(uint8_t busNum, uint8_t devAddr, int32_t &
     const UsbDev dev = {busNum, devAddr};
     int32_t ret = UsbdClient::GetInstance().GetFileDescriptor(dev, fd);
     if (UEC_OK != ret) {
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d error ret:%{public}d", __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_USB_SERVICE, "error ret:%{public}d", ret);
     }
     return ret;
 }
@@ -356,7 +353,7 @@ int32_t UsbService::RequestQueue(const UsbDev &dev, const UsbPipe &pipe, const s
 {
     int32_t ret = UsbdClient::GetInstance().RequestQueue(dev, pipe, clientData, bufferData);
     if (UEC_OK != ret) {
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d error ret:%{public}d", __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_USB_SERVICE, "error ret:%{public}d", ret);
     }
     return ret;
 }
@@ -366,7 +363,7 @@ int32_t UsbService::RequestWait(const UsbDev &dev, int32_t timeOut, std::vector<
 {
     int32_t ret = UsbdClient::GetInstance().RequestWait(dev, clientData, bufferData, timeOut);
     if (UEC_OK != ret) {
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d error ret:%{public}d", __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_USB_SERVICE, "error ret:%{public}d", ret);
     }
     return ret;
 }
@@ -396,20 +393,18 @@ static std::string GetDevStringValFromIdx(uint8_t busNum, uint8_t devAddr, uint8
 
     int32_t ret = UsbdClient::GetInstance().GetStringDescriptor(dev, idx, strV);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d get string[%{public}hhu] failed ret:%{public}d", __func__,
-                   __LINE__, idx, ret);
+        USB_HILOGE(MODULE_USB_SERVICE, "get string[%{public}hhu] failed ret:%{public}d", idx, ret);
         return strDesc;
     }
     uint32_t length = strV.size();
     if ((length < DESCRIPTOR_VALUE_START_OFFSET) || (strV[1] != DESCRIPTOR_TYPE_STRING)) {
-        USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:%{public}d type or length error, len:%{public}u", __func__, __LINE__,
-                   length);
+        USB_HILOGI(MODULE_USB_SERVICE, "type or length error, len:%{public}u", length);
         return strDesc;
     }
 
     uint16_t *tbuf = new(std::nothrow) uint16_t[length + 1]();
     if (tbuf == nullptr) {
-        USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:%{public}d new failed\n", __func__, __LINE__);
+        USB_HILOGI(MODULE_USB_SERVICE, "new failed\n");
         return strDesc;
     }
 
@@ -418,8 +413,8 @@ static std::string GetDevStringValFromIdx(uint8_t busNum, uint8_t devAddr, uint8
     }
     std::wstring wstr((wchar_t *)(tbuf), (length - DESCRIPTOR_VALUE_START_OFFSET) / HALF);
     strDesc = std::string(wstr.begin(), wstr.end());
-    USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:%{public}d getString idx:%{public}d String:%{public}s length:%{public}d",
-               __func__, __LINE__, idx, strDesc.c_str(), length);
+    USB_HILOGI(MODULE_USB_SERVICE, "getString idx:%{public}d String:%{public}s length:%{public}d", idx, strDesc.c_str(),
+        length);
     delete[] tbuf;
     return strDesc;
 }
@@ -448,23 +443,20 @@ static int32_t FillDevStrings(UsbDevice &dev)
     dev.SetManufacturerName(GetDevStringValFromIdx(busNum, devAddr, dev.GetiManufacturer()));
     dev.SetProductName(GetDevStringValFromIdx(busNum, devAddr, dev.GetiProduct()));
     dev.SetmSerial(GetDevStringValFromIdx(busNum, devAddr, dev.GetiSerialNumber()));
-    USB_HILOGI(MODULE_USB_SERVICE,
-               "%{public}s:%{public}d iSerial:%{public}d mSerial:%{public}s Manufactur:%{public}s product:%{public}s "
-               "version:%{public}s",
-               __func__, __LINE__, dev.GetiSerialNumber(), dev.GetmSerial().c_str(), dev.GetManufacturerName().c_str(),
-               dev.GetProductName().c_str(), dev.GetVersion().c_str());
+    USB_HILOGI(MODULE_USB_SERVICE, "iSerial:%{public}d mSerial:%{public}s Manufactur:%{public}s product:%{public}s "
+        "version:%{public}s", dev.GetiSerialNumber(), dev.GetmSerial().c_str(), dev.GetManufacturerName().c_str(),
+        dev.GetProductName().c_str(), dev.GetVersion().c_str());
 
     std::vector<USBConfig> configs;
     configs = dev.GetConfigs();
     for (auto it = configs.begin(); it != configs.end(); ++it) {
         it->SetName(GetDevStringValFromIdx(busNum, devAddr, it->GetiConfiguration()));
-        USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:%{public}d Config:%{public}d %{public}s", __func__, __LINE__,
-                   it->GetiConfiguration(), it->GetName().c_str());
+        USB_HILOGI(MODULE_USB_SERVICE, "Config:%{public}d %{public}s", it->GetiConfiguration(), it->GetName().c_str());
         std::vector<UsbInterface> interfaces = it->GetInterfaces();
         for (auto itIF = interfaces.begin(); itIF != interfaces.end(); ++itIF) {
             itIF->SetName(GetDevStringValFromIdx(busNum, devAddr, itIF->GetiInterface()));
-            USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:%{public}d interface:%{public}hhu %{public}s", __func__,
-                __LINE__, itIF->GetiInterface(), itIF->GetName().c_str());
+            USB_HILOGI(MODULE_USB_SERVICE, "interface:%{public}hhu %{public}s", itIF->GetiInterface(),
+                itIF->GetName().c_str());
         }
         it->SetInterfaces(interfaces);
     }
@@ -478,19 +470,15 @@ int32_t UsbService::GetDeviceInfoDescriptor(const UsbDev &uDev, std::vector<uint
     int32_t ret = UsbdClient::GetInstance().GetRawDescriptor(uDev, descriptor);
     if (ret != UEC_OK) {
         UsbdClient::GetInstance().CloseDevice(uDev);
-        USB_HILOGE(MODULE_USB_SERVICE,
-                   "%{public}s:%{public}d GetRawDescriptor failed ret=%{public}d busNum:%{public}d "
-                   "devAddr:%{public}d",
-                   __func__, __LINE__, ret, uDev.busNum, uDev.devAddr);
+        USB_HILOGE(MODULE_USB_SERVICE, "GetRawDescriptor failed ret=%{public}d busNum:%{public}d devAddr:%{public}d",
+            ret, uDev.busNum, uDev.devAddr);
         return ret;
     }
     uint8_t *buffer = descriptor.data();
     uint32_t length = descriptor.size();
     if ((!buffer) || (length == 0)) {
-        USB_HILOGE(MODULE_USB_SERVICE,
-                   "%{public}s:%{public}d GetRawDescriptor failed len=%{public}d busNum:%{public}d "
-                   "devAddr:%{public}d",
-                   __func__, __LINE__, length, uDev.busNum, uDev.devAddr);
+        USB_HILOGE(MODULE_USB_SERVICE, "GetRawDescriptor failed len=%{public}d busNum:%{public}d devAddr:%{public}d",
+            length, uDev.busNum, uDev.devAddr);
         return UEC_SERVICE_INVALID_VALUE;
     }
     dev.SetBusNum(uDev.busNum);
@@ -500,7 +488,7 @@ int32_t UsbService::GetDeviceInfoDescriptor(const UsbDev &uDev, std::vector<uint
     ret = UsbDescriptorParser::ParseDeviceDescriptor(buffer, length, dev);
     if (ret != UEC_OK) {
         UsbdClient::GetInstance().CloseDevice(uDev);
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s ParseDeviceDescriptor failed ret=%{public}d", __func__, ret);
+        USB_HILOGE(MODULE_USB_SERVICE, "ParseDeviceDescriptor failed ret=%{public}d", ret);
         return ret;
     }
     return ret;
@@ -515,51 +503,50 @@ int32_t UsbService::GetConfigDescriptor(UsbDevice &dev, std::vector<uint8_t> &de
     int32_t ret = UEC_OK;
     for (uint8_t i = 0; i < dev.GetDescConfigCount(); ++i) {
         if (length <= cursor) {
-            USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d GetConfigDescriptor[%{public}d] length=%{public}d",
-                       __func__, __LINE__, i, length);
+            USB_HILOGE(MODULE_USB_SERVICE, "GetConfigDescriptor[%{public}d] length=%{public}d", i, length);
             break;
         }
-        USB_HILOGI(MODULE_USB_SERVICE, "%{public}s GetConfigDescriptor length=%{public}d", __func__, length);
+        USB_HILOGI(MODULE_USB_SERVICE, "GetConfigDescriptor length=%{public}d", length);
         uint32_t configCursor = 0;
         USBConfig config;
         ret = UsbDescriptorParser::ParseConfigDescriptor(buffer + cursor, length - cursor, configCursor, config);
+        if (ret != UEC_OK) {
+            USB_HILOGE(MODULE_USB_SERVICE, "ParseConfigDescriptor failed ret=%{public}d", ret);
+            return ret;
+        }
         cursor += configCursor;
         configs.push_back(config);
     }
     dev.SetConfigs(configs);
-    USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:%{public}d SetConfigs ret=%{public}d", __func__, __LINE__, ret);
     ret = FillDevStrings(dev);
-    USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:%{public}d FillDevStrings ret=%{public}d", __func__, __LINE__, ret);
+    USB_HILOGI(MODULE_USB_SERVICE, "FillDevStrings ret=%{public}d", ret);
     return ret;
 }
 
 int32_t UsbService::GetDeviceInfo(uint8_t busNum, uint8_t devAddr, UsbDevice &dev)
 {
-    USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:%{public}d busNum:%{public}d devAddr:%{public}d", __func__, __LINE__,
-               busNum, devAddr);
+    USB_HILOGI(MODULE_USB_SERVICE, "busNum:%{public}d devAddr:%{public}d", busNum, devAddr);
     const UsbDev uDev = {busNum, devAddr};
     std::vector<uint8_t> descriptor;
 
     int32_t ret = UsbdClient::GetInstance().OpenDevice(uDev);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s OpenDevice failed ret=%{public}d", __func__, ret);
+        USB_HILOGE(MODULE_USB_SERVICE, "OpenDevice failed ret=%{public}d", ret);
         return ret;
     }
 
     ret = GetDeviceInfoDescriptor(uDev, descriptor, dev);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d GetDeviceInfoDescriptor ret=%{public}d", __func__,
-                   __LINE__, ret);
+        USB_HILOGE(MODULE_USB_SERVICE, "GetDeviceInfoDescriptor ret=%{public}d", ret);
     }
     ret = GetConfigDescriptor(dev, descriptor);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d GetConfigDescriptor ret=%{public}d", __func__, __LINE__,
-                   ret);
+        USB_HILOGE(MODULE_USB_SERVICE, "GetConfigDescriptor ret=%{public}d", ret);
         return ret;
     }
 
     UsbdClient::GetInstance().CloseDevice(uDev);
-    USB_HILOGI(MODULE_USB_SERVICE, "%{public}s CloseDevice=%{public}s", __func__, dev.ToString().c_str());
+    USB_HILOGI(MODULE_USB_SERVICE, "CloseDevice=%{public}s", dev.ToString().c_str());
 
     return UEC_OK;
 }
@@ -568,18 +555,18 @@ bool UsbService::AddDevice(uint8_t busNum, uint8_t devAddr)
 {
     UsbDevice *devInfo = new(std::nothrow) UsbDevice();
     if (devInfo == nullptr) {
-        USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:%{public}d new failed", __func__, __LINE__);
+        USB_HILOGI(MODULE_USB_SERVICE, "new failed");
         return false;
     }
 
     errno_t retSafe = memset_s(devInfo, sizeof(UsbDevice), 0, sizeof(UsbDevice));
     if (retSafe != EOK) {
-        USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:%{public}d memset_s failed", __func__, __LINE__);
+        USB_HILOGI(MODULE_USB_SERVICE, "memset_s failed");
         return false;
     }
 
     int32_t ret = GetDeviceInfo(busNum, devAddr, *devInfo);
-    USB_HILOGI(MODULE_USB_SERVICE, "%{public}s:%{public}d GetDeviceInfo ret=%{public}d", __func__, __LINE__, ret);
+    USB_HILOGI(MODULE_USB_SERVICE, "GetDeviceInfo ret=%{public}d", ret);
     if (ret == UEC_OK) {
         usbHostManger_->AddDevice(devInfo);
         return true;
@@ -590,11 +577,10 @@ bool UsbService::AddDevice(uint8_t busNum, uint8_t devAddr)
 
 bool UsbService::DelDevice(uint8_t busNum, uint8_t devAddr)
 {
-    USB_HILOGI(MODULE_USBD, "%{public}s:%{public}d entry", __func__, __LINE__);
+    USB_HILOGI(MODULE_USBD, "entry");
     int32_t ret = Close(busNum, devAddr);
     if (ret != UEC_OK) {
-        USB_HILOGE(MODULE_USBD, "%{public}s:%{public}d Close device failed width ret = %{public}d", __func__, __LINE__,
-                   ret);
+        USB_HILOGE(MODULE_USBD, "Close device failed width ret = %{public}d", ret);
     }
     return usbHostManger_->DelDevice(busNum, devAddr);
 }
@@ -633,8 +619,7 @@ int32_t UsbService::RegBulkCallback(const UsbDev &devInfo, const UsbPipe &pipe, 
 {
     int32_t ret = UsbdClient::GetInstance().RegBulkCallback(devInfo, pipe, cb);
     if (UEC_OK != ret) {
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d RegBulkCallback error ret:%{public}d", __func__, __LINE__,
-                   ret);
+        USB_HILOGE(MODULE_USB_SERVICE, "RegBulkCallback error ret:%{public}d", ret);
     }
     return ret;
 }
@@ -643,8 +628,7 @@ int32_t UsbService::UnRegBulkCallback(const UsbDev &devInfo, const UsbPipe &pipe
 {
     int32_t ret = UsbdClient::GetInstance().UnRegBulkCallback(devInfo, pipe);
     if (UEC_OK != ret) {
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d UnRegBulkCallback error ret:%{public}d", __func__,
-                   __LINE__, ret);
+        USB_HILOGE(MODULE_USB_SERVICE, "UnRegBulkCallback error ret:%{public}d", ret);
     }
     return ret;
 }
@@ -652,12 +636,12 @@ int32_t UsbService::UnRegBulkCallback(const UsbDev &devInfo, const UsbPipe &pipe
 int32_t UsbService::BulkRead(const UsbDev &devInfo, const UsbPipe &pipe, sptr<Ashmem> &ashmem)
 {
     if (ashmem == nullptr) {
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d BulkRead error ashmem", __func__, __LINE__);
+        USB_HILOGE(MODULE_USB_SERVICE, "BulkRead error ashmem");
         return UEC_SERVICE_INVALID_VALUE;
     }
     int32_t ret = UsbdClient::GetInstance().BulkRead(devInfo, pipe, ashmem);
     if (UEC_OK != ret) {
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d BulkRead error ret:%{public}d", __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_USB_SERVICE, "BulkRead error ret:%{public}d", ret);
     }
     return ret;
 }
@@ -665,12 +649,12 @@ int32_t UsbService::BulkRead(const UsbDev &devInfo, const UsbPipe &pipe, sptr<As
 int32_t UsbService::BulkWrite(const UsbDev &devInfo, const UsbPipe &pipe, sptr<Ashmem> &ashmem)
 {
     if (ashmem == nullptr) {
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d BulkWrite error ashmem", __func__, __LINE__);
+        USB_HILOGE(MODULE_USB_SERVICE, "BulkWrite error ashmem");
         return UEC_SERVICE_INVALID_VALUE;
     }
     int32_t ret = UsbdClient::GetInstance().BulkWrite(devInfo, pipe, ashmem);
     if (UEC_OK != ret) {
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d BulkWrite error ret:%{public}d", __func__, __LINE__, ret);
+        USB_HILOGE(MODULE_USB_SERVICE, "BulkWrite error ret:%{public}d", ret);
     }
     return ret;
 }
@@ -679,8 +663,7 @@ int32_t UsbService::BulkCancel(const UsbDev &devInfo, const UsbPipe &pipe)
 {
     int32_t ret = UsbdClient::GetInstance().BulkCancel(devInfo, pipe);
     if (UEC_OK != ret) {
-        USB_HILOGE(MODULE_USB_SERVICE, "%{public}s:%{public}d BulkCancel error ret:%{public}d", __func__, __LINE__,
-                   ret);
+        USB_HILOGE(MODULE_USB_SERVICE, "BulkCancel error ret:%{public}d", ret);
     }
     return ret;
 }

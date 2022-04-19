@@ -27,7 +27,7 @@ const int32_t MAX_STR_LENGTH = 1024;
 void NapiUtil::JsValueToString(const napi_env &env, const napi_value &value, const int32_t bufLen, std::string &target)
 {
     if (bufLen <= 0 || bufLen > MAX_STR_LENGTH) {
-        USB_HILOGE(MODULE_JS_NAPI, "%{public}s string too long malloc failed", __func__);
+        USB_HILOGE(MODULE_JS_NAPI, "string too long malloc failed");
         return;
     }
 
@@ -67,7 +67,7 @@ void NapiUtil::JsObjectToString(const napi_env &env, const napi_value &object, s
         napi_get_value_string_utf8(env, field, buf.get(), bufLen, &result);
         fieldRef = buf.get();
     } else {
-        USB_HILOGW(MODULE_JS_NAPI, "%{public}s js to str no property: %{public}s", __func__, fieldStr.c_str());
+        USB_HILOGW(MODULE_JS_NAPI, "js to str no property: %{public}s", fieldStr.c_str());
     }
 }
 
@@ -79,7 +79,7 @@ bool NapiUtil::JsObjectGetProperty(const napi_env &env, const napi_value &object
     if (hasProperty) {
         napi_get_named_property(env, object, fieldStr.c_str(), &value);
     } else {
-        USB_HILOGW(MODULE_JS_NAPI, "%{public}s js object has no property: %{public}s", __func__, fieldStr.c_str());
+        USB_HILOGW(MODULE_JS_NAPI, "js object has no property: %{public}s", fieldStr.c_str());
     }
     return hasProperty;
 }
@@ -97,7 +97,7 @@ void NapiUtil::JsObjectToInt(const napi_env &env, const napi_value &object, std:
         NAPI_ASSERT_RETURN_VOID(env, valueType == napi_number, "Wrong argument type. Number expected.");
         napi_get_value_int32(env, field, &fieldRef);
     } else {
-        USB_HILOGW(MODULE_JS_NAPI, "%{public}s js to int32_t no property: %{public}s", __func__, fieldStr.c_str());
+        USB_HILOGW(MODULE_JS_NAPI, "js to int32_t no property: %{public}s", fieldStr.c_str());
     }
 }
 
@@ -106,7 +106,7 @@ bool NapiUtil::JsUint8ArrayParse(const napi_env &env, const napi_value &object, 
 {
     bool isTypedArray = false;
     if (napi_is_typedarray(env, object, &isTypedArray) != napi_ok || !isTypedArray) {
-        USB_HILOGW(MODULE_JS_NAPI, "%{public}s invalid type", __func__);
+        USB_HILOGW(MODULE_JS_NAPI, "invalid type");
         return false;
     }
 
@@ -116,17 +116,17 @@ bool NapiUtil::JsUint8ArrayParse(const napi_env &env, const napi_value &object, 
     napi_status infoStatus = napi_get_typedarray_info(env, object, &type, &bufferSize,
         reinterpret_cast<void **>(uint8Buffer), &buffer, &offset);
     if (infoStatus != napi_ok) {
-        USB_HILOGW(MODULE_JS_NAPI, "%{public}s get typedarray info failed, status: %{public}d", __func__, infoStatus);
+        USB_HILOGW(MODULE_JS_NAPI, "get typedarray info failed, status: %{public}d", infoStatus);
         return false;
     }
 
     if (type != napi_uint8_array) {
-        USB_HILOGW(MODULE_JS_NAPI, "%{public}s not Uint8Array type: %{public}d", __func__, type);
+        USB_HILOGW(MODULE_JS_NAPI, "not Uint8Array type: %{public}d", type);
         return false;
     }
 
     if (bufferSize == 0) {
-        USB_HILOGW(MODULE_JS_NAPI, "%{public}s:%{public}d bufferSize error", __func__, __LINE__);
+        USB_HILOGW(MODULE_JS_NAPI, "bufferSize error");
         return false;
     }
 
@@ -142,7 +142,7 @@ void NapiUtil::Uint8ArrayToJsValue(const napi_env &env, std::vector<uint8_t> &ui
 
     errno_t ret = memcpy_s(nativeArraybuffer, bufferSize, uint8Buffer.data(), bufferSize);
     if (ret != EOK) {
-        USB_HILOGE(MODULE_JS_NAPI, "%{public}s:%{public}d memcpy_s failed\n", __func__, __LINE__);
+        USB_HILOGE(MODULE_JS_NAPI, "memcpy_s failed\n");
         return;
     }
 
