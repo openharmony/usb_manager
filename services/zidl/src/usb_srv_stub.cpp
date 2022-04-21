@@ -227,18 +227,16 @@ int32_t UsbServerStub::DoSetCurrentFunctions(MessageParcel &data, MessageParcel 
 int32_t UsbServerStub::DoUsbFunctionsFromString(MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
     std::string funcs;
-    data.ReadString(funcs);
-    int32_t ret = UsbFunctionsFromString(funcs);
-    WRITE_PARCEL_WITH_RET(reply, Int32, ret, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    READ_PARCEL_WITH_RET(data, String, funcs, UEC_SERVICE_READ_PARCEL_ERROR);
+    WRITE_PARCEL_WITH_RET(reply, Int32, UsbFunctionsFromString(funcs), UEC_SERVICE_WRITE_PARCEL_ERROR);
     return UEC_OK;
 }
 
 int32_t UsbServerStub::DoUsbFunctionsToString(MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
     int32_t funcs;
-    data.ReadInt32(funcs);
-    std::string ret = UsbFunctionsToString(funcs);
-    WRITE_PARCEL_WITH_RET(reply, String, ret, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    READ_PARCEL_WITH_RET(data, Int32, funcs, UEC_SERVICE_READ_PARCEL_ERROR);
+    WRITE_PARCEL_WITH_RET(reply, String, UsbFunctionsToString(funcs), UEC_SERVICE_WRITE_PARCEL_ERROR);
     return UEC_OK;
 }
 
@@ -475,7 +473,7 @@ int32_t UsbServerStub::DoGetActiveConfig(MessageParcel &data, MessageParcel &rep
     READ_PARCEL_WITH_RET(data, Uint8, devAddr, UEC_SERVICE_WRITE_PARCEL_ERROR);
     int32_t ret = GetActiveConfig(busNum, devAddr, config);
     if (ret == UEC_OK) {
-        reply.WriteUint8(config);
+        WRITE_PARCEL_WITH_RET(reply, Uint8, config, UEC_SERVICE_WRITE_PARCEL_ERROR);
     }
     return ret;
 }
@@ -641,7 +639,7 @@ int32_t UsbServerStub::DoGetDevices(MessageParcel &data, MessageParcel &reply, M
 int32_t UsbServerStub::SetDeviceListMessageParcel(std::vector<UsbDevice> &deviceList, MessageParcel &data)
 {
     int32_t deviceCount = (int32_t)deviceList.size();
-    data.WriteInt32(deviceCount);
+    WRITE_PARCEL_WITH_RET(data, Int32, deviceCount, UEC_SERVICE_WRITE_PARCEL_ERROR);
     for (int32_t i = 0; i < deviceCount; ++i) {
         UsbDevice &devInfo = deviceList[i];
         int32_t ret = SetDeviceMessageParcel(devInfo, data);
