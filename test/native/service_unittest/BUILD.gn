@@ -40,7 +40,7 @@ ohos_unittest("test_usbdevicepipe") {
   external_deps = [
     "ability_base:want",
     "bundle_framework:appexecfwk_base",
-    "ces_standard:cesfwk_innerkits",
+    "common_event_service:cesfwk_innerkits",
     "eventhandler:libeventhandler",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
@@ -72,7 +72,7 @@ ohos_unittest("test_bulkcallback") {
   external_deps = [
     "ability_base:want",
     "bundle_framework:appexecfwk_base",
-    "ces_standard:cesfwk_innerkits",
+    "common_event_service:cesfwk_innerkits",
     "eventhandler:libeventhandler",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
@@ -101,7 +101,7 @@ ohos_unittest("test_usbrequest") {
   external_deps = [
     "ability_base:want",
     "bundle_framework:appexecfwk_base",
-    "ces_standard:cesfwk_innerkits",
+    "common_event_service:cesfwk_innerkits",
     "eventhandler:libeventhandler",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
@@ -130,7 +130,7 @@ ohos_unittest("test_usbcore") {
   external_deps = [
     "ability_base:want",
     "bundle_framework:appexecfwk_base",
-    "ces_standard:cesfwk_innerkits",
+    "common_event_service:cesfwk_innerkits",
     "eventhandler:libeventhandler",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
