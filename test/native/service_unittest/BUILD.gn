@@ -19,7 +19,10 @@ module_output_path = "${usb_manager_part_name}/usb_unittest_test"
 config("module_private_config") {
   visibility = [ ":*" ]
 
-  include_dirs = [ "include" ]
+  include_dirs = [
+    "include",
+    "${usb_manager_path}/test/common/include/",
+  ]
 }
 
 ohos_unittest("test_usbdevicepipe") {
@@ -54,8 +57,8 @@ ohos_unittest("test_usbdevicepipe") {
 ohos_unittest("test_bulkcallback") {
   module_out_path = module_output_path
   sources = [
+    "${usb_manager_path}/test/common/src/usb_callback_test.cpp",
     "src/usb_bulkcallback_test.cpp",
-    "src/usb_callback_test.cpp",
   ]
 
   configs = [
@@ -143,5 +146,10 @@ ohos_unittest("test_usbcore") {
 
 group("unittest") {
   testonly = true
-  deps = []
+  deps = [
+    ":test_bulkcallback",
+    ":test_usbcore",
+    ":test_usbdevicepipe",
+    ":test_usbrequest",
+  ]
 }
