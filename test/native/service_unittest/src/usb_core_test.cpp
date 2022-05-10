@@ -285,7 +285,7 @@ HWTEST_F(UsbCoreTest, UsbFunctionsToString001, TestSize.Level1)
     auto &instance = UsbSrvClient::GetInstance();
     std::string funcName = instance.UsbFunctionsToString(UsbFunctionManager::FUNCTION_NONE);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbCoreTest::UsbFunctionsToString=%{public}s", funcName.c_str());
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbCoreTest::UsbFunctionsToString=%{public}d", funcName.size());
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbCoreTest::UsbFunctionsToString=%{public}zu", funcName.size());
     ASSERT_TRUE(!(funcName.empty()));
     USB_HILOGI(MODULE_USB_SERVICE, "Case End : UsbFunctionsToString001 : SetConfig");
 }
@@ -508,7 +508,7 @@ HWTEST_F(UsbCoreTest, GetPorts001, TestSize.Level1)
     auto &usbSrvClient = UsbSrvClient::GetInstance();
     std::vector<UsbPort> portlist;
     auto ports = usbSrvClient.GetPorts(portlist);
-    USB_HILOGD(MODULE_USB_SERVICE, "Get UsbPort size=%{public}d", portlist.size());
+    USB_HILOGD(MODULE_USB_SERVICE, "Get UsbPort size=%{public}zu", portlist.size());
     ASSERT_TRUE(ports == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "Case End : GetPorts001 : GetPorts");
 }
