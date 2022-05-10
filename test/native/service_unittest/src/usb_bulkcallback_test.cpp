@@ -111,7 +111,7 @@ HWTEST_F(UsbBulkcallbackTest, RegBulkCallback001, TestSize.Level1)
     auto ret = UsbSrvClient.GetDevices(devi);
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbBulkcallbackTest::RegBulkCallback001 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbBulkcallbackTest::RegBulkCallback001 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -159,7 +159,7 @@ HWTEST_F(UsbBulkcallbackTest, RegBulkCallback002, TestSize.Level1)
     auto ret = UsbSrvClient.GetDevices(devi);
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbBulkcallbackTest::RegBulkCallback002 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbBulkcallbackTest::RegBulkCallback002 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -207,7 +207,7 @@ HWTEST_F(UsbBulkcallbackTest, RegBulkCallback003, TestSize.Level1)
     auto ret = UsbSrvClient.GetDevices(devi);
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbBulkcallbackTest::RegBulkCallback003 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbBulkcallbackTest::RegBulkCallback003 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -257,7 +257,7 @@ HWTEST_F(UsbBulkcallbackTest, RegBulkCallback004, TestSize.Level1)
     auto ret = UsbSrvClient.GetDevices(devi);
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbBulkcallbackTest::RegBulkCallback004 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbBulkcallbackTest::RegBulkCallback004 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -307,7 +307,7 @@ HWTEST_F(UsbBulkcallbackTest, RegBulkCallback005, TestSize.Level1)
     auto ret = UsbSrvClient.GetDevices(devi);
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbBulkcallbackTest::RegBulkCallback005 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbBulkcallbackTest::RegBulkCallback005 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -357,7 +357,7 @@ HWTEST_F(UsbBulkcallbackTest, RegBulkCallback006, TestSize.Level1)
     auto ret = UsbSrvClient.GetDevices(devi);
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbBulkcallbackTest::RegBulkCallback006 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbBulkcallbackTest::RegBulkCallback006 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -901,7 +901,7 @@ HWTEST_F(UsbBulkcallbackTest, UnRegBulkCallback001, TestSize.Level1)
     auto ret = UsbSrvClient.GetDevices(devi);
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbBulkcallbackTest::UnRegBulkCallback001 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbBulkcallbackTest::UnRegBulkCallback001 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -993,7 +993,7 @@ HWTEST_F(UsbBulkcallbackTest, UnRegBulkCallback003, TestSize.Level1)
     auto ret = UsbSrvClient.GetDevices(devi);
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbBulkcallbackTest::UnRegBulkCallback003 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbBulkcallbackTest::UnRegBulkCallback003 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();

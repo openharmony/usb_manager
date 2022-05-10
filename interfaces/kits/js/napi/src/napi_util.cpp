@@ -30,14 +30,15 @@ void NapiUtil::JsValueToString(const napi_env &env, const napi_value &value, con
         USB_HILOGE(MODULE_JS_NAPI, "string too long malloc failed");
         return;
     }
+    // 1 represent '\0'
+    int32_t actBufLen = bufLen + 1;
+    std::unique_ptr<char[]> buf = std::make_unique<char[]>(actBufLen);
 
-    std::unique_ptr<char[]> buf = std::make_unique<char[]>(bufLen);
-
-    errno_t ret = memset_s(buf.get(), bufLen, 0, bufLen);
+    errno_t ret = memset_s(buf.get(), actBufLen, 0, actBufLen);
     NAPI_ASSERT_RETURN_VOID(env, ret == EOK, "JsValueToString memset_s failed.");
 
     size_t result = 0;
-    napi_get_value_string_utf8(env, value, buf.get(), bufLen, &result);
+    napi_get_value_string_utf8(env, value, buf.get(), actBufLen, &result);
     target = buf.get();
 }
 
@@ -58,13 +59,15 @@ void NapiUtil::JsObjectToString(const napi_env &env, const napi_value &object, s
         napi_get_named_property(env, object, fieldStr.c_str(), &field);
         napi_typeof(env, field, &valueType);
         NAPI_ASSERT_RETURN_VOID(env, valueType == napi_string, "Wrong argument type. String expected.");
-        std::unique_ptr<char[]> buf = std::make_unique<char[]>(bufLen);
+        // 1 represent '\0'
+        int32_t actBufLen = bufLen + 1;
+        std::unique_ptr<char[]> buf = std::make_unique<char[]>(actBufLen);
 
-        errno_t ret = memset_s(buf.get(), bufLen, 0, bufLen);
+        errno_t ret = memset_s(buf.get(), actBufLen, 0, actBufLen);
         NAPI_ASSERT_RETURN_VOID(env, ret == EOK, "JsObjectToString memset_s failed.");
 
         size_t result = 0;
-        napi_get_value_string_utf8(env, field, buf.get(), bufLen, &result);
+        napi_get_value_string_utf8(env, field, buf.get(), actBufLen, &result);
         fieldRef = buf.get();
     } else {
         USB_HILOGW(MODULE_JS_NAPI, "js to str no property: %{public}s", fieldStr.c_str());

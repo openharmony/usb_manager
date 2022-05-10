@@ -71,7 +71,7 @@ HWTEST_F(UsbDevicePipeTest, getDevices001, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::getDevices001 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::getDevices001 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::getDevices001 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -101,7 +101,7 @@ HWTEST_F(UsbDevicePipeTest, UsbOpenDevice001, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbOpenDevice001 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(deviceList.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbOpenDevice001 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbOpenDevice001 %{public}d size=%{public}zu", __LINE__,
                deviceList.size());
     UsbDevice device = deviceList.front();
     USBDevicePipe pipe;
@@ -130,7 +130,7 @@ HWTEST_F(UsbDevicePipeTest, Usbcontrolstansfer001, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer001 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer001 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer001 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -167,7 +167,7 @@ HWTEST_F(UsbDevicePipeTest, Usbcontrolstansfer002, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer002 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer002 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer002 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -206,7 +206,7 @@ HWTEST_F(UsbDevicePipeTest, Usbcontrolstansfer003, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer003 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer003 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer003 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -245,7 +245,7 @@ HWTEST_F(UsbDevicePipeTest, Usbcontrolstansfer004, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer004 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer004 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer004 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -282,7 +282,7 @@ HWTEST_F(UsbDevicePipeTest, Usbcontrolstansfer005, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer005 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer005 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer005 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -321,7 +321,7 @@ HWTEST_F(UsbDevicePipeTest, Usbcontrolstansfer006, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer006 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer006 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer006 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -360,7 +360,7 @@ HWTEST_F(UsbDevicePipeTest, Usbcontrolstansfer007, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer007 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer007 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer007 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -399,7 +399,7 @@ HWTEST_F(UsbDevicePipeTest, Usbcontrolstansfer008, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer008 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer008 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer008 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -440,7 +440,7 @@ HWTEST_F(UsbDevicePipeTest, Usbcontrolstansfer009, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer009 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer009 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer009 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -481,7 +481,7 @@ HWTEST_F(UsbDevicePipeTest, Usbcontrolstansfer010, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer010 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer010 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer010 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -519,7 +519,7 @@ HWTEST_F(UsbDevicePipeTest, Usbcontrolstansfer011, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer011 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer011 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer011 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -559,7 +559,7 @@ HWTEST_F(UsbDevicePipeTest, Usbcontrolstansfer012, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer012 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer012 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer012 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -600,7 +600,7 @@ HWTEST_F(UsbDevicePipeTest, Usbcontrolstansfer0013, TestSize.Level1)
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer0013 %{public}d ret=%{public}d", __LINE__,
                ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer0013 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer0013 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -639,7 +639,7 @@ HWTEST_F(UsbDevicePipeTest, Usbcontrolstansfer0014, TestSize.Level1)
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer0014 %{public}d ret=%{public}d", __LINE__,
                ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer0014 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer0014 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -680,7 +680,7 @@ HWTEST_F(UsbDevicePipeTest, Usbcontrolstansfer0015, TestSize.Level1)
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer0015 %{public}d ret=%{public}d", __LINE__,
                ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer0015 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer0015 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -720,7 +720,7 @@ HWTEST_F(UsbDevicePipeTest, Usbcontrolstansfer016, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer016 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer016 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer016 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -758,7 +758,7 @@ HWTEST_F(UsbDevicePipeTest, Usbcontrolstansfer017, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer017 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer017 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer017 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -798,7 +798,7 @@ HWTEST_F(UsbDevicePipeTest, Usbcontrolstansfer018, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer018 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer018 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer018 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -838,7 +838,7 @@ HWTEST_F(UsbDevicePipeTest, Usbcontrolstansfer019, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer019 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer019 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer019 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -875,7 +875,7 @@ HWTEST_F(UsbDevicePipeTest, Usbcontrolstansfer020, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer020 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer020 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer020 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -914,7 +914,7 @@ HWTEST_F(UsbDevicePipeTest, Usbcontrolstansfer021, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer021 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer021 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Usbcontrolstansfer021 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -953,7 +953,7 @@ HWTEST_F(UsbDevicePipeTest, UsbClaimInterface001, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface001 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface001 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface001 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -988,7 +988,7 @@ HWTEST_F(UsbDevicePipeTest, UsbClaimInterface002, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface002 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface002 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface002 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1023,7 +1023,7 @@ HWTEST_F(UsbDevicePipeTest, UsbClaimInterface003, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface003 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface003 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface003 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1058,7 +1058,7 @@ HWTEST_F(UsbDevicePipeTest, UsbClaimInterface004, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface004 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface004 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface004 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1093,7 +1093,7 @@ HWTEST_F(UsbDevicePipeTest, UsbClaimInterface005, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface005 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface005 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface005 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1130,7 +1130,7 @@ HWTEST_F(UsbDevicePipeTest, UsbClaimInterface006, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface006 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface006 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface006 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1167,7 +1167,7 @@ HWTEST_F(UsbDevicePipeTest, UsbClaimInterface007, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface007 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface007 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface007 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1204,7 +1204,7 @@ HWTEST_F(UsbDevicePipeTest, UsbClaimInterface008, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface008 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface008 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbClaimInterface008 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1242,7 +1242,7 @@ HWTEST_F(UsbDevicePipeTest, UsbReleaseInterface001, TestSize.Level1)
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbReleaseInterface001 %{public}d ret=%{public}d", __LINE__,
                ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbReleaseInterface001 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbReleaseInterface001 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1278,7 +1278,7 @@ HWTEST_F(UsbDevicePipeTest, UsbReleaseInterface002, TestSize.Level1)
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbReleaseInterface002 %{public}d ret=%{public}d", __LINE__,
                ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbReleaseInterface002 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbReleaseInterface002 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1316,7 +1316,7 @@ HWTEST_F(UsbDevicePipeTest, UsbReleaseInterface003, TestSize.Level1)
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbReleaseInterface003 %{public}d ret=%{public}d", __LINE__,
                ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbReleaseInterface003 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbReleaseInterface003 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1354,7 +1354,7 @@ HWTEST_F(UsbDevicePipeTest, UsbReleaseInterface004, TestSize.Level1)
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbReleaseInterface004 %{public}d ret=%{public}d", __LINE__,
                ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbReleaseInterface004 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbReleaseInterface004 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1394,7 +1394,7 @@ HWTEST_F(UsbDevicePipeTest, UsbReleaseInterface005, TestSize.Level1)
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbReleaseInterface005 %{public}d ret=%{public}d", __LINE__,
                ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbReleaseInterface005 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbReleaseInterface005 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1432,7 +1432,7 @@ HWTEST_F(UsbDevicePipeTest, UsbReleaseInterface006, TestSize.Level1)
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbReleaseInterface006 %{public}d ret=%{public}d", __LINE__,
                ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbReleaseInterface006 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbReleaseInterface006 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1470,7 +1470,7 @@ HWTEST_F(UsbDevicePipeTest, UsbBulkTransfer001, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer001 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer001 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer001 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1516,7 +1516,7 @@ HWTEST_F(UsbDevicePipeTest, UsbBulkTransfer002, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer002 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer002 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer002 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1560,7 +1560,7 @@ HWTEST_F(UsbDevicePipeTest, UsbBulkTransfer003, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer003 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer003 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer003 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1608,7 +1608,7 @@ HWTEST_F(UsbDevicePipeTest, UsbBulkTransfer004, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer004 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer004 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer004 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1657,7 +1657,7 @@ HWTEST_F(UsbDevicePipeTest, UsbBulkTransfer005, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer005 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer005 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer005 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1704,7 +1704,7 @@ HWTEST_F(UsbDevicePipeTest, UsbBulkTransfer006, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer006 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer006 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer006 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1751,7 +1751,7 @@ HWTEST_F(UsbDevicePipeTest, UsbBulkTransfer007, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer007 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer007 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer007 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1797,7 +1797,7 @@ HWTEST_F(UsbDevicePipeTest, UsbBulkTransfer008, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer008 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer008 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer008 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1845,7 +1845,7 @@ HWTEST_F(UsbDevicePipeTest, UsbBulkTransfer009, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer009 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer009 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer009 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1893,7 +1893,7 @@ HWTEST_F(UsbDevicePipeTest, UsbBulkTransfer010, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer010 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer010 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::UsbBulkTransfer010 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1938,7 +1938,7 @@ HWTEST_F(UsbDevicePipeTest, SetConfiguration001, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetConfiguration001 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetConfiguration001 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetConfiguration001 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -1973,7 +1973,7 @@ HWTEST_F(UsbDevicePipeTest, SetConfiguration002, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetConfiguration002 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetConfiguration002 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetConfiguration002 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -2010,7 +2010,7 @@ HWTEST_F(UsbDevicePipeTest, SetConfiguration003, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetConfiguration003 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetConfiguration003 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetConfiguration003 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -2048,7 +2048,7 @@ HWTEST_F(UsbDevicePipeTest, Close001, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Close001 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Close001 %{public}d size=%{public}d", __LINE__, devi.size());
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Close001 %{public}d size=%{public}zu", __LINE__, devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
     UsbSrvClient.RequestRight(device.GetName());
@@ -2075,7 +2075,7 @@ HWTEST_F(UsbDevicePipeTest, Close002, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Close002 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Close002 %{public}d size=%{public}d", __LINE__, devi.size());
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Close002 %{public}d size=%{public}zu", __LINE__, devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
     UsbSrvClient.RequestRight(device.GetName());
@@ -2107,7 +2107,7 @@ HWTEST_F(UsbDevicePipeTest, Close003, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Close003 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Close003 %{public}d size=%{public}d", __LINE__, devi.size());
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::Close003 %{public}d size=%{public}zu", __LINE__, devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
     UsbSrvClient.RequestRight(device.GetName());
@@ -2139,7 +2139,7 @@ HWTEST_F(UsbDevicePipeTest, SetInterface001, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetInterface001 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetInterface001 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetInterface001 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -2177,7 +2177,7 @@ HWTEST_F(UsbDevicePipeTest, SetInterface002, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetInterface002 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetInterface002 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetInterface002 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -2217,7 +2217,7 @@ HWTEST_F(UsbDevicePipeTest, SetInterface003, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetInterface003 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetInterface003 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetInterface003 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -2257,7 +2257,7 @@ HWTEST_F(UsbDevicePipeTest, SetInterface004, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetInterface004 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetInterface004 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetInterface004 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -2295,7 +2295,7 @@ HWTEST_F(UsbDevicePipeTest, SetInterface005, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetInterface005 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetInterface005 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetInterface005 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -2335,7 +2335,7 @@ HWTEST_F(UsbDevicePipeTest, SetInterface006, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetInterface006 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetInterface006 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::SetInterface006 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -2375,7 +2375,7 @@ HWTEST_F(UsbDevicePipeTest, GetRawDescriptors001, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::GetRawDescriptors001 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::GetRawDescriptors001 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::GetRawDescriptors001 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -2409,7 +2409,7 @@ HWTEST_F(UsbDevicePipeTest, GetRawDescriptors002, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::GetRawDescriptors002 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::GetRawDescriptors002 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::GetRawDescriptors002 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -2445,7 +2445,7 @@ HWTEST_F(UsbDevicePipeTest, GetRawDescriptors003, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::GetRawDescriptors003 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::GetRawDescriptors003 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::GetRawDescriptors003 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -2481,7 +2481,7 @@ HWTEST_F(UsbDevicePipeTest, GetFileDescriptors001, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::GetFileDescriptors001 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::GetFileDescriptors001 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::GetFileDescriptors001 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -2522,7 +2522,7 @@ HWTEST_F(UsbDevicePipeTest, GetFileDescriptors002, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::GetFileDescriptors002 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::GetFileDescriptors002 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::GetFileDescriptors002 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();
@@ -2565,7 +2565,7 @@ HWTEST_F(UsbDevicePipeTest, GetFileDescriptors003, TestSize.Level1)
     EXPECT_TRUE(ret == 0);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::GetFileDescriptors003 %{public}d ret=%{public}d", __LINE__, ret);
     EXPECT_TRUE(!(devi.empty())) << "delist NULL";
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::GetFileDescriptors003 %{public}d size=%{public}d", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbDevicePipeTest::GetFileDescriptors003 %{public}d size=%{public}zu", __LINE__,
                devi.size());
     USBDevicePipe pipe;
     UsbDevice device = devi.front();

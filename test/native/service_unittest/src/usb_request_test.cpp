@@ -73,7 +73,7 @@ HWTEST_F(UsbRequestTest, UsbRequestInitialize001, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:UsbRequestInitialize001 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:UsbRequestInitialize001 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -116,7 +116,7 @@ HWTEST_F(UsbRequestTest, UsbRequestInitialize002, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:UsbRequestInitialize002 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:UsbRequestInitialize002 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -162,7 +162,7 @@ HWTEST_F(UsbRequestTest, UsbRequestInitialize003, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:UsbRequestInitialize003 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:UsbRequestInitialize003 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -205,7 +205,7 @@ HWTEST_F(UsbRequestTest, UsbRequestInitialize004, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:UsbRequestInitialize004 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:UsbRequestInitialize004 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -248,7 +248,7 @@ HWTEST_F(UsbRequestTest, UsbRequestInitialize005, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:UsbRequestInitialize005 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:UsbRequestInitialize005 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -294,7 +294,7 @@ HWTEST_F(UsbRequestTest, UsbRequestInitialize006, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:UsbRequestInitialize006 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:UsbRequestInitialize006 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -340,7 +340,7 @@ HWTEST_F(UsbRequestTest, UsbrequestQueue001, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest::UsbrequestQueue001 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest::UsbrequestQueue001 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -385,7 +385,7 @@ HWTEST_F(UsbRequestTest, UsbrequestQueue002, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest::UsbrequestQueue002 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest::UsbrequestQueue002 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -433,7 +433,7 @@ HWTEST_F(UsbRequestTest, UsbrequestQueue003, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest::UsbrequestQueue003 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest::UsbrequestQueue003 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -481,7 +481,7 @@ HWTEST_F(UsbRequestTest, UsbrequestQueue004, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest::UsbrequestQueue004 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest::UsbrequestQueue004 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -529,7 +529,7 @@ HWTEST_F(UsbRequestTest, UsbrequestQueue005, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest::UsbrequestQueue005 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest::UsbrequestQueue005 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -580,7 +580,7 @@ HWTEST_F(UsbRequestTest, UsbrequestQueue006, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest::UsbrequestQueue006 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest::UsbrequestQueue006 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -631,7 +631,7 @@ HWTEST_F(UsbRequestTest, Usbrequestfree001, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestfree001 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestfree001 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -674,7 +674,7 @@ HWTEST_F(UsbRequestTest, Usbrequestfree002, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestfree002 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestfree002 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -720,7 +720,7 @@ HWTEST_F(UsbRequestTest, Usbrequestfree003, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestfree003 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestfree003 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -766,7 +766,7 @@ HWTEST_F(UsbRequestTest, Usbrequestfree004, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestfree004 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestfree004 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -812,7 +812,7 @@ HWTEST_F(UsbRequestTest, Usbrequestfree005, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestfree005 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestfree005 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -861,7 +861,7 @@ HWTEST_F(UsbRequestTest, Usbrequestfree006, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestfree006 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestfree006 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -910,7 +910,7 @@ HWTEST_F(UsbRequestTest, Usbrequestabort001, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestabort001 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestabort001 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -961,7 +961,7 @@ HWTEST_F(UsbRequestTest, Usbrequestabort002, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestabort002 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestabort002 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -1012,7 +1012,7 @@ HWTEST_F(UsbRequestTest, Usbrequestabort003, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestabort003 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestabort003 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -1063,7 +1063,7 @@ HWTEST_F(UsbRequestTest, Usbrequestabort004, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestabort004 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestabort004 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -1114,7 +1114,7 @@ HWTEST_F(UsbRequestTest, Usbrequestabort005, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestabort005 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestabort005 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -1164,7 +1164,7 @@ HWTEST_F(UsbRequestTest, Usbrequestabort006, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestabort006 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestabort006 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -1214,7 +1214,7 @@ HWTEST_F(UsbRequestTest, PipeRequestWait001, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:PipeRequestWait001 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:PipeRequestWait001 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -1264,7 +1264,7 @@ HWTEST_F(UsbRequestTest, PipeRequestWait002, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:PipeRequestWait002 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:PipeRequestWait002 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -1316,7 +1316,7 @@ HWTEST_F(UsbRequestTest, PipeRequestWait003, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:PipeRequestWait003 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:PipeRequestWait003 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -1368,7 +1368,7 @@ HWTEST_F(UsbRequestTest, PipeRequestWait004, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:PipeRequestWait004 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:PipeRequestWait004 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -1419,7 +1419,7 @@ HWTEST_F(UsbRequestTest, PipeRequestWait005, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:PipeRequestWait005 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:PipeRequestWait005 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
@@ -1470,7 +1470,7 @@ HWTEST_F(UsbRequestTest, PipeRequestWait006, TestSize.Level1)
     vector<UsbDevice> delist;
     auto &UsbSrvClient = UsbSrvClient::GetInstance();
     auto ret = UsbSrvClient.GetDevices(delist);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:PipeRequestWait006 %{public}d ret=%{public}d size:%{public}d",
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:PipeRequestWait006 %{public}d ret=%{public}d size:%{public}zu",
                __LINE__, ret, delist.size());
     EXPECT_TRUE(ret == 0);
     EXPECT_TRUE(!(delist.empty())) << "delist NULL";
