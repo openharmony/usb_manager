@@ -20,11 +20,11 @@
 #include "common_event_manager.h"
 #include "common_event_support.h"
 #include "delayed_sp_singleton.h"
-#include "ohos/aafwk/content/want.h"
 #include "string_ex.h"
 #include "usb_common.h"
 #include "usb_errors.h"
 #include "usb_service.h"
+#include "want.h"
 
 using namespace OHOS::AAFwk;
 using namespace OHOS::EventFwk;
