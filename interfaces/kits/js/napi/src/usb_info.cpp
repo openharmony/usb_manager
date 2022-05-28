@@ -1123,17 +1123,17 @@ static bool GetBulkTransferParams(napi_env env, napi_callback_info info, USBBulk
     napi_value argv[PARAM_COUNT_4] = {0};
 
     napi_status status = napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
-    NAPI_ASSERT(env, (status == napi_ok) && (argc >= PARAM_COUNT_3), "BulkTransfer failed to get cb info");
+    NAPI_ASSERT_BASE(env, (status == napi_ok) && (argc >= PARAM_COUNT_3), "BulkTransfer failed to get cb info", false);
 
     napi_valuetype type;
     USBDevicePipe pipe;
     napi_typeof(env, argv[INDEX_0], &type);
-    NAPI_ASSERT(env, type == napi_object, "BulkTransfer wrong argument type index 0, object expected");
+    NAPI_ASSERT_BASE(env, type == napi_object, "BulkTransfer wrong argument type index 0, object expected", false);
     ParseUsbDevicePipe(env, argv[INDEX_0], pipe);
 
     USBEndpoint ep;
     napi_typeof(env, argv[INDEX_1], &type);
-    NAPI_ASSERT(env, type == napi_object, "BulkTransfer wrong argument type index 1. Object expected.");
+    NAPI_ASSERT_BASE(env, type == napi_object, "BulkTransfer wrong argument type index 1. Object expected.", false);
     ParseEndpointObj(env, argv[INDEX_1], ep);
 
     int32_t timeOut = 0;
@@ -1155,7 +1155,7 @@ static bool GetBulkTransferParams(napi_env env, napi_callback_info info, USBBulk
 
     if (ep.GetDirection() == USB_ENDPOINT_DIR_OUT) {
         uint8_t *nativeArraybuffer = new(std::nothrow) uint8_t[bufferSize];
-        NAPI_ASSERT(env, nativeArraybuffer != nullptr, "nativeArraybuffer create failed.");
+        NAPI_ASSERT_BASE(env, nativeArraybuffer != nullptr, "nativeArraybuffer create failed.", false);
 
         errno_t ret = memcpy_s(nativeArraybuffer, bufferSize, buffer, bufferSize);
         if (ret != EOK) {
