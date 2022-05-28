@@ -933,8 +933,7 @@ static napi_value PipeGetFileDescriptor(napi_env env, napi_callback_info info)
 
     int32_t fd = -1;
     napi_value result;
-    int32_t ret = g_usbClient.GetFileDescriptor(pipe, fd);
-    NAPI_ASSERT(env, ret == UEC_OK, "Get File Descriptor failed.");
+    g_usbClient.GetFileDescriptor(pipe, fd);
     napi_create_int32(env, fd, &result);
 
     return result;
