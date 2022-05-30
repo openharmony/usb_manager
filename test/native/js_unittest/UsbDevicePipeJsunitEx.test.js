@@ -768,5 +768,28 @@ describe('UsbDevicePipeJsFunctionsTestEx', function () {
     console.info('usb set_configuration_test_05 :  PASS');
   })
 
+/**
+   * @tc.number    : SUB_USB_set_configuration_test_06
+   * @tc.name      : setConfiguration
+   * @tc.desc      : 反向测试 USBConfig的name interval（1-16） 赋值错误 设置设备接口
+   */
+   it('SUB_USB_set_configuration_test_06', 0, function () {
+    console.info('usb set_configuration_test_06 begin');
+    if (gDeviceList.length == 0) {
+      console.info('usb case get_device_list is null')
+      expect(false).assertTrue();
+      return
+    }
 
+    for (var j = 0; j < gDeviceList[0].configs.length; j++) {
+      var config = gDeviceList[0].configs[j]
+      config.name = 'asdfsd'
+      config.interfaces[0].endpoints[0].interval = 0
+      var ret = usb.setConfiguration(gPipe, config)
+      console.info('usb case setConfiguration return : ' + ret);
+      expect(ret).assertLess(0);
+    }
+
+    console.info('usb set_configuration_test_06 :  PASS');
+  })
 })
