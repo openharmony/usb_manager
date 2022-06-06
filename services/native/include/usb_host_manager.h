@@ -19,6 +19,7 @@
 #include <map>
 #include <string>
 #include <vector>
+
 #include "system_ability.h"
 #include "usb_device.h"
 #include "usb_right_manager.h"
@@ -36,6 +37,8 @@ public:
     bool AddDevice(UsbDevice *dev);
 
 private:
+    bool PublishCommonEvent(const std::string &event, const UsbDevice &dev);
+
     MAP_STR_DEVICE devices_;
     SystemAbility *systemAbility_;
 };

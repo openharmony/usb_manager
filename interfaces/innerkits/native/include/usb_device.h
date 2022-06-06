@@ -46,6 +46,27 @@ public:
         this->configs_ = configs;
     }
 
+    explicit UsbDevice(const Json::Value &device)
+    {
+        busNum_ = device["busNum"].asUInt();
+        devAddr_ = device["devAddress"].asUInt();
+        serial_ = device["serial"].asString();
+        name_ = device["name"].asString();
+        manufacturerName_ = device["manufacturerName"].asString();
+        productName_ = device["productName"].asString();
+        version_ = device["version"].asString();
+        vendorId_ = device["vendorId"].asInt();
+        productId_ = device["productId"].asInt();
+        klass_ = device["clazz"].asInt();
+        subClass_ = device["subClass"].asInt();
+        protocol_ = device["protocol"].asInt();
+
+        Json::Value configs = device["configs"];
+        for (uint32_t idx = 0; idx < configs.size(); ++idx) {
+            configs_.emplace_back(configs[idx]);
+        }
+    }
+
     UsbDevice() {}
     ~UsbDevice() {}
 
@@ -287,6 +308,31 @@ public:
     uint16_t GetbcdDevice()
     {
         return this->bcdDevice_;
+    }
+
+    Json::Value ToJson() const
+    {
+        Json::Value device;
+        device["busNum"] = busNum_;
+        device["devAddress"] = devAddr_;
+        device["serial"] = serial_;
+        device["name"] = name_;
+        device["manufacturerName"] = manufacturerName_;
+        device["productName"] = productName_;
+        device["version"] = version_;
+        device["vendorId"] = vendorId_;
+        device["productId"] = productId_;
+        device["clazz"] = klass_;
+        device["subClass"] = subClass_;
+        device["protocol"] = protocol_;
+
+        Json::Value configs;
+        for (auto &cfg : configs_) {
+            configs.append(cfg.ToJson());
+        }
+        device["configs"] = configs;
+
+        return device;
     }
 
 private:
