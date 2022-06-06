@@ -43,6 +43,21 @@ public:
         this->endpoints_ = endpoints;
     }
 
+    explicit UsbInterface(const Json::Value &interface)
+    {
+        id_ = interface["id"].asInt();
+        protocol_ = interface["protocol"].asInt();
+        klass_ = interface["clazz"].asInt();
+        subClass_ = interface["subClass"].asInt();
+        alternateSetting_ = interface["alternateSetting"].asInt();
+        name_ = interface["name"].asString();
+
+        Json::Value endpoints = interface["endpoints"];
+        for (uint32_t idx = 0; idx < endpoints.size(); ++idx) {
+            endpoints_.emplace_back(endpoints[idx]);
+        }
+    }
+
     UsbInterface() {}
 
     const std::string &GetName() const
@@ -159,6 +174,25 @@ public:
     uint8_t GetiInterface()
     {
         return this->iInterface_;
+    }
+
+    Json::Value ToJson() const
+    {
+        Json::Value interface;
+        interface["id"] = id_;
+        interface["protocol"] = protocol_;
+        interface["clazz"] = klass_;
+        interface["subClass"] = subClass_;
+        interface["alternateSetting"] = alternateSetting_;
+        interface["name"] = name_;
+
+        Json::Value endpoints;
+        for (const auto &ep : endpoints_) {
+            endpoints.append(ep.ToJson());
+        }
+        interface["endpoints"] = endpoints;
+
+        return interface;
     }
 
 private:

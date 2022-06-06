@@ -19,33 +19,29 @@
 #include <map>
 #include <string>
 #include <vector>
+
 #include "usb_common.h"
+#include "usb_srv_support.h"
+#include "usbd_subscriber.h"
 
 namespace OHOS {
 namespace USB {
-class UsbFunctionManager {
+class UsbDeviceManager {
 public:
     static bool AreSettableFunctions(int32_t funcs);
 
-    static int32_t FromStringFunctions(std::string_view funcs);
-    static std::string ToStringFunctions(int32_t func);
-    static void updateFunctions(int32_t func);
-    static int32_t getCurrentFunctions();
-
-    static constexpr std::string_view FUNCTION_NAME_NONE = "none";
-    static constexpr std::string_view FUNCTION_NAME_HDC = "hdc";
-    static constexpr std::string_view FUNCTION_NAME_ACM = "acm";
-    static constexpr std::string_view FUNCTION_NAME_ECM = "ecm";
-
-    static constexpr int32_t FUNCTION_NONE = 0;
-    static constexpr int32_t FUNCTION_ACM = 1;
-    static constexpr int32_t FUNCTION_ECM = 2;
-    static constexpr int32_t FUNCTION_HDC = 4;
+    static uint32_t ConvertFromString(std::string_view funcs);
+    static std::string ConvertToString(uint32_t func);
+    void UpdateFunctions(int32_t func);
+    int32_t GetCurrentFunctions();
+    void HandleEvent(int32_t status);
 
 private:
-    static constexpr int32_t FUNCTION_SETTABLE = FUNCTION_HDC | FUNCTION_ACM | FUNCTION_ECM;
+    static constexpr int32_t FUNCTION_SETTABLE =
+        UsbSrvSupport::FUNCTION_HDC | UsbSrvSupport::FUNCTION_ACM | UsbSrvSupport::FUNCTION_ECM;
     static const std::map<std::string_view, int32_t> FUNCTION_MAPPING_N2C;
-    static int32_t currentFunctions;
+    int32_t currentFunctions_ {0};
+    bool connected_ {false};
 };
 } // namespace USB
 } // namespace OHOS

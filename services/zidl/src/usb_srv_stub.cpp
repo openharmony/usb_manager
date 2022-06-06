@@ -208,12 +208,12 @@ int32_t UsbServerStub::OnRemoteRequest(uint32_t code, MessageParcel &data, Messa
 
 int32_t UsbServerStub::DoGetCurrentFunctions(MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
-    int32_t funcs;
-    int32_t ret = GetCurrentFunctions(funcs);
+    int32_t functions;
+    int32_t ret = GetCurrentFunctions(functions);
     if (ret != UEC_OK) {
         return ret;
     }
-    WRITE_PARCEL_WITH_RET(reply, Int32, funcs, UEC_SERVICE_WRITE_PARCEL_ERROR);
+    WRITE_PARCEL_WITH_RET(reply, Int32, functions, UEC_SERVICE_WRITE_PARCEL_ERROR);
     return UEC_OK;
 }
 

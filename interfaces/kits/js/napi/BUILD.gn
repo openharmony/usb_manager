@@ -18,6 +18,7 @@ config("usbnapi_private_config") {
     "//foundation/arkui/napi/native_engine",
     "//foundation/arkui/napi/interfaces/kits",
     "//third_party/node/src",
+    "//third_party/jsoncpp/include/json",
     "${usb_manager_path}/interfaces/kits/js/napi/include",
     "${usb_manager_path}/interfaces/innerkits/native/include",
   ]
@@ -35,6 +36,7 @@ ohos_shared_library("usb") {
   deps = [
     "${usb_manager_path}/interfaces/innerkits:usbsrv_client",
     "//foundation/arkui/napi:ace_napi",
+    "//third_party/jsoncpp:jsoncpp",
   ]
   external_deps = [
     "hiviewdfx_hilog_native:libhilog",

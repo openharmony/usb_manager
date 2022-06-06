@@ -601,8 +601,8 @@ static napi_value CoreSetCurrentFunctions(napi_env env, napi_callback_info info)
     napi_typeof(env, argv[INDEX_0], &type);
     NAPI_ASSERT(env, type == napi_number, "Wrong argument type. Number expected.");
 
-    int32_t funcs = 0;
-    napi_get_value_int32(env, argv[INDEX_0], &funcs);
+    uint32_t funcs = 0;
+    napi_get_value_uint32(env, argv[INDEX_0], &funcs);
 
     auto asyncContext = new(std::nothrow) USBFunctionAsyncContext();
     NAPI_ASSERT(env, asyncContext != nullptr, "Create USBFunctionAsyncContext failed.");
