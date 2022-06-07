@@ -22,6 +22,7 @@ config("module_private_config") {
   include_dirs = [
     "include",
     "${usb_manager_path}/test/common/include/",
+    "//third_party/jsoncpp/include/json",
   ]
 }
 
@@ -144,12 +145,43 @@ ohos_unittest("test_usbcore") {
   ]
 }
 
+ohos_unittest("test_usbevent") {
+  module_out_path = module_output_path
+  sources = [ "src/usb_event_test.cpp" ]
+
+  configs = [
+    "${utils_path}:utils_config",
+    ":module_private_config",
+  ]
+
+  deps = [
+    "${usb_manager_path}/interfaces/innerkits:usbsrv_client",
+    "${usb_manager_path}/services:usbservice",
+    "//third_party/googletest:gtest_main",
+    "//third_party/jsoncpp:jsoncpp",
+  ]
+
+  external_deps = [
+    "ability_base:want",
+    "bundle_framework:appexecfwk_base",
+    "common_event_service:cesfwk_innerkits",
+    "eventhandler:libeventhandler",
+    "hiviewdfx_hilog_native:libhilog",
+    "ipc:ipc_core",
+    "safwk:system_ability_fwk",
+    "samgr_standard:samgr_proxy",
+    "usb_device_driver:usbd_client",
+    "utils_base:utils",
+  ]
+}
+
 group("unittest") {
   testonly = true
   deps = [
     ":test_bulkcallback",
     ":test_usbcore",
     ":test_usbdevicepipe",
+    ":test_usbevent",
     ":test_usbrequest",
   ]
 }

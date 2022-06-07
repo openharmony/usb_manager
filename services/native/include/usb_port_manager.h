@@ -29,8 +29,6 @@ class UsbPortManager {
 public:
     UsbPortManager();
     ~UsbPortManager();
-    typedef std::map<int32_t, UsbPort> PortMap;
-    PortMap portMap;
 
     void Init();
     void Init(int32_t test);
@@ -43,6 +41,7 @@ public:
     void RemovePort(int32_t portId);
 
 private:
+    std::map<int32_t, UsbPort> portMap_;
 };
 } // namespace USB
 } // namespace OHOS

@@ -47,7 +47,7 @@ static void PrintHelp()
 
 static void GetCurrentFunctionInfo()
 {
-    int32_t funcs = -1;
+    int32_t funcs = 0;
     string strFun = "";
     int32_t ret = g_usbClient.GetCurrentFunctions(funcs);
     if (ret) {
@@ -128,7 +128,7 @@ int32_t main(int32_t argc, char *argv[])
         return 0;
     }
 
-    int32_t mode;
+    uint32_t mode;
     if ((!strcmp(argv[CMD_INDEX], "-f"))) {
         mode = stoi(argv[PARAM_INDEX]);
         FunctionSwitch(g_usbClient, mode);

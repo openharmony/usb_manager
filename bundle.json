@@ -29,7 +29,8 @@
           "libhilog",
           "ipc_core",
           "system_ability_fwk",
-          "samgr_proxy"
+          "samgr_proxy",
+          "jsoncpp"
         ],
         "third_party": []
       },

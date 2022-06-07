@@ -14,7 +14,7 @@
 import("//base/usb/usb_manager/usbmgr.gni")
 
 config("usbsrv_private_config") {
-  include_dirs = []
+  include_dirs = [ "//third_party/jsoncpp/include/json" ]
 }
 
 config("usbsrv_public_config") {
@@ -29,7 +29,7 @@ ohos_shared_library("usbservice") {
   sources = [
     "${usb_manager_path}/services/zidl/src/usb_srv_stub.cpp",
     "native/src/usb_descriptor_parser.cpp",
-    "native/src/usb_function_manager.cpp",
+    "native/src/usb_device_manager.cpp",
     "native/src/usb_host_manager.cpp",
     "native/src/usb_port_manager.cpp",
     "native/src/usb_right_manager.cpp",
@@ -46,7 +46,10 @@ ohos_shared_library("usbservice") {
 
   public_configs = [ ":usbsrv_public_config" ]
 
-  deps = [ "${usb_manager_path}/interfaces/innerkits:usbsrv_client" ]
+  deps = [
+    "${usb_manager_path}/interfaces/innerkits:usbsrv_client",
+    "//third_party/jsoncpp:jsoncpp",
+  ]
 
   external_deps = [
     "ability_base:want",

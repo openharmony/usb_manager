@@ -27,6 +27,7 @@
 #include "usb_errors.h"
 #include "usb_service.h"
 #include "usb_srv_client.h"
+#include "usb_srv_support.h"
 
 using namespace testing::ext;
 using namespace OHOS::USB;
@@ -191,7 +192,7 @@ HWTEST_F(UsbCoreTest, UsbFunctionsFromString001, TestSize.Level1)
 {
     USB_HILOGI(MODULE_USB_SERVICE, "Case Start : UsbFunctionsFromString001 : SetConfig");
     auto &instance = UsbSrvClient::GetInstance();
-    int32_t funcCode = instance.UsbFunctionsFromString(UsbFunctionManager::FUNCTION_NAME_NONE);
+    int32_t funcCode = instance.UsbFunctionsFromString(UsbSrvSupport::FUNCTION_NAME_NONE);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbCoreTest::functionsFromString=%{public}d", funcCode);
     ASSERT_TRUE(funcCode != UEC_SERVICE_INVALID_VALUE);
     USB_HILOGI(MODULE_USB_SERVICE, "Case End : UsbFunctionsFromString001 : SetConfig");
@@ -206,7 +207,7 @@ HWTEST_F(UsbCoreTest, UsbFunctionsFromString002, TestSize.Level1)
 {
     USB_HILOGI(MODULE_USB_SERVICE, "Case Start : UsbFunctionsFromString002 : SetConfig");
     auto &instance = UsbSrvClient::GetInstance();
-    int32_t funcCode = instance.UsbFunctionsFromString(UsbFunctionManager::FUNCTION_NAME_HDC);
+    int32_t funcCode = instance.UsbFunctionsFromString(UsbSrvSupport::FUNCTION_NAME_HDC);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbCoreTest::functionsFromString=%{public}d", funcCode);
     ASSERT_TRUE(funcCode != UEC_SERVICE_INVALID_VALUE);
     USB_HILOGI(MODULE_USB_SERVICE, "Case End : UsbFunctionsFromString002 : SetConfig");
@@ -221,7 +222,7 @@ HWTEST_F(UsbCoreTest, UsbFunctionsFromString003, TestSize.Level1)
 {
     USB_HILOGI(MODULE_USB_SERVICE, "Case Start : UsbFunctionsFromString003 : SetConfig");
     auto &instance = UsbSrvClient::GetInstance();
-    int32_t funcCode = instance.UsbFunctionsFromString(UsbFunctionManager::FUNCTION_NAME_ACM);
+    int32_t funcCode = instance.UsbFunctionsFromString(UsbSrvSupport::FUNCTION_NAME_ACM);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbCoreTest::functionsFromString=%{public}d", funcCode);
     ASSERT_TRUE(funcCode != UEC_SERVICE_INVALID_VALUE);
     USB_HILOGI(MODULE_USB_SERVICE, "Case End : UsbFunctionsFromString003 : SetConfig");
@@ -236,7 +237,7 @@ HWTEST_F(UsbCoreTest, UsbFunctionsFromString004, TestSize.Level1)
 {
     USB_HILOGI(MODULE_USB_SERVICE, "Case Start : UsbFunctionsFromString004 : SetConfig");
     auto &instance = UsbSrvClient::GetInstance();
-    int32_t funcCode = instance.UsbFunctionsFromString(UsbFunctionManager::FUNCTION_NAME_ECM);
+    int32_t funcCode = instance.UsbFunctionsFromString(UsbSrvSupport::FUNCTION_NAME_ECM);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbCoreTest::functionsFromString=%{public}d", funcCode);
     ASSERT_TRUE(funcCode != UEC_SERVICE_INVALID_VALUE);
     USB_HILOGI(MODULE_USB_SERVICE, "Case End : UsbFunctionsFromString004 : SetConfig");
@@ -283,7 +284,7 @@ HWTEST_F(UsbCoreTest, UsbFunctionsToString001, TestSize.Level1)
 {
     USB_HILOGI(MODULE_USB_SERVICE, "Case Start : UsbFunctionsToString001 : SetConfig");
     auto &instance = UsbSrvClient::GetInstance();
-    std::string funcName = instance.UsbFunctionsToString(UsbFunctionManager::FUNCTION_NONE);
+    std::string funcName = instance.UsbFunctionsToString(UsbSrvSupport::FUNCTION_NONE);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbCoreTest::UsbFunctionsToString=%{public}s", funcName.c_str());
     USB_HILOGI(MODULE_USB_SERVICE, "UsbCoreTest::UsbFunctionsToString=%{public}zu", funcName.size());
     ASSERT_TRUE(!(funcName.empty()));
@@ -299,7 +300,7 @@ HWTEST_F(UsbCoreTest, UsbFunctionsToString002, TestSize.Level1)
 {
     USB_HILOGI(MODULE_USB_SERVICE, "Case Start : UsbFunctionsToString002 : SetConfig");
     auto &instance = UsbSrvClient::GetInstance();
-    std::string funcName = instance.UsbFunctionsToString(UsbFunctionManager::FUNCTION_HDC);
+    std::string funcName = instance.UsbFunctionsToString(UsbSrvSupport::FUNCTION_HDC);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbCoreTest::UsbFunctionsToString=%{public}s", funcName.c_str());
     ASSERT_TRUE(!(funcName.empty()));
     USB_HILOGI(MODULE_USB_SERVICE, "Case End : UsbFunctionsToString002 : SetConfig");
@@ -314,7 +315,7 @@ HWTEST_F(UsbCoreTest, UsbFunctionsToString003, TestSize.Level1)
 {
     USB_HILOGI(MODULE_USB_SERVICE, "Case Start : UsbFunctionsToString003 : SetConfig");
     auto &instance = UsbSrvClient::GetInstance();
-    std::string funcName = instance.UsbFunctionsToString(UsbFunctionManager::FUNCTION_ACM);
+    std::string funcName = instance.UsbFunctionsToString(UsbSrvSupport::FUNCTION_ACM);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbFunctionServiceTest::UsbFunctionsToString=%{public}s", funcName.c_str());
     ASSERT_TRUE(!(funcName.empty()));
     USB_HILOGI(MODULE_USB_SERVICE, "Case End : UsbFunctionsToString003 : SetConfig");
@@ -329,7 +330,7 @@ HWTEST_F(UsbCoreTest, UsbFunctionsToString004, TestSize.Level1)
 {
     USB_HILOGI(MODULE_USB_SERVICE, "Case Start : UsbFunctionsToString004 : SetConfig");
     auto &instance = UsbSrvClient::GetInstance();
-    std::string funcName = instance.UsbFunctionsToString(UsbFunctionManager::FUNCTION_ECM);
+    std::string funcName = instance.UsbFunctionsToString(UsbSrvSupport::FUNCTION_ECM);
     USB_HILOGI(MODULE_USB_SERVICE, "UsbFunctionServiceTest::UsbFunctionsToString=%{public}s", funcName.c_str());
     ASSERT_TRUE(!(funcName.empty()));
     USB_HILOGI(MODULE_USB_SERVICE, "Case End : UsbFunctionsToString004 : SetConfig");

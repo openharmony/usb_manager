@@ -15,7 +15,7 @@
 
 #include "usb_service_subscriber.h"
 
-#include <sys/time.h>
+#include "json.h"
 #include "common_event_data.h"
 #include "common_event_manager.h"
 #include "common_event_support.h"
@@ -31,8 +31,6 @@ using namespace OHOS::EventFwk;
 
 namespace OHOS {
 namespace USB {
-const int32_t MSEC_TIME = 1000;
-
 UsbServiceSubscriber::UsbServiceSubscriber() {}
 
 int32_t UsbServiceSubscriber::PortChangedEvent(int32_t portId, int32_t powerRole, int32_t dataRole, int32_t mode)
@@ -43,10 +41,21 @@ int32_t UsbServiceSubscriber::PortChangedEvent(int32_t portId, int32_t powerRole
         return UEC_SERVICE_GET_USB_SERVICE_FAILED;
     }
 
+    Json::Value port;
+    port["portId"] = portId;
+    port["powerRole"] = powerRole;
+    port["dataRole"] = dataRole;
+    port["mode"] = mode;
+
+    Json::StreamWriterBuilder builder;
+    builder["indentation"] = "";
+    auto jsonString = Json::writeString(builder, port);
+
     Want want;
     want.SetAction(CommonEventSupport::COMMON_EVENT_USB_PORT_CHANGED);
     pms->UpdateUsbPort(portId, powerRole, dataRole, mode);
     CommonEventData data;
+    data.SetData(jsonString);
     data.SetWant(want);
     CommonEventPublishInfo publishInfo;
     publishInfo.SetOrdered(true);
@@ -57,79 +66,31 @@ int32_t UsbServiceSubscriber::PortChangedEvent(int32_t portId, int32_t powerRole
     return isSuccess;
 }
 
-int32_t Invoking(const UsbInfo &info, Want &want)
-{
-    int32_t ret = 0;
-    switch (info.getDevInfoStatus()) {
-        case ACT_DEVUP:
-            want.SetAction(CommonEventSupport::COMMON_EVENT_USB_DEVICE_ATTACHED);
-            break;
-        case ACT_DEVDOWN:
-            want.SetAction(CommonEventSupport::COMMON_EVENT_USB_DEVICE_DETACHED);
-            break;
-        case ACT_UPDEVICE:
-            want.SetAction(CommonEventSupport::COMMON_EVENT_USB_ACCESSORY_ATTACHED);
-            break;
-        case ACT_DOWNDEVICE:
-            want.SetAction(CommonEventSupport::COMMON_EVENT_USB_ACCESSORY_DETACHED);
-            break;
-        default:
-            ret = -1;
-            break;
-    }
-    return ret;
-}
-
 int32_t UsbServiceSubscriber::DeviceEvent(const UsbInfo &info)
 {
-    struct timeval start;
-    gettimeofday(&start, NULL);
     int32_t status = info.getDevInfoStatus();
-    int32_t ret = UEC_OK;
-    Want want;
-    USB_HILOGW(MODULE_USBD, "status:%{public}d bus:%{public}d dev:%{public}d", status, info.getDevInfoBusNum(),
-        info.getDevInfoDevNum());
-
-    if (Invoking(info, want) == -1) {
-        return ret;
-    }
-
-    CommonEventData data;
-    data.SetWant(want);
-    CommonEventPublishInfo publishInfo;
-    publishInfo.SetOrdered(true);
-    bool isSuccess = CommonEventManager::PublishCommonEvent(data, publishInfo);
-    if (!isSuccess) {
-        USB_HILOGE(MODULE_USB_SERVICE, "failed to publish USB_CHANGED event");
-        ret = UEC_SERVICE_NO_INIT;
-    }
-    struct timeval end;
-    gettimeofday(&end, NULL);
-    int64_t tackTime = (end.tv_sec - start.tv_sec) * MSEC_TIME + (end.tv_usec - start.tv_usec) / MSEC_TIME;
-    USB_HILOGD(MODULE_USB_SERVICE, "end call subscriber usb device tached event, takes : %{public}lld ms",
-               (long long)tackTime);
-
-    if ((ACT_UPDEVICE == status) || (ACT_DOWNDEVICE == status)) {
-        return ret;
-    }
-    int32_t busNum = info.getDevInfoBusNum();
-    int32_t devAddr = info.getDevInfoDevNum();
-    USB_HILOGW(MODULE_USBD, "status:%{public}d bus:%{public}d dev:%{public}d", status, busNum, devAddr);
     auto pms = DelayedSpSingleton<UsbService>::GetInstance();
     if (pms == nullptr) {
         USB_HILOGE(MODULE_USB_SERVICE, "failed to GetInstance");
         return UEC_SERVICE_GET_USB_SERVICE_FAILED;
     }
 
+    if ((ACT_UPDEVICE == status) || (ACT_DOWNDEVICE == status)) {
+        pms->UpdateDeviceState(status);
+        return UEC_OK;
+    }
+
+    int32_t busNum = info.getDevInfoBusNum();
+    int32_t devAddr = info.getDevInfoDevNum();
     if (status == ACT_DEVUP) {
-        USB_HILOGE(MODULE_USB_SERVICE, "usb attached");
+        USB_HILOGI(MODULE_USB_SERVICE, "usb attached");
         pms->AddDevice(busNum, devAddr);
     } else {
-        USB_HILOGE(MODULE_USB_SERVICE, "usb detached");
+        USB_HILOGI(MODULE_USB_SERVICE, "usb detached");
         pms->DelDevice(busNum, devAddr);
     }
 
-    return ret;
+    return UEC_OK;
 }
 } // namespace USB
 } // namespace OHOS

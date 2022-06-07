@@ -20,6 +20,7 @@
 #include <sstream>
 #include <string>
 #include "usb_common.h"
+#include "json.h"
 
 namespace OHOS {
 namespace USB {
@@ -32,6 +33,16 @@ public:
         this->interval_ = interval;
         this->maxPacketSize_ = maxPacketSize;
     }
+
+    explicit USBEndpoint(const Json::Value &endpoint)
+    {
+        address_ = endpoint["address"].asInt();
+        attributes_ = endpoint["attributes"].asInt();
+        interval_ = endpoint["interval"].asInt();
+        maxPacketSize_ = endpoint["maxPacketSize"].asInt();
+        interfaceId_ = endpoint["interfaceId"].asUInt();
+    }
+
     USBEndpoint() {}
     ~USBEndpoint() {}
 
@@ -122,6 +133,21 @@ public:
     int8_t GetInterfaceId() const
     {
         return interfaceId_;
+    }
+
+    Json::Value ToJson() const
+    {
+        Json::Value endpoint;
+        endpoint["address"] = address_;
+        endpoint["attributes"] = attributes_;
+        endpoint["interval"] = interval_;
+        endpoint["maxPacketSize"] = maxPacketSize_;
+        endpoint["direction"] = GetDirection();
+        endpoint["number"] = GetEndpointNumber();
+        endpoint["type"] = GetType();
+        endpoint["interfaceId"] = interfaceId_;
+
+        return endpoint;
     }
 
 private:
