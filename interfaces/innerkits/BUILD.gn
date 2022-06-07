@@ -14,7 +14,10 @@
 import("//base/usb/usb_manager/usbmgr.gni")
 
 config("usbsrv_private_config") {
-  include_dirs = [ "${usb_manager_path}/services/zidl/include" ]
+  include_dirs = [
+    "${usb_manager_path}/services/zidl/include",
+    "//third_party/jsoncpp/include/json",
+  ]
 }
 
 config("usbsrv_public_config") {
@@ -38,7 +41,7 @@ ohos_shared_library("usbsrv_client") {
 
   public_configs = [ ":usbsrv_public_config" ]
 
-  deps = []
+  deps = [ "//third_party/jsoncpp:jsoncpp" ]
 
   external_deps = [
     "eventhandler:libeventhandler",

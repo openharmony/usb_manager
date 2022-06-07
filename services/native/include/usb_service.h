@@ -22,7 +22,7 @@
 #include "iremote_object.h"
 #include "iusb_srv.h"
 #include "system_ability.h"
-#include "usb_function_manager.h"
+#include "usb_device_manager.h"
 #include "usb_host_manager.h"
 #include "usb_port_manager.h"
 #include "usb_right_manager.h"
@@ -86,6 +86,7 @@ public:
     bool AddDevice(uint8_t busNum, uint8_t devAddr);
     bool DelDevice(uint8_t busNum, uint8_t devAddr);
     void UpdateUsbPort(int32_t portId, int32_t powerRole, int32_t dataRole, int32_t mode);
+    void UpdateDeviceState(int32_t status);
     int32_t GetDeviceInfo(uint8_t busNum, uint8_t devAddr, UsbDevice &dev);
     int32_t GetDeviceInfoDescriptor(const UsbDev &uDev, std::vector<uint8_t> &descriptor, UsbDevice &dev);
     int32_t GetConfigDescriptor(UsbDevice &dev, std::vector<uint8_t> &descriptor);
@@ -107,10 +108,10 @@ private:
     std::shared_ptr<UsbHostManager> usbHostManger_;
     std::shared_ptr<UsbRightManager> usbRightManager_;
     std::shared_ptr<UsbPortManager> usbPortManager_;
+    std::shared_ptr<UsbDeviceManager> usbDeviceManager_;
     std::shared_ptr<AppExecFwk::EventRunner> eventRunner_;
     std::shared_ptr<UsbServerEventHandler> handler_;
     sptr<UsbServiceSubscriber> usbdSubscriber_;
-    std::map<std::string, PortInfo> portMap;
 };
 } // namespace USB
 } // namespace OHOS

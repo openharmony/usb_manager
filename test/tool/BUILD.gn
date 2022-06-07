@@ -31,7 +31,7 @@ ohos_executable("usb_function_port_test") {
     "usb_device_driver:usbd_client",
     "utils_base:utils",
   ]
-  install_enable = true
+  install_enable = false
   subsystem_name = "usb"
-  part_name = "usb_manager_native"
+  part_name = "usb_manager"
 }

@@ -37,6 +37,20 @@ public:
         this->name_ = name;
         this->interfaces_ = interfaces;
     }
+
+    explicit USBConfig(const Json::Value &config)
+    {
+        id_ = config["id"].asInt();
+        attributes_ = config["attributes"].asInt();
+        maxPower_ = config["maxPower"].asInt();
+        name_ = config["name"].asString();
+
+        Json::Value interfaces = config["interfaces"];
+        for (uint32_t idx = 0; idx < interfaces.size(); ++idx) {
+            interfaces_.emplace_back(interfaces[idx]);
+        }
+    }
+
     USBConfig() {}
     ~USBConfig() {}
 
@@ -140,6 +154,25 @@ public:
     uint8_t GetiConfiguration()
     {
         return this->iConfiguration_;
+    }
+
+    Json::Value ToJson() const
+    {
+        Json::Value config;
+        config["id"] = id_;
+        config["attributes"] = attributes_;
+        config["maxPower"] = maxPower_;
+        config["name"] = name_;
+        config["isRemoteWakeup"] = IsRemoteWakeup();
+        config["isSelfPowered"] = IsSelfPowered();
+
+        Json::Value interfaces;
+        for (auto &intf : interfaces_) {
+            interfaces.append(intf.ToJson());
+        }
+        config["interfaces"] = interfaces;
+
+        return config;
     }
 
 private:

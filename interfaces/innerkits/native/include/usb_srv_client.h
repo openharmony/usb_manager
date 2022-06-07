@@ -21,6 +21,7 @@
 #include <memory>
 #include <mutex>
 #include <singleton.h>
+
 #include "iremote_object.h"
 #include "iusb_srv.h"
 #include "usb_device.h"
@@ -55,8 +56,8 @@ public:
     std::string UsbFunctionsToString(int32_t funcs);
     int32_t ClaimInterface(USBDevicePipe &pip, const UsbInterface &interface, bool force);
     int32_t ReleaseInterface(USBDevicePipe &pip, const UsbInterface &interface);
-    int32_t BulkTransfer(USBDevicePipe &pip, const USBEndpoint &endpoint, std::vector<uint8_t> &bufferData,
-        int32_t timeOut);
+    int32_t BulkTransfer(
+        USBDevicePipe &pip, const USBEndpoint &endpoint, std::vector<uint8_t> &bufferData, int32_t timeOut);
     int32_t ControlTransfer(USBDevicePipe &pip, const UsbCtrlTransfer &ctrl, std::vector<uint8_t> &bufferData);
     int32_t SetConfiguration(USBDevicePipe &pip, const USBConfig &config);
     int32_t SetInterface(USBDevicePipe &pipe, const UsbInterface &interface);
