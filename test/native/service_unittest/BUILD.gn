@@ -50,7 +50,7 @@ ohos_unittest("test_usbdevicepipe") {
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
     "samgr_standard:samgr_proxy",
-    "usb_device_driver:usbd_client",
+    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 }
@@ -82,7 +82,7 @@ ohos_unittest("test_bulkcallback") {
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
     "samgr_standard:samgr_proxy",
-    "usb_device_driver:usbd_client",
+    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 }
@@ -111,7 +111,7 @@ ohos_unittest("test_usbrequest") {
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
     "samgr_standard:samgr_proxy",
-    "usb_device_driver:usbd_client",
+    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 }
@@ -140,7 +140,7 @@ ohos_unittest("test_usbcore") {
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
     "samgr_standard:samgr_proxy",
-    "usb_device_driver:usbd_client",
+    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 }
@@ -170,7 +170,7 @@ ohos_unittest("test_usbevent") {
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
     "samgr_standard:samgr_proxy",
-    "usb_device_driver:usbd_client",
+    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 }

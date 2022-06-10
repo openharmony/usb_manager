@@ -61,7 +61,7 @@ ohos_shared_library("usbservice") {
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
     "samgr_standard:samgr_proxy",
-    "usb_device_driver:usbd_client",
+    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
