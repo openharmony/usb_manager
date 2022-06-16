@@ -42,7 +42,7 @@ ohos_shared_library("usb") {
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
     "samgr_standard:lsamgr",
-    "usb_device_driver:usbd_client",
+    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 

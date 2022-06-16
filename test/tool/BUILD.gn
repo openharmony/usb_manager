@@ -28,7 +28,7 @@ ohos_executable("usb_function_port_test") {
   external_deps = [
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver:usbd_client",
+    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
   install_enable = false
