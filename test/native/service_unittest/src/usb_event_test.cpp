@@ -65,11 +65,11 @@ void UsbEventTest::TearDown()
 }
 
 /**
- * @tc.name: usbStateEvent001
+ * @tc.name: SUB_USB_Broadcast_0100
  * @tc.desc: usb gadget connected event
  * @tc.type: FUNC
  */
-HWTEST_F(UsbEventTest, usbStateEvent001, TestSize.Level1)
+HWTEST_F(UsbEventTest, SUB_USB_Broadcast_0100, TestSize.Level1)
 {
     // subscribe usb common event
     MatchingSkills matchingSkills;
@@ -91,11 +91,11 @@ HWTEST_F(UsbEventTest, usbStateEvent001, TestSize.Level1)
 }
 
 /**
- * @tc.name: usbStateEvent002
+ * @tc.name: SUB_USB_Broadcast_0200
  * @tc.desc: usb gadget disconnected event
  * @tc.type: FUNC
  */
-HWTEST_F(UsbEventTest, usbStateEvent002, TestSize.Level1)
+HWTEST_F(UsbEventTest, SUB_USB_Broadcast_0200, TestSize.Level1)
 {
     MatchingSkills matchingSkills;
     matchingSkills.AddEvent(CommonEventSupport::COMMON_EVENT_USB_STATE);
@@ -116,11 +116,11 @@ HWTEST_F(UsbEventTest, usbStateEvent002, TestSize.Level1)
 }
 
 /**
- * @tc.name: usbDeviceAttached
+ * @tc.name: SUB_USB_Broadcast_0300
  * @tc.desc: usb device attached event
  * @tc.type: FUNC
  */
-HWTEST_F(UsbEventTest, usbDeviceAttached, TestSize.Level1)
+HWTEST_F(UsbEventTest, SUB_USB_Broadcast_0300, TestSize.Level1)
 {
     MatchingSkills matchingSkills;
     matchingSkills.AddEvent(CommonEventSupport::COMMON_EVENT_USB_DEVICE_ATTACHED);
@@ -171,11 +171,11 @@ HWTEST_F(UsbEventTest, usbDeviceAttached, TestSize.Level1)
 }
 
 /**
- * @tc.name: usbDeviceDetached
+ * @tc.name: SUB_USB_Broadcast_0400
  * @tc.desc: usb device detached event
  * @tc.type: FUNC
  */
-HWTEST_F(UsbEventTest, usbDeviceDetached, TestSize.Level1)
+HWTEST_F(UsbEventTest, SUB_USB_Broadcast_0400, TestSize.Level1)
 {
     MatchingSkills matchingSkills;
     matchingSkills.AddEvent(CommonEventSupport::COMMON_EVENT_USB_DEVICE_DETACHED);
@@ -208,11 +208,11 @@ HWTEST_F(UsbEventTest, usbDeviceDetached, TestSize.Level1)
 }
 
 /**
- * @tc.name: usbPortChangedToHost
+ * @tc.name: SUB_USB_Broadcast_0500
  * @tc.desc: usb port change to host event
  * @tc.type: FUNC
  */
-HWTEST_F(UsbEventTest, usbPortChangedToHost, TestSize.Level1)
+HWTEST_F(UsbEventTest, SUB_USB_Broadcast_0500, TestSize.Level1)
 {
     MatchingSkills matchingSkills;
     matchingSkills.AddEvent(CommonEventSupport::COMMON_EVENT_USB_PORT_CHANGED);
@@ -242,11 +242,11 @@ HWTEST_F(UsbEventTest, usbPortChangedToHost, TestSize.Level1)
 }
 
 /**
- * @tc.name: usbPortChangedToDevice
+ * @tc.name: SUB_USB_Broadcast_0600
  * @tc.desc: usb port change to device event
  * @tc.type: FUNC
  */
-HWTEST_F(UsbEventTest, usbPortChangedToDevice, TestSize.Level1)
+HWTEST_F(UsbEventTest, SUB_USB_Broadcast_0600, TestSize.Level1)
 {
     MatchingSkills matchingSkills;
     matchingSkills.AddEvent(CommonEventSupport::COMMON_EVENT_USB_PORT_CHANGED);
