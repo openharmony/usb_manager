@@ -16,10 +16,10 @@
 #include "usbmgrunregbulkcallback_fuzzer.h"
 
 #include "iremote_object.h"
-#include "usb_srv_client.h"
-#include "usb_errors.h"
 #include "usb_callback_test.h"
 #include "usb_common_fuzz.h"
+#include "usb_errors.h"
+#include "usb_srv_client.h"
 
 namespace OHOS {
 namespace USB {

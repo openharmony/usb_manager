@@ -14,12 +14,14 @@
  */
 
 #include "usb_request_test.h"
+
 #include <csignal>
 #include <iostream>
-#include <iservice_registry.h>
 #include <vector>
+
 #include "if_system_ability_manager.h"
 #include "ipc_skeleton.h"
+#include "iservice_registry.h"
 #include "iusb_srv.h"
 #include "system_ability_definition.h"
 #include "usb_common.h"
