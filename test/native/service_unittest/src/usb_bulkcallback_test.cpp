@@ -14,19 +14,22 @@
  */
 
 #include "usb_bulkcallback_test.h"
+
+#include <sys/time.h>
+
 #include <iostream>
 #include <vector>
-#include <sys/time.h>
+
+#include "ashmem.h"
 #include "delayed_sp_singleton.h"
 #include "hilog_wrapper.h"
 #include "if_system_ability_manager.h"
-#include "system_ability_definition.h"
-#include "usb_srv_client.h"
-#include "ashmem.h"
-#include "securec.h"
-#include "usb_errors.h"
 #include "iservice_registry.h"
+#include "securec.h"
+#include "system_ability_definition.h"
 #include "usb_callback_test.h"
+#include "usb_errors.h"
+#include "usb_srv_client.h"
 
 using namespace testing::ext;
 using namespace OHOS;

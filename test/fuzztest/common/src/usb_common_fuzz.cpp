@@ -14,8 +14,9 @@
  */
 
 #include "usb_common_fuzz.h"
-#include "usb_srv_client.h"
+
 #include "usb_errors.h"
+#include "usb_srv_client.h"
 
 namespace OHOS {
 namespace USB {
