@@ -14,9 +14,10 @@
  */
 
 #include <gtest/gtest.h>
-#include <iostream>
 #include <json/json.h>
 #include <semaphore.h>
+
+#include <iostream>
 
 #include "common_event_manager.h"
 #include "common_event_support.h"

@@ -13,13 +13,16 @@
  * limitations under the License.
  */
 
+#include <unistd.h>
+
+#include <sys/time.h>
+
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <sys/time.h>
-#include <unistd.h>
+
 #include "hilog_wrapper.h"
 #include "napi/native_api.h"
 #include "napi/native_node_api.h"

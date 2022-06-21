@@ -16,9 +16,9 @@
 #include "usbmgrbulkwrite_fuzzer.h"
 
 #include "iremote_object.h"
-#include "usb_errors.h"
 #include "usb_callback_test.h"
 #include "usb_common_fuzz.h"
+#include "usb_errors.h"
 
 namespace OHOS {
 namespace USB {

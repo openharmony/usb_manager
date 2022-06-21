@@ -14,8 +14,9 @@
  */
 
 #include "usbd_bulk_callback.h"
-#include "usb_errors.h"
+
 #include "hilog_wrapper.h"
+#include "usb_errors.h"
 
 namespace OHOS::USB {
 int32_t UsbdBulkCallBack::OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply,
