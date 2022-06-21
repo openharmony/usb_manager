@@ -12,10 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #include "usb_device_pipe_test.h"
+
+#include <sys/time.h>
+
 #include <iostream>
 #include <vector>
-#include <sys/time.h>
+
 #include "delayed_sp_singleton.h"
 #include "hilog_wrapper.h"
 #include "if_system_ability_manager.h"

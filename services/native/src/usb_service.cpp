@@ -14,12 +14,15 @@
  */
 
 #include "usb_service.h"
+
+#include <ipc_skeleton.h>
+#include <unistd.h>
+
 #include <cstdio>
 #include <iostream>
-#include <ipc_skeleton.h>
 #include <sstream>
 #include <string>
-#include <unistd.h>
+
 #include "bundle_mgr_interface.h"
 #include "bundle_mgr_proxy.h"
 #include "file_ex.h"

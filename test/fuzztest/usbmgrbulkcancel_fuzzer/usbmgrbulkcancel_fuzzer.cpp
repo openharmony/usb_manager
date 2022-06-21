@@ -18,11 +18,12 @@
 #include <array>
 #include <optional>
 
-#include "iremote_object.h"
 #include "ashmem.h"
-#include "usb_errors.h"
+#include "iremote_object.h"
 #include "usb_callback_test.h"
 #include "usb_common_fuzz.h"
+#include "usb_errors.h"
+
 namespace {
 const uint32_t ASHMEM_MAX_SIZE = 1024;
 const uint32_t MEM_DATA = 1024 * 1024;

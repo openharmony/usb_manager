@@ -15,11 +15,11 @@
 
 #include "usb_service_subscriber.h"
 
-#include "json.h"
 #include "common_event_data.h"
 #include "common_event_manager.h"
 #include "common_event_support.h"
 #include "delayed_sp_singleton.h"
+#include "json.h"
 #include "string_ex.h"
 #include "usb_common.h"
 #include "usb_errors.h"
