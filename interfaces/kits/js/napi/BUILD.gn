@@ -39,10 +39,10 @@ ohos_shared_library("usb") {
     "//third_party/jsoncpp:jsoncpp",
   ]
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
     "samgr_standard:lsamgr",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 

@@ -26,9 +26,9 @@ ohos_executable("usb_function_port_test") {
   ]
   deps = [ "${usb_manager_path}/interfaces/innerkits:usbsrv_client" ]
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
   install_enable = false
