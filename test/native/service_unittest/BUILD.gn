@@ -45,12 +45,12 @@ ohos_unittest("test_usbdevicepipe") {
     "ability_base:want",
     "bundle_framework:appexecfwk_base",
     "common_event_service:cesfwk_innerkits",
+    "drivers_interface_usb:usbd_client",
     "eventhandler:libeventhandler",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
     "samgr_standard:samgr_proxy",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 }
@@ -77,12 +77,12 @@ ohos_unittest("test_bulkcallback") {
     "ability_base:want",
     "bundle_framework:appexecfwk_base",
     "common_event_service:cesfwk_innerkits",
+    "drivers_interface_usb:usbd_client",
     "eventhandler:libeventhandler",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
     "samgr_standard:samgr_proxy",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 }
@@ -106,12 +106,12 @@ ohos_unittest("test_usbrequest") {
     "ability_base:want",
     "bundle_framework:appexecfwk_base",
     "common_event_service:cesfwk_innerkits",
+    "drivers_interface_usb:usbd_client",
     "eventhandler:libeventhandler",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
     "samgr_standard:samgr_proxy",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 }
@@ -135,12 +135,12 @@ ohos_unittest("test_usbcore") {
     "ability_base:want",
     "bundle_framework:appexecfwk_base",
     "common_event_service:cesfwk_innerkits",
+    "drivers_interface_usb:usbd_client",
     "eventhandler:libeventhandler",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
     "samgr_standard:samgr_proxy",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 }
@@ -165,12 +165,12 @@ ohos_unittest("test_usbevent") {
     "ability_base:want",
     "bundle_framework:appexecfwk_base",
     "common_event_service:cesfwk_innerkits",
+    "drivers_interface_usb:usbd_client",
     "eventhandler:libeventhandler",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
     "samgr_standard:samgr_proxy",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 }

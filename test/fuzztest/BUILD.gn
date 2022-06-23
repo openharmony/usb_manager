@@ -49,9 +49,9 @@ ohos_fuzztest("UsbMgrRequestRightFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -71,9 +71,9 @@ ohos_fuzztest("UsbMgrHasRightFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -94,9 +94,9 @@ ohos_fuzztest("UsbMgrRemoveRightFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -117,9 +117,9 @@ ohos_fuzztest("UsbMgrGetSupportedModesFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -141,9 +141,9 @@ ohos_fuzztest("UsbMgrSetPortRoleFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -164,9 +164,9 @@ ohos_fuzztest("UsbMgrSetCurrentFunctionsFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -189,9 +189,9 @@ ohos_fuzztest("UsbMgrUsbFunctionsFromStringFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -212,9 +212,9 @@ ohos_fuzztest("UsbMgrUsbFunctionsToStringFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -237,9 +237,9 @@ ohos_fuzztest("UsbMgrClaimInterfaceFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -260,9 +260,9 @@ ohos_fuzztest("UsbMgrReleaseInterfaceFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -284,9 +284,9 @@ ohos_fuzztest("UsbMgrBulkTransferFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -307,9 +307,9 @@ ohos_fuzztest("UsbMgrControlTransferFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -330,9 +330,9 @@ ohos_fuzztest("UsbMgrSetConfigurationFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -354,9 +354,9 @@ ohos_fuzztest("UsbMgrSetInterfaceFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -377,9 +377,9 @@ ohos_fuzztest("UsbMgrGetRawDescriptorsFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -401,9 +401,9 @@ ohos_fuzztest("UsbMgrGetFileDescriptorFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -424,9 +424,9 @@ ohos_fuzztest("UsbMgrCloseFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -447,9 +447,9 @@ ohos_fuzztest("UsbMgrPipeRequestWaitFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -470,9 +470,9 @@ ohos_fuzztest("UsbMgrRequestInitializeFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -494,9 +494,9 @@ ohos_fuzztest("UsbMgrRequestQueueFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -517,9 +517,9 @@ ohos_fuzztest("UsbMgrRequestFreeFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -540,9 +540,9 @@ ohos_fuzztest("UsbMgrRegBulkCallbackFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -566,9 +566,9 @@ ohos_fuzztest("UsbMgrUnRegBulkCallbackFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -592,9 +592,9 @@ ohos_fuzztest("UsbMgrBulkReadFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -618,9 +618,9 @@ ohos_fuzztest("UsbMgrBulkWriteFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
@@ -644,9 +644,9 @@ ohos_fuzztest("UsbMgrBulkCancelFuzzTest") {
   ]
 
   external_deps = [
+    "drivers_interface_usb:usbd_client",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
