@@ -56,12 +56,12 @@ ohos_shared_library("usbservice") {
     "bundle_framework:appexecfwk_base",
     "bundle_framework:appexecfwk_core",
     "common_event_service:cesfwk_innerkits",
+    "drivers_interface_usb:usbd_client",
     "eventhandler:libeventhandler",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
     "samgr_standard:samgr_proxy",
-    "usb_device_driver_interface:usbd_client",
     "utils_base:utils",
   ]
 
