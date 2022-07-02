@@ -29,12 +29,16 @@ public:
     static bool JsObjectGetProperty(const napi_env &env, const napi_value &object, std::string fieldStr,
         napi_value &value);
     static void JsObjectToInt(const napi_env &env, const napi_value &object, std::string fieldStr, int32_t &fieldRef);
+    static void JsObjectToUint(const napi_env &env, const napi_value &object, const std::string& fieldStr,
+        uint32_t &fieldRef);
     static bool JsUint8ArrayParse(const napi_env &env, const napi_value &object, uint8_t **uint8Buffer,
         size_t &bufferSize, size_t &offset);
     static void Uint8ArrayToJsValue(const napi_env &env, std::vector<uint8_t> &uint8Buffer, size_t bufferSize,
         napi_value &result);
     static void SetValueUtf8String(const napi_env &env, std::string fieldStr, std::string str, napi_value &result);
     static void SetValueInt32(const napi_env &env, std::string fieldStr, const int32_t intValue, napi_value &result);
+    static void SetValueUint32(const napi_env &env, const std::string& fieldStr, const uint32_t uintValue,
+        napi_value &result);
     static void SetValueBool(const napi_env &env, std::string fieldStr, const bool boolValue, napi_value &result);
 };
 } // namespace USB

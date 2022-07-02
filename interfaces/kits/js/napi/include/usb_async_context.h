@@ -84,7 +84,7 @@ struct USBControlTransferAsyncContext : USBAsyncContext {
     USBDevicePipe pipe;
     int32_t request;
     int32_t target;
-    int32_t reqType;
+    uint32_t reqType;
     int32_t directon;
     int32_t value;
     int32_t index;
