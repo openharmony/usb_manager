@@ -41,7 +41,7 @@ public:
     explicit USBConfig(const Json::Value &config)
     {
         id_ = config["id"].asInt();
-        attributes_ = config["attributes"].asInt();
+        attributes_ = config["attributes"].asUInt();
         maxPower_ = config["maxPower"].asInt();
         name_ = config["name"].asString();
 
@@ -59,7 +59,7 @@ public:
         return id_;
     }
 
-    const int32_t &GetAttributes() const
+    const uint32_t &GetAttributes() const
     {
         return attributes_;
     }
@@ -114,7 +114,7 @@ public:
         this->id_ = id;
     }
 
-    void SetAttribute(int32_t attributes)
+    void SetAttribute(uint32_t attributes)
     {
         this->attributes_ = attributes;
     }
@@ -177,7 +177,7 @@ public:
 
 private:
     int32_t id_ = INVALID_USB_INT_VALUE;
-    int32_t attributes_ = INVALID_USB_INT_VALUE;
+    uint32_t attributes_ = 0;
     std::vector<UsbInterface> interfaces_;
     int32_t maxPower_ = INVALID_USB_INT_VALUE;
     std::string name_;

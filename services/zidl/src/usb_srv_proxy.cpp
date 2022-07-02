@@ -174,12 +174,13 @@ int32_t UsbServerProxy::GetDeviceConfigsMessageParcel(MessageParcel &data, std::
     data.ReadUint32(configCount);
 
     int32_t tmp;
+    uint32_t attributes;
     for (uint32_t i = 0; i < configCount; ++i) {
         USBConfig config;
         READ_PARCEL_WITH_RET(data, Int32, tmp, UEC_SERVICE_READ_PARCEL_ERROR);
         config.SetId(tmp);
-        READ_PARCEL_WITH_RET(data, Int32, tmp, UEC_SERVICE_READ_PARCEL_ERROR);
-        config.SetAttribute(tmp);
+        READ_PARCEL_WITH_RET(data, Uint32, attributes, UEC_SERVICE_READ_PARCEL_ERROR);
+        config.SetAttribute(attributes);
         READ_PARCEL_WITH_RET(data, Int32, tmp, UEC_SERVICE_READ_PARCEL_ERROR);
         config.SetMaxPower(tmp);
 
@@ -246,14 +247,16 @@ int32_t UsbServerProxy::GetDeviceInterfacesMessageParcel(MessageParcel &data, st
 int32_t UsbServerProxy::GetDeviceEndpointsMessageParcel(MessageParcel &data, std::vector<USBEndpoint> &eps)
 {
     int32_t tmp, epCount;
+    uint32_t attributes;
+    uint32_t address;
     READ_PARCEL_WITH_RET(data, Int32, tmp, UEC_SERVICE_READ_PARCEL_ERROR);
     epCount = tmp;
     for (int32_t i = 0; i < epCount; ++i) {
         USBEndpoint ep;
-        READ_PARCEL_WITH_RET(data, Int32, tmp, UEC_SERVICE_READ_PARCEL_ERROR);
-        ep.SetAddr(tmp);
-        READ_PARCEL_WITH_RET(data, Int32, tmp, UEC_SERVICE_READ_PARCEL_ERROR);
-        ep.SetAttr(tmp);
+        READ_PARCEL_WITH_RET(data, Uint32, address, UEC_SERVICE_READ_PARCEL_ERROR);
+        ep.SetAddr(address);
+        READ_PARCEL_WITH_RET(data, Uint32, attributes, UEC_SERVICE_READ_PARCEL_ERROR);
+        ep.SetAttr(attributes);
         READ_PARCEL_WITH_RET(data, Int32, tmp, UEC_SERVICE_READ_PARCEL_ERROR);
         ep.SetInterval(tmp);
         READ_PARCEL_WITH_RET(data, Int32, tmp, UEC_SERVICE_READ_PARCEL_ERROR);
@@ -660,7 +663,9 @@ int32_t UsbServerProxy::ControlTransfer(const UsbDev &dev, const UsbCtrlTransfer
         USB_HILOGE(MODULE_INNERKIT, "write failed! len:%{public}d", ret);
         return ret;
     }
-    bool isWrite = ((ctrl.requestType & USB_ENDPOINT_DIR_MASK) == USB_ENDPOINT_DIR_OUT);
+
+    uint32_t reqType = static_cast<uint32_t>(ctrl.requestType);
+    bool isWrite = ((reqType & USB_ENDPOINT_DIR_MASK) == USB_ENDPOINT_DIR_OUT);
     ret = remote->SendRequest(static_cast<int32_t>(IUsbSrv::USB_FUN_CONTROL_TRANSFER), data, reply, option);
     if (ret != UEC_OK) {
         USB_HILOGE(MODULE_INNERKIT, "USB_FUN_CONTROL_TRANSFER ret:%{public}d", ret);

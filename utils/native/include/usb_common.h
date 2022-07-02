@@ -29,7 +29,7 @@ constexpr int32_t INVALID_USB_INT_VALUE = -1;
 /**
  * Bitmask used for extracting the USBEndpoint type from it's address
  */
-constexpr int32_t USB_ENDPOINT_XFERTYPE_MASK = 0x03;
+constexpr uint32_t USB_ENDPOINT_XFERTYPE_MASK = 0x03;
 
 /**
  * Control USBEndpoint type
@@ -54,32 +54,32 @@ constexpr int32_t USB_ENDPOINT_XFER_INT = 3;
 /**
  * Bitmask used for extracting the USBEndpoint number from it's address
  */
-constexpr int32_t USB_ENDPOINT_NUMBER_MASK = 0x0f;
+constexpr uint32_t USB_ENDPOINT_NUMBER_MASK = 0x0f;
 
 /**
  * Bitmask used for extracting the USBEndpoint direction from it's address
  */
-constexpr int32_t USB_ENDPOINT_DIR_MASK = 0x80;
+constexpr uint32_t USB_ENDPOINT_DIR_MASK = 0x80;
 
 /**
  * Used to signify direction of data for USBEndpoint is OUT, host to device
  */
-constexpr int32_t USB_ENDPOINT_DIR_OUT = 0;
+constexpr uint32_t USB_ENDPOINT_DIR_OUT = 0;
 
 /**
  * Used to signify direction of data for USBEndpoint is IN, device to host
  */
-constexpr int32_t USB_ENDPOINT_DIR_IN = 0x80;
+constexpr uint32_t USB_ENDPOINT_DIR_IN = 0x80;
 
 /**
  * Bitmask for self power in the USBConfig
  */
-constexpr int32_t USB_CFG_SELF_POWERED = 0x80;
+constexpr uint32_t USB_CFG_SELF_POWERED = 0x80;
 
 /**
  * Bitmask for remote wakeup in the USBConfig
  */
-constexpr int32_t USB_CFG_REMOTE_WAKEUP = 0x20;
+constexpr uint32_t USB_CFG_REMOTE_WAKEUP = 0x20;
 
 #define INVALID_STRING_VALUE ("")
 #define RETURN_IF_WITH_RET(cond, retval) \

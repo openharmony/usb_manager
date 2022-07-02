@@ -84,13 +84,13 @@ static void CreateUsbDevicePipe(const napi_env env, napi_value &obj, const USBDe
 static void CtoJSUsbEndpoint(const napi_env &env, napi_value &obj, const USBEndpoint &usbEndpoint)
 {
     napi_create_object(env, &obj);
-    NapiUtil::SetValueInt32(env, "address", usbEndpoint.GetAddress(), obj);
-    NapiUtil::SetValueInt32(env, "attributes", usbEndpoint.GetAttributes(), obj);
+    NapiUtil::SetValueUint32(env, "address", usbEndpoint.GetAddress(), obj);
+    NapiUtil::SetValueUint32(env, "attributes", usbEndpoint.GetAttributes(), obj);
     NapiUtil::SetValueInt32(env, "interval", usbEndpoint.GetInterval(), obj);
     NapiUtil::SetValueInt32(env, "maxPacketSize", usbEndpoint.GetMaxPacketSize(), obj);
-    NapiUtil::SetValueInt32(env, "direction", usbEndpoint.GetDirection(), obj);
-    NapiUtil::SetValueInt32(env, "number", usbEndpoint.GetEndpointNumber(), obj);
-    NapiUtil::SetValueInt32(env, "type", usbEndpoint.GetType(), obj);
+    NapiUtil::SetValueUint32(env, "direction", usbEndpoint.GetDirection(), obj);
+    NapiUtil::SetValueUint32(env, "number", usbEndpoint.GetEndpointNumber(), obj);
+    NapiUtil::SetValueUint32(env, "type", usbEndpoint.GetType(), obj);
     NapiUtil::SetValueInt32(env, "interfaceId", usbEndpoint.GetInterfaceId(), obj);
 }
 
@@ -124,7 +124,7 @@ static void CtoJSUsbConfig(const napi_env &env, napi_value &obj, const USBConfig
 {
     napi_create_object(env, &obj);
     NapiUtil::SetValueInt32(env, "id", usbConfig.GetId(), obj);
-    NapiUtil::SetValueInt32(env, "attributes", usbConfig.GetAttributes(), obj);
+    NapiUtil::SetValueUint32(env, "attributes", usbConfig.GetAttributes(), obj);
     NapiUtil::SetValueBool(env, "isRemoteWakeup", usbConfig.IsRemoteWakeup(), obj);
     NapiUtil::SetValueBool(env, "isSelfPowered", usbConfig.IsSelfPowered(), obj);
     NapiUtil::SetValueInt32(env, "maxPower", usbConfig.GetMaxPower(), obj);
@@ -229,7 +229,7 @@ static bool ParseEndpointsObjs(const napi_env env, const napi_value interfaceObj
 struct PipeControlParam {
     int32_t request;
     int32_t target;
-    int32_t reqType;
+    uint32_t reqType;
     int32_t value;
     int32_t index;
     uint8_t *data;
@@ -242,8 +242,8 @@ static void ParsePipeControlParam(const napi_env env, const napi_value jsObj, Pi
     NapiUtil::JsObjectToInt(env, jsObj, "request", request);
     int32_t target = 0;
     NapiUtil::JsObjectToInt(env, jsObj, "target", target);
-    int32_t reqType = 0;
-    NapiUtil::JsObjectToInt(env, jsObj, "reqType", reqType);
+    uint32_t reqType = 0;
+    NapiUtil::JsObjectToUint(env, jsObj, "reqType", reqType);
     int32_t value = 0;
     NapiUtil::JsObjectToInt(env, jsObj, "value", value);
     int32_t index = 0;
@@ -604,8 +604,8 @@ static napi_value CoreSetCurrentFunctions(napi_env env, napi_callback_info info)
     napi_typeof(env, argv[INDEX_0], &type);
     NAPI_ASSERT(env, type == napi_number, "Wrong argument type. Number expected.");
 
-    uint32_t funcs = 0;
-    napi_get_value_uint32(env, argv[INDEX_0], &funcs);
+    int32_t funcs = 0;
+    napi_get_value_int32(env, argv[INDEX_0], &funcs);
 
     auto asyncContext = new(std::nothrow) USBFunctionAsyncContext();
     NAPI_ASSERT(env, asyncContext != nullptr, "Create USBFunctionAsyncContext failed.");
