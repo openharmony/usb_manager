@@ -26,7 +26,7 @@ using namespace OHOS::EventFwk;
 
 namespace OHOS {
 namespace USB {
-const std::map<std::string_view, int32_t> UsbDeviceManager::FUNCTION_MAPPING_N2C = {
+const std::map<std::string_view, uint32_t> UsbDeviceManager::FUNCTION_MAPPING_N2C = {
     {UsbSrvSupport::FUNCTION_NAME_NONE, UsbSrvSupport::FUNCTION_NONE},
     {UsbSrvSupport::FUNCTION_NAME_ACM, UsbSrvSupport::FUNCTION_ACM},
     {UsbSrvSupport::FUNCTION_NAME_ECM, UsbSrvSupport::FUNCTION_ECM},
@@ -37,7 +37,8 @@ const std::map<std::string_view, int32_t> UsbDeviceManager::FUNCTION_MAPPING_N2C
 
 bool UsbDeviceManager::AreSettableFunctions(int32_t funcs)
 {
-    return funcs == UsbSrvSupport::FUNCTION_NONE || ((~FUNCTION_SETTABLE & funcs) == 0);
+    return static_cast<uint32_t>(funcs) == UsbSrvSupport::FUNCTION_NONE ||
+        ((~FUNCTION_SETTABLE & static_cast<uint32_t>(funcs)) == 0);
 }
 
 uint32_t UsbDeviceManager::ConvertFromString(std::string_view strFun)
@@ -139,7 +140,7 @@ void UsbDeviceManager::HandleEvent(int32_t status)
     want.SetAction(CommonEventSupport::COMMON_EVENT_USB_STATE);
 
     want.SetParam(std::string {UsbSrvSupport::CONNECTED}, connected_);
-    uint32_t remainderFunc = currentFunctions_;
+    uint32_t remainderFunc = static_cast<uint32_t>(currentFunctions_);
     // start from bit 1
     uint32_t bit = 1;
     while (remainderFunc != 0) {

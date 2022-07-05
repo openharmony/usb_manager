@@ -21,17 +21,21 @@
       "ram": "6M",
       "deps": {
         "components": [
+          "hiviewdfx_hilog_native",
           "ability_base",
-          "appexecfwk_base",
-          "appexecfwk_core",
-          "libeventhandler",
-          "cesfwk_innerkits",
-          "libhilog",
-          "ipc_core",
-          "system_ability_fwk",
-          "samgr_proxy",
-          "jsoncpp"
-        ],
+          "eventhandler",
+          "window_manager",
+          "jsoncpp",
+          "napi",
+          "bundle_framework",
+          "common_event_service",
+          "drivers_interface_usb",
+          "ipc",
+          "safwk",
+          "utils_base",
+          "ace_engine",
+          "samgr_standard"
+	],
         "third_party": []
       },
       "build": {

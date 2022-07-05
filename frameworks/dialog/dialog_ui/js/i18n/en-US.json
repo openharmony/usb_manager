@@ -1,0 +1,8 @@
+{
+  "message":{
+    "allowButton": "Allow",
+    "notAllowButton": "Not Allow",
+    "allow": "Whether ",
+    "use": "allowed to use the "
+  }
+}

@@ -37,9 +37,9 @@ public:
     void HandleEvent(int32_t status);
 
 private:
-    static constexpr int32_t FUNCTION_SETTABLE =
+    static constexpr uint32_t FUNCTION_SETTABLE =
         UsbSrvSupport::FUNCTION_HDC | UsbSrvSupport::FUNCTION_ACM | UsbSrvSupport::FUNCTION_ECM;
-    static const std::map<std::string_view, int32_t> FUNCTION_MAPPING_N2C;
+    static const std::map<std::string_view, uint32_t> FUNCTION_MAPPING_N2C;
     int32_t currentFunctions_ {0};
     bool connected_ {false};
 };

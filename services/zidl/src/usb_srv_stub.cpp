@@ -434,7 +434,7 @@ int32_t UsbServerStub::DoControlTransfer(MessageParcel &data, MessageParcel &rep
         return ret;
     }
 
-    bool bWrite = ((requestType & USB_ENDPOINT_DIR_MASK) == USB_ENDPOINT_DIR_OUT);
+    bool bWrite = ((static_cast<uint32_t>(requestType) & USB_ENDPOINT_DIR_MASK) == USB_ENDPOINT_DIR_OUT);
     const UsbDev tmpDev = {busNum, devAddr};
     const UsbCtrlTransfer tctrl = {requestType, request, value, index, timeOut};
     ret = ControlTransfer(tmpDev, tctrl, bufferData);
@@ -682,7 +682,7 @@ int32_t UsbServerStub::SetDeviceConfigsMessageParcel(std::vector<USBConfig> &con
     for (auto it = configs.begin(); it != configs.end(); ++it) {
         USBConfig config = *it;
         WRITE_PARCEL_WITH_RET(data, Int32, config.GetId(), UEC_SERVICE_WRITE_PARCEL_ERROR);
-        WRITE_PARCEL_WITH_RET(data, Int32, config.GetAttributes(), UEC_SERVICE_WRITE_PARCEL_ERROR);
+        WRITE_PARCEL_WITH_RET(data, Uint32, config.GetAttributes(), UEC_SERVICE_WRITE_PARCEL_ERROR);
         WRITE_PARCEL_WITH_RET(data, Int32, config.GetMaxPower(), UEC_SERVICE_WRITE_PARCEL_ERROR);
 
         WRITE_PARCEL_WITH_RET(data, Uint8, config.GetiConfiguration(), UEC_SERVICE_WRITE_PARCEL_ERROR);
@@ -725,8 +725,8 @@ int32_t UsbServerStub::SetDeviceEndpointsMessageParcel(std::vector<USBEndpoint> 
 {
     for (auto it = eps.begin(); it != eps.end(); ++it) {
         USBEndpoint ep = *it;
-        WRITE_PARCEL_WITH_RET(data, Int32, ep.GetAddress(), UEC_SERVICE_WRITE_PARCEL_ERROR);
-        WRITE_PARCEL_WITH_RET(data, Int32, ep.GetAttributes(), UEC_SERVICE_WRITE_PARCEL_ERROR);
+        WRITE_PARCEL_WITH_RET(data, Uint32, ep.GetAddress(), UEC_SERVICE_WRITE_PARCEL_ERROR);
+        WRITE_PARCEL_WITH_RET(data, Uint32, ep.GetAttributes(), UEC_SERVICE_WRITE_PARCEL_ERROR);
         WRITE_PARCEL_WITH_RET(data, Int32, ep.GetInterval(), UEC_SERVICE_WRITE_PARCEL_ERROR);
         WRITE_PARCEL_WITH_RET(data, Int32, ep.GetMaxPacketSize(), UEC_SERVICE_WRITE_PARCEL_ERROR);
         USB_HILOGI(MODULE_USB_SERVICE, "ep=%{public}s", ep.ToString().c_str());
