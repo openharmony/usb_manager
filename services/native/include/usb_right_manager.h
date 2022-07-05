@@ -36,6 +36,12 @@ public:
     int32_t RequestRight(const std::string &deviceName, const std::string &bundleName);
     bool AddDeviceRight(const std::string &deviceName, const std::string &bundleName);
     bool RemoveDeviceRight(const std::string &deviceName);
+
+private:
+    std::pair<int32_t, int32_t> GetDisplayPosition();
+    bool GetUserAgreementByDiag(const std::string &deviceName, const std::string &bundleName);
+
+    int32_t dialogId_ {-1};
 };
 } // namespace USB
 } // namespace OHOS

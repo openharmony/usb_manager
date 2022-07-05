@@ -1079,7 +1079,7 @@ HWTEST_F(UsbRequestTest, Usbrequestabort004, TestSize.Level1)
     UsbRequest request;
     UsbInterface interface = device.GetConfigs().front().GetInterfaces().at(1);
     USBEndpoint point = interface.GetEndpoints().at(1);
-    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestabort004 %{public}d GetDirection=%{public}d ", __LINE__,
+    USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestabort004 %{public}d GetDirection=%{public}u ", __LINE__,
                point.GetDirection());
     USB_HILOGI(MODULE_USB_SERVICE, "UsbRequestTest:Usbrequestabort004 %{public}d GetInterfaceId=%{public}d ", __LINE__,
                point.GetInterfaceId());

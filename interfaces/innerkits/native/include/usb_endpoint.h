@@ -36,8 +36,8 @@ public:
 
     explicit USBEndpoint(const Json::Value &endpoint)
     {
-        address_ = endpoint["address"].asInt();
-        attributes_ = endpoint["attributes"].asInt();
+        address_ = endpoint["address"].asUInt();
+        attributes_ = endpoint["attributes"].asUInt();
         interval_ = endpoint["interval"].asInt();
         maxPacketSize_ = endpoint["maxPacketSize"].asInt();
         interfaceId_ = endpoint["interfaceId"].asUInt();
@@ -50,22 +50,23 @@ public:
     {
         return address_ & USB_ENDPOINT_NUMBER_MASK;
     }
-    const int32_t &GetAddress() const
+
+    const uint32_t &GetAddress() const
     {
         return address_;
     }
 
-    int32_t GetDirection() const
+    uint32_t GetDirection() const
     {
         return address_ & USB_ENDPOINT_DIR_MASK;
     }
 
-    const int32_t &GetAttributes() const
+    const uint32_t &GetAttributes() const
     {
         return attributes_;
     }
 
-    int32_t GetEndpointNumber() const
+    uint32_t GetEndpointNumber() const
     {
         return address_ & USB_ENDPOINT_NUMBER_MASK;
     }
@@ -80,7 +81,7 @@ public:
         return maxPacketSize_;
     }
 
-    int32_t GetType() const
+    uint32_t GetType() const
     {
         return (attributes_ & USB_ENDPOINT_XFERTYPE_MASK);
     }
@@ -105,12 +106,12 @@ public:
         return ret;
     }
 
-    void SetAddr(int32_t val)
+    void SetAddr(uint32_t val)
     {
         address_ = val;
     }
 
-    void SetAttr(int32_t val)
+    void SetAttr(uint32_t val)
     {
         attributes_ = val;
     }
@@ -151,8 +152,8 @@ public:
     }
 
 private:
-    int32_t address_ = INVALID_USB_INT_VALUE;
-    int32_t attributes_ = INVALID_USB_INT_VALUE;
+    uint32_t address_ = 0;
+    uint32_t attributes_ = 0;
     int32_t interval_ = INVALID_USB_INT_VALUE;
     int32_t maxPacketSize_ = INVALID_USB_INT_VALUE;
     uint8_t interfaceId_ = UINT8_MAX;

@@ -104,6 +104,38 @@ void NapiUtil::JsObjectToInt(const napi_env &env, const napi_value &object, std:
     }
 }
 
+void NapiUtil::JsObjectToUint(const napi_env &env, const napi_value &object, const std::string& fieldStr,
+    uint32_t &fieldRef)
+{
+    bool hasProperty = false;
+    napi_status status = napi_has_named_property(env, object, fieldStr.c_str(), &hasProperty);
+    if (status != napi_ok || !hasProperty) {
+        USB_HILOGE(MODULE_JS_NAPI, "js to uint32_t no property: %{public}s", fieldStr.c_str());
+        return;
+    }
+
+    napi_value field = nullptr;
+    napi_valuetype valueType;
+
+    status = napi_get_named_property(env, object, fieldStr.c_str(), &field);
+    if (status != napi_ok) {
+        USB_HILOGE(MODULE_JS_NAPI, "get property failed: %{public}s", fieldStr.c_str());
+        return;
+    }
+
+    status = napi_typeof(env, field, &valueType);
+    if (status != napi_ok) {
+        USB_HILOGE(MODULE_JS_NAPI, "type error failed: %{public}s", fieldStr.c_str());
+        return;
+    }
+
+    NAPI_ASSERT_RETURN_VOID(env, valueType == napi_number, "Wrong argument type. Number expected.");
+    status = napi_get_value_uint32(env, field, &fieldRef);
+    if (status != napi_ok) {
+        USB_HILOGE(MODULE_JS_NAPI, "get value failed: %{public}s", fieldStr.c_str());
+    }
+}
+
 bool NapiUtil::JsUint8ArrayParse(const napi_env &env, const napi_value &object, uint8_t **uint8Buffer,
     size_t &bufferSize, size_t &offset)
 {
@@ -164,6 +196,22 @@ void NapiUtil::SetValueInt32(const napi_env &env, std::string fieldStr, const in
     napi_value value;
     napi_create_int32(env, intValue, &value);
     napi_set_named_property(env, result, fieldStr.c_str(), value);
+}
+
+void NapiUtil::SetValueUint32(const napi_env &env, const std::string& fieldStr, const uint32_t uintValue,
+    napi_value &result)
+{
+    napi_value value = nullptr;
+    napi_status status = napi_create_uint32(env, uintValue, &value);
+    if (status != napi_ok) {
+        USB_HILOGE(MODULE_JS_NAPI, "create uint32 failed:%{public}s\n", fieldStr.c_str());
+        return;
+    }
+
+    status = napi_set_named_property(env, result, fieldStr.c_str(), value);
+    if (status != napi_ok) {
+        USB_HILOGE(MODULE_JS_NAPI, "set property failed:%{public}s\n", fieldStr.c_str());
+    }
 }
 
 void NapiUtil::SetValueBool(const napi_env &env, std::string fieldStr, const bool boolValue, napi_value &result)
