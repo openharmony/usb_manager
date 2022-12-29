@@ -350,13 +350,13 @@ static void ParseDeviceObj(const napi_env env, const napi_value deviceObj, UsbDe
     NapiUtil::JsObjectToInt(env, deviceObj, "productId", productId);
     int32_t clazz = 0;
     NapiUtil::JsObjectToInt(env, deviceObj, "clazz", clazz);
-    int32_t subclass = 0;
-    NapiUtil::JsObjectToInt(env, deviceObj, "subClass", subclass);
+    int32_t subClass = 0;
+    NapiUtil::JsObjectToInt(env, deviceObj, "subClass", subClass);
     int32_t protocol = 0;
     NapiUtil::JsObjectToInt(env, deviceObj, "protocol", protocol);
     std::vector<USBConfig> configs;
     ParseConfigsObjs(env, deviceObj, configs);
-    dev = UsbDevice(name, manufacturerName, productName, version, devAddr, busNum, vendorId, productId, clazz, subclass,
+    dev = UsbDevice(name, manufacturerName, productName, version, devAddr, busNum, vendorId, productId, clazz, subClass,
                     protocol, configs);
 }
 
