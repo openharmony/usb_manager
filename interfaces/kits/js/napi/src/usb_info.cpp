@@ -97,7 +97,7 @@ static void CtoJSUsbInterface(const napi_env &env, napi_value &obj, const UsbInt
     NapiUtil::SetValueInt32(env, "id", usbInterface.GetId(), obj);
     NapiUtil::SetValueInt32(env, "protocol", usbInterface.GetProtocol(), obj);
     NapiUtil::SetValueInt32(env, "clazz", usbInterface.GetClass(), obj);
-    NapiUtil::SetValueInt32(env, "subclass", usbInterface.GetSubClass(), obj);
+    NapiUtil::SetValueInt32(env, "subClass", usbInterface.GetSubClass(), obj);
     NapiUtil::SetValueInt32(env, "alternateSetting", usbInterface.GetAlternateSetting(), obj);
     NapiUtil::SetValueUtf8String(env, "name", usbInterface.GetName(), obj);
     napi_value arr;
@@ -144,7 +144,7 @@ static void CtoJSUsbDevice(const napi_env &env, napi_value &obj, const UsbDevice
     NapiUtil::SetValueInt32(env, "vendorId", usbDevice.GetVendorId(), obj);
     NapiUtil::SetValueInt32(env, "productId", usbDevice.GetProductId(), obj);
     NapiUtil::SetValueInt32(env, "clazz", usbDevice.GetClass(), obj);
-    NapiUtil::SetValueInt32(env, "subclass", usbDevice.GetSubclass(), obj);
+    NapiUtil::SetValueInt32(env, "subClass", usbDevice.GetSubclass(), obj);
     NapiUtil::SetValueInt32(env, "protocol", usbDevice.GetProtocol(), obj);
     NapiUtil::SetValueInt32(env, "devAddress", usbDevice.GetDevAddr(), obj);
     NapiUtil::SetValueInt32(env, "busNum", usbDevice.GetBusNum(), obj);
@@ -258,7 +258,7 @@ static void ParseInterfaceObj(const napi_env env, const napi_value interfaceObj,
     int32_t clzz = 0;
     NapiUtil::JsObjectToInt(env, interfaceObj, "clazz", clzz);
     int32_t subClass = 0;
-    NapiUtil::JsObjectToInt(env, interfaceObj, "subclass", subClass);
+    NapiUtil::JsObjectToInt(env, interfaceObj, "subClass", subClass);
     int32_t alternateSetting = 0;
     NapiUtil::JsObjectToInt(env, interfaceObj, "alternateSetting", alternateSetting);
     std::string name;
@@ -350,13 +350,13 @@ static void ParseDeviceObj(const napi_env env, const napi_value deviceObj, UsbDe
     NapiUtil::JsObjectToInt(env, deviceObj, "productId", productId);
     int32_t clazz = 0;
     NapiUtil::JsObjectToInt(env, deviceObj, "clazz", clazz);
-    int32_t subclass = 0;
-    NapiUtil::JsObjectToInt(env, deviceObj, "subclass", subclass);
+    int32_t subClass = 0;
+    NapiUtil::JsObjectToInt(env, deviceObj, "subClass", subClass);
     int32_t protocol = 0;
     NapiUtil::JsObjectToInt(env, deviceObj, "protocol", protocol);
     std::vector<USBConfig> configs;
     ParseConfigsObjs(env, deviceObj, configs);
-    dev = UsbDevice(name, manufacturerName, productName, version, devAddr, busNum, vendorId, productId, clazz, subclass,
+    dev = UsbDevice(name, manufacturerName, productName, version, devAddr, busNum, vendorId, productId, clazz, subClass,
                     protocol, configs);
 }
 
